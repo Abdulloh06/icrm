@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "736010589870",
+    "project_id": "avlo-crm",
+    "storage_bucket": "avlo-crm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736010589870:android:85f78cbce110a824c1ff3f",
+        "android_client_info": {
+          "package_name": "uz.eurosoft.avlolead"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736010589870-hb9jrjoojqem6i986j6j1p6u4oon3e95.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.eurosoft.avlolead",
+            "certificate_hash": "a929821a4bdc722da5996d9151af324ad44a278c"
+          }
+        },
+        {
+          "client_id": "736010589870-cok9rbfjg7tpqrgf8nc33m6lp36q8j1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqDrOEtWbbLTUgQnScnMxDjLd0hpWiKkI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736010589870-cok9rbfjg7tpqrgf8nc33m6lp36q8j1i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
