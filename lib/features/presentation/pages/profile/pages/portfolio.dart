@@ -1,10 +1,16 @@
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/portfolio_bloc/portfolio_bloc.dart';
-import 'package:avlo/features/presentation/blocs/portfolio_bloc/portfolio_state.dart';
-import 'package:avlo/features/presentation/pages/profile/components/portfolio_card.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
-import 'package:avlo/widgets/main_bottom_bar.dart';
+
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/portfolio_bloc/portfolio_bloc.dart';
+import 'package:icrm/features/presentation/blocs/portfolio_bloc/portfolio_state.dart';
+import 'package:icrm/features/presentation/pages/profile/components/portfolio_card.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
+import 'package:icrm/widgets/main_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';

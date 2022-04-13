@@ -69,6 +69,7 @@ class ContactsUpdateEvent extends ContactsEvent {
   final File? avatar;
   final int type;
   final bool hasAvatar;
+  final bool fromContact;
 
   ContactsUpdateEvent({
     required this.id,
@@ -79,6 +80,7 @@ class ContactsUpdateEvent extends ContactsEvent {
     this.avatar,
     required this.type,
     this.hasAvatar = true,
+    this.fromContact = false,
   });
 
   @override

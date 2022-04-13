@@ -1,6 +1,6 @@
-import 'package:avlo/core/models/dash_board_model.dart';
-import 'package:avlo/core/models/leads_model.dart';
-import 'package:avlo/core/models/leads_status_model.dart';
+import 'package:icrm/core/models/dash_board_model.dart';
+import 'package:icrm/core/models/leads_model.dart';
+import 'package:icrm/core/models/leads_status_model.dart';
 import 'package:equatable/equatable.dart';
 
 

@@ -1,5 +1,5 @@
-import 'package:avlo/core/models/calendar_model.dart';
-import 'package:avlo/core/service/api/get_calendar.dart';
+import 'package:icrm/core/models/calendar_model.dart';
+import 'package:icrm/core/service/api/get_calendar.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/util/get_it.dart';

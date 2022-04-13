@@ -1,7 +1,12 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
-import 'package:avlo/core/models/message_model.dart';
-import 'package:avlo/core/repository/api_repository.dart';
-import 'package:avlo/core/repository/user_token.dart';
+import 'package:icrm/core/models/message_model.dart';
+import 'package:icrm/core/repository/api_repository.dart';
+import 'package:icrm/core/repository/user_token.dart';
 import 'package:dio/dio.dart';
 
 class LeadsMessage {
@@ -10,12 +15,27 @@ class LeadsMessage {
 
   Future<bool> sendMessage({
     required String message,
-    required int user_id,
+    required dynamic user_id,
     required int lead_id,
-    required int client_id,
+    required dynamic client_id,
   }) async {
 
     try {
+
+      Map<String, dynamic> data = {
+        "lead_id": lead_id,
+        "message": message,
+      };
+      if(user_id != null) {
+        data.addAll({
+          "user_id": user_id,
+        });
+      }
+      if(client_id != null) {
+        data.addAll({
+          "contact_id": client_id,
+        });
+      }
 
       final response = await dio.post(
         ApiRepository.leadsMessage,
@@ -26,11 +46,7 @@ class LeadsMessage {
             "Content-Type": "application/json"
           }
         ),
-        data: {
-          "lead_id": lead_id,
-          "user_id": user_id,
-          "message": message,
-        },
+        data: data,
       ).timeout(const Duration(minutes: 1), onTimeout: () {
         throw Exception('TIME OUT');
       });

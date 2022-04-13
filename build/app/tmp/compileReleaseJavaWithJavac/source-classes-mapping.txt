@@ -1,4 +1,0 @@
-io/flutter/plugins/GeneratedPluginRegistrant.java
- io.flutter.plugins.GeneratedPluginRegistrant
-uz/eurosoft/avlolead/BuildConfig.java
- uz.eurosoft.avlolead.BuildConfig

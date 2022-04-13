@@ -1,4 +1,4 @@
-name: avlo
+name: icrm
 description: A new Flutter project.
 
 publish_to: 'none'
@@ -47,6 +47,8 @@ dependencies:
   share: ^2.0.4
   file_picker: ^4.5.1
   telephony: ^0.1.4
+  lottie: ^1.2.2
+  pull_to_refresh: ^2.0.0
 
 dev_dependencies:
   flutter_test:

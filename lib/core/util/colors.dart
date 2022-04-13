@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:flutter/material.dart';
 
 class AppColors {

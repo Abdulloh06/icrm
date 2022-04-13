@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 class ContactModel {
   final int id;
   final String name;

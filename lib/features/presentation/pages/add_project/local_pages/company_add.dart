@@ -1,12 +1,17 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/company_bloc/company_bloc.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_bloc.dart';
-import 'package:avlo/features/presentation/pages/drawer/companies/components/company_card.dart';
-import 'package:avlo/features/presentation/pages/widgets/one_button.dart';
-import 'package:avlo/widgets/custom_text_field.dart';
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/company_bloc/company_bloc.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/pages/drawer/companies/components/company_card.dart';
+import 'package:icrm/features/presentation/pages/widgets/one_button.dart';
+import 'package:icrm/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -176,8 +181,7 @@ class _ContactCompanyState extends State<ContactCompany> {
                       ),
                       CustomTextField(
                         onTap: () => pickImage(),
-                        validator: (value) =>
-                        hasImage ? null : Locales.string(context, 'key'),
+                        validator: (value) => null,
                         controller: _imageController,
                         onChanged: (value) {},
                         readOnly: true,
@@ -193,9 +197,7 @@ class _ContactCompanyState extends State<ContactCompany> {
                         height: 20,
                       ),
                       CustomTextField(
-                        validator: (value) => value!.isEmpty
-                            ? Locales.string(context, "must_fill_this_line")
-                            : null,
+                        validator: (value) => null,
                         controller: _urlController,
                         onChanged: (value) {},
                         hint: 'company_url',
@@ -215,27 +217,14 @@ class _ContactCompanyState extends State<ContactCompany> {
                       const SizedBox(height: 20),
                       OneButtonWidget(
                         press: () {
-                          if(widget.contact_id != null) {
-                            if (_formKey.currentState!.validate()) {
-                              context.read<CompanyBloc>().add(CompanyAddEvent(
-                                contactId: widget.contact_id!,
-                                image: File(logo!.path),
-                                url: _urlController.text,
-                                name: _nameController.text,
-                                description: 'description',
-                              ));
-                            }
-                          }else {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                margin: const EdgeInsets.all(20),
-                                backgroundColor: AppColors.mainColor,
-                                content: LocaleText('first_fill_contact_info', style: AppTextStyles.mainGrey.copyWith(color: Colors.white)),
-                              ),
-                            );
+                          if (_formKey.currentState!.validate()) {
+                            context.read<CompanyBloc>().add(CompanyAddEvent(
+                              contactId: widget.contact_id,
+                              image: File(logo!.path),
+                              url: _urlController.text,
+                              name: _nameController.text,
+                              description: 'description',
+                            ));
                           }
                         },
                       ),

@@ -1,4 +1,9 @@
-import 'package:avlo/core/util/colors.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 

@@ -1,8 +1,8 @@
-import 'package:avlo/core/models/user_categories_model.dart';
-import 'package:avlo/core/service/api/get_user_categories.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/user_categories_bloc/user_categories_event.dart';
-import 'package:avlo/features/presentation/blocs/user_categories_bloc/user_categories_state.dart';
+import 'package:icrm/core/models/user_categories_model.dart';
+import 'package:icrm/core/service/api/get_user_categories.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/user_categories_bloc/user_categories_event.dart';
+import 'package:icrm/features/presentation/blocs/user_categories_bloc/user_categories_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserCategoriesBloc extends Bloc<UserCategoriesEvent, UserCategoriesState>{

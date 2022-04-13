@@ -1,5 +1,5 @@
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/main_includes.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/main_includes.dart';
 import 'package:flutter/material.dart';
 
 class Projects extends StatelessWidget {

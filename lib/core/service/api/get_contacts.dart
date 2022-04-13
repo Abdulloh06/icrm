@@ -1,6 +1,11 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
-import 'package:avlo/core/models/contacts_model.dart';
-import 'package:avlo/core/repository/api_repository.dart';
+import 'package:icrm/core/models/contacts_model.dart';
+import 'package:icrm/core/repository/api_repository.dart';
 import 'package:dio/dio.dart';
 import '../../repository/user_token.dart';
 
@@ -43,22 +48,27 @@ class GetContacts {
     required String phone_number,
     required String email,
     required int type,
-    required File avatar,
+    required File? avatar,
   }) async {
     try {
 
-      String fileName = avatar.path.split('/').last;
 
       FormData formData = await FormData.fromMap({
         "name": name,
-        "position": position,
         "phone_number": phone_number,
-        "email": email,
         "contact_type": type,
       });
+      if(email != '') {
+        formData.fields.add(MapEntry('email', email));
+      }
+      if(position != '') {
+        formData.fields.add(MapEntry('position', position));
+      }
 
-      formData.files.add(MapEntry('avatar', await MultipartFile.fromFile(avatar.path, filename: fileName)));
-
+      if(avatar != null) {
+        String fileName = avatar.path.split('/').last;
+        formData.files.add(MapEntry('avatar', await MultipartFile.fromFile(avatar.path, filename: fileName)));
+      }
       final response = await dio.post(
         ApiRepository.getContacts,
         options: Options(
@@ -109,12 +119,16 @@ class GetContacts {
 
       FormData formData = await FormData.fromMap({
         "name": name,
-        "position": position,
         "phone_number": phone_number,
-        "email": email,
         "contact_type": type,
       });
 
+      if(position == '') {
+        formData.fields.add(MapEntry('position', position));
+      }
+      if(email == '') {
+        formData.fields.add(MapEntry('email', email));
+      }
       if(hasAvatar) {
         String fileName = avatar!.path.split('/').last;
         formData.files.add(MapEntry('avatar', await MultipartFile.fromFile(avatar.path, filename: fileName)));
@@ -219,12 +233,16 @@ class GetContacts {
 
       FormData formData = await FormData.fromMap({
         "name": name,
-        "position": position,
         "phone_number": phone_number,
-        "email": email,
         "contact_type": type,
         "source": source,
       });
+      if(email != '') {
+        formData.fields.add(MapEntry('email', email));
+      }
+      if(position != '') {
+        formData.fields.add(MapEntry('position', position));
+      }
 
       final response = await dio.post(
         ApiRepository.getContacts,

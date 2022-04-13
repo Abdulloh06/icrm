@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:avlo/core/models/contacts_model.dart';
-import 'package:avlo/features/presentation/blocs/company_bloc/company_bloc.dart';
-import 'package:avlo/features/presentation/blocs/contacts_bloc/contacts_bloc.dart';
-import 'package:avlo/features/presentation/blocs/contacts_bloc/contacts_event.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_bloc.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_event.dart';
+import 'package:icrm/core/models/contacts_model.dart';
+import 'package:icrm/features/presentation/blocs/company_bloc/company_bloc.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_bloc.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_event.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_event.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +15,6 @@ import '../../../../../core/util/colors.dart';
 import '../../../../../core/util/text_styles.dart';
 import '../../../../../widgets/custom_text_field.dart';
 import '../../../../../widgets/main_button.dart';
-import 'general_page.dart';
 
 //ignore:must_be_immutable
 class MainInfoDialog extends StatefulWidget {

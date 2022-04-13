@@ -1,8 +1,8 @@
-import 'package:avlo/core/models/contacts_model.dart';
-import 'package:avlo/core/service/api/get_contacts.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/contacts_bloc/contacts_event.dart';
-import 'package:avlo/features/presentation/blocs/contacts_bloc/contacts_state.dart';
+import 'package:icrm/core/models/contacts_model.dart';
+import 'package:icrm/core/service/api/get_contacts.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_event.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
@@ -58,7 +58,12 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
           avatar: event.avatar,
           hasAvatar: event.hasAvatar,
         );
-        emit(ContactsShowState(contact: contact));
+        if(event.fromContact) {
+          final List<ContactModel> contacts = await getIt.get<GetContacts>().getContacts();
+          emit(ContactsInitState(contacts: contacts));
+        }else {
+          emit(ContactsShowState(contact: contact));
+        }
       } catch (error) {
         print(error);
 

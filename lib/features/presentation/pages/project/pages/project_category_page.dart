@@ -1,7 +1,7 @@
-import 'package:avlo/core/models/user_categories_model.dart';
-import 'package:avlo/core/service/api/get_user_categories.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/get_it.dart';
+import 'package:icrm/core/models/user_categories_model.dart';
+import 'package:icrm/core/service/api/get_user_categories.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/get_it.dart';
 import 'package:flutter/material.dart';
 
 class ProjectCategoryPage extends StatefulWidget {

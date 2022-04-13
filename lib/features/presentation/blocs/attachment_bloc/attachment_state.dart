@@ -1,4 +1,4 @@
-import 'package:avlo/core/models/attachment_model.dart';
+import 'package:icrm/core/models/attachment_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AttachmentState extends Equatable {

@@ -1,9 +1,17 @@
-import 'package:avlo/core/models/contacts_model.dart';
-import 'package:avlo/core/models/leads_status_model.dart';
-import 'package:avlo/core/models/projects_model.dart';
-import 'package:avlo/core/models/tasks_model.dart';
-import 'package:avlo/core/models/team_model.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
+import 'package:icrm/core/models/contacts_model.dart';
+import 'package:icrm/core/models/leads_status_model.dart';
+import 'package:icrm/core/models/message_model.dart';
+import 'package:icrm/core/models/projects_model.dart';
+import 'package:icrm/core/models/tasks_model.dart';
+import 'package:icrm/core/models/team_model.dart';
+import 'package:flutter/foundation.dart';
+
+@immutable
 class LeadsModel {
   final int id;
   final int projectId;
@@ -26,6 +34,7 @@ class LeadsModel {
   final LeadsStatusModel? leadStatus;
   final List<TasksModel>? tasks;
   final TeamModel? member;
+  final List<MessageModel>? messages;
 
   LeadsModel({
     required this.id,
@@ -49,6 +58,7 @@ class LeadsModel {
     this.leadStatus,
     this.tasks,
     this.member,
+    this.messages,
   });
 
   factory LeadsModel.fromJson(Map<String, dynamic> json) {
@@ -67,7 +77,7 @@ class LeadsModel {
 
     TeamModel? teamModel;
     if(json['seller'] != null) {
-      teamModel = TeamModel.fromJson(json['seller'] ?? []);
+      teamModel = TeamModel.fromJson(json['seller']);
     }
 
     return LeadsModel(
@@ -92,6 +102,7 @@ class LeadsModel {
       leadStatus: leadsStatus,
       tasks: fetchTasks(json['tasks'] ?? []),
       member: teamModel,
+      messages: fetchMessage(json['messages'] ?? []),
     );
   }
 
@@ -115,6 +126,16 @@ class LeadsModel {
     return tasks;
   }
 
+  static List<MessageModel> fetchMessage(List data) {
+    List items = data;
+    List<MessageModel> messages = [];
+
+    for(int i = 0; i < items.length; i++) {
+      messages.add(MessageModel.fromJson(items[i]));
+    }
+
+    return messages;
+  }
 }
 
 

@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsKeys {
@@ -45,7 +50,7 @@ class SharedPreferencesService {
       await _preferences.setString(PrefsKeys.phoneKey, data['user']['phone_number'] ?? "");
       await _preferences.setString(PrefsKeys.emailKey, data['user']['email'] ?? "");
     }else {
-      await _preferences.setInt('id', data['data']['id']);
+      await _preferences.setInt(PrefsKeys.idKey, data['data']['id']);
       await _preferences.setString(PrefsKeys.nameKey, data['data']['first_name'] ?? "");
       await _preferences.setString(PrefsKeys.surnameKey, data['data']['last_name'] ?? "");
       await _preferences.setString(PrefsKeys.phoneKey, data['data']['phone_number'] ?? "");
@@ -84,6 +89,6 @@ class SharedPreferencesService {
 
   String get getRefreshToken =>
       _preferences.getString(PrefsKeys.refreshTokenKey) ?? "";
-  dynamic get getUserId => _preferences.getInt('id');
+  dynamic get getUserId => _preferences.getInt(PrefsKeys.idKey);
   String get getResponsibility => _preferences.getString(PrefsKeys.responsibilityKey) ?? "";
 }

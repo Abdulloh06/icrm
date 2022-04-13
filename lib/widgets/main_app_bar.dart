@@ -1,16 +1,17 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/service/shared_preferences_service.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/cubits/bottom_bar_cubit.dart';
-import 'package:avlo/features/presentation/blocs/cubits/theme_cubit.dart';
-import 'package:avlo/features/presentation/pages/seacrh_page/search_page.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/cubits/theme_cubit.dart';
+import 'package:icrm/features/presentation/pages/seacrh_page/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'custom_text_field.dart';
 
 class AppBarBack extends StatelessWidget {
@@ -36,7 +37,7 @@ class AppBarBack extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
-            onTap: onTap != null ? onTap : () =>Navigator.pop(context),
+            onTap: onTap == null ? () => Navigator.pop(context) : onTap,
             child: Row(
               children: [
                 const Icon(Icons.arrow_back_ios),
@@ -87,7 +88,7 @@ class MainAppBar extends StatelessWidget {
         title: project
             ? Row(children: [
                 GestureDetector(
-                  onTap: () => onTap != null ? onTap!.call() : Navigator.pop(context),
+                  onTap: onTap == null ? () => Navigator.pop(context) : onTap,
                   child: Icon(Icons.arrow_back_ios),
                 ),
                 Flexible(
@@ -105,116 +106,62 @@ class MainAppBar extends StatelessWidget {
                 ? AppColors.mainColor
                 : Colors.white,
         actions: [
-          IconButton(
-            onPressed: () async {
-
-              final _prefs = await SharedPreferences.getInstance();
-
-              Set<String> history = {};
-
-              if(_prefs.getStringList(PrefsKeys.searchHistoryKey) != null) {
-                history = _prefs.getStringList(PrefsKeys.searchHistoryKey)!.toSet();
-              }
-
-              String search = '';
-
-              showDialog(
-                barrierDismissible: true,
-                context: context,
-                builder: (context) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Material(
-                      elevation: 0,
-                      color: Colors.transparent,
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Column(
-                            children: [
-                              CustomTextField(
-                                hint: 'search',
-                                controller: _searchController,
-                                validator: (value) => null,
-                                iconMargin: 10,
-                                suffixIcon: 'assets/icons_svg/search.svg',
-                                onChanged: (value) {
-                                  search = value;
-                                },
-                                iconColor: UserToken.isDark ? Colors.white : Colors.black,
-                                isFilled: true,
-                                onEditingComplete: () {
-                                  if(search != '') {
-                                    history.add(search);
-                                    _prefs.setStringList(PrefsKeys.searchHistoryKey, history.toList());
-                                    Navigator.pop(context);
-                                    Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => SearchPage(search: search),
-                                    ));
-                                  }else {
-                                    Navigator.pop(context);
-                                  }
-                                },
-                                color: UserToken.isDark ? AppColors.cardColorDark : Colors.white,
-                              ),
-                              const SizedBox(height: 20),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  height: 300,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
+          StatefulBuilder(
+            builder: (context, setState) {
+              return IconButton(
+                onPressed: () async {
+                  showDialog(
+                    barrierDismissible: true,
+                    context: context,
+                    builder: (context) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Material(
+                          elevation: 0,
+                          color: Colors.transparent,
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                children: [
+                                  CustomTextField(
+                                    hint: 'search',
+                                    controller: _searchController,
+                                    validator: (value) => null,
+                                    iconMargin: 10,
+                                    suffixIcon: 'assets/icons_svg/search.svg',
+                                    onChanged: (value) {
+                                      setState(() {});
+                                    },
+                                    iconColor: UserToken.isDark ? Colors.white : Colors.black,
+                                    isFilled: true,
                                     color: UserToken.isDark ? AppColors.cardColorDark : Colors.white,
                                   ),
-                                  child: ListView.builder(
-                                    itemCount: history.length,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                            Navigator.push(context, MaterialPageRoute(
-                                              builder: (context) => SearchPage(search: history.elementAt(index)),
-                                            ));
-                                          },
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/icons_svg/search_history.svg',
-                                                color: UserToken.isDark ? Colors.white : Colors.black,
-                                              ),
-                                              const SizedBox(width: 20),
-                                              Text(
-                                                history.elementAt(index),
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppColors.mainColor,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.5,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: SearchPage(search: _searchController.text),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   );
                 },
+                icon: SvgPicture.asset(
+                  'assets/icons_svg/search.svg',
+                  color: UserToken.isDark ? Colors.white : Colors.black,
+                ),
               );
-            },
-            icon: SvgPicture.asset(
-              'assets/icons_svg/search.svg',
-              color: UserToken.isDark ? Colors.white : Colors.black,
-            ),
+            }
           ),
           IconButton(
             onPressed: () => scaffoldKey.currentState!.openEndDrawer(),
@@ -228,3 +175,4 @@ class MainAppBar extends StatelessWidget {
     });
   }
 }
+

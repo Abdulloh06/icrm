@@ -1,7 +1,7 @@
-import 'package:avlo/core/service/api/get_profile.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/profile_bloc/profile_event.dart';
-import 'package:avlo/features/presentation/blocs/profile_bloc/profile_state.dart';
+import 'package:icrm/core/service/api/get_profile.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/profile_bloc/profile_event.dart';
+import 'package:icrm/features/presentation/blocs/profile_bloc/profile_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/models/profile_model.dart';

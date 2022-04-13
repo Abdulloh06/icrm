@@ -1,4 +1,4 @@
-import 'package:avlo/core/models/portfolio_model.dart';
+import 'package:icrm/core/models/portfolio_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class PortfolioState extends Equatable {

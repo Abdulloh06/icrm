@@ -1,6 +1,11 @@
-import 'package:avlo/core/util/text_input_format.dart';
-import 'package:avlo/features/presentation/blocs/helper_bloc/helper_bloc.dart';
-import 'package:avlo/features/presentation/blocs/helper_bloc/helper_event.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/util/text_input_format.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_bloc.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_event.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 
 import 'package:flutter/material.dart';
@@ -20,9 +25,11 @@ class ReminderCalendar extends StatefulWidget {
   ReminderCalendar({
     Key? key,
     required this.id,
+    this.isProject = false,
   }) : super(key: key);
 
   final int id;
+  final bool isProject;
 
   @override
   State<ReminderCalendar> createState() => _ReminderCalendarState();
@@ -37,10 +44,11 @@ class _ReminderCalendarState extends State<ReminderCalendar> {
   DateTime selected_date = DateTime.now();
   final _formKey = GlobalKey<FormState>();
 
-  int id = 1;
-
   @override
   Widget build(BuildContext context) {
+
+    _startDateController.text = DateFormat("dd.MM.yyyy").format(DateTime.now());
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 0),
@@ -80,7 +88,7 @@ class _ReminderCalendarState extends State<ReminderCalendar> {
                   LocaleText(
                     'calendar',
                     style: AppTextStyles.mainBold.copyWith(fontSize: 25),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -118,23 +126,14 @@ class _ReminderCalendarState extends State<ReminderCalendar> {
                             controller: _startDateController,
                             suffixIcon: 'assets/icons_svg/add_grey.svg',
                             hint: 'start',
-                            validator: (value) => value!.isEmpty ? Locales.string(context, 'must_fill_this_line') : value.length < 10 ? Locales.string(context, 'enter_valid_info') : null,
+                            validator: (value) => null,
+                            readOnly: true,
                             onChanged: (value) {},
-                            onTap: () {
-                              setState(() {
-                                id = 1;
-                              });
-                            },
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: CustomTextField(
-                            onTap: () {
-                              setState(() {
-                                id = 2;
-                              });
-                            },
                             isFilled: true,
                             color: UserToken.isDark
                                 ? AppColors.textFieldColorDark
@@ -219,14 +218,7 @@ class _ReminderCalendarState extends State<ReminderCalendar> {
                           focusedDate = _focusedDay;
                           selected_date = _selectedDay;
 
-                          switch (id) {
-                            case 1:
-                              _startDateController.text = DateFormat("dd.MM.yyyy").format(_selectedDay);
-                              break;
-                            case 2:
-                              _endDateController.text = DateFormat("dd.MM.yyyy").format(_selectedDay);
-                              break;
-                          }
+                          _endDateController.text = DateFormat("dd.MM.yyyy").format(_selectedDay);
                         });
                       },
                       lastDay: DateTime(2025),

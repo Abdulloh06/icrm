@@ -1,12 +1,15 @@
-import 'dart:io';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
+import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../../../core/repository/user_token.dart';
 import '../../../../../core/util/colors.dart';
 import '../../../../../core/util/text_styles.dart';
@@ -39,9 +42,7 @@ class ChangeUserInfoDialog extends StatefulWidget {
 
 class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
   final _formKey = GlobalKey<FormState>();
-
   final _imagePicker = ImagePicker();
-
   File? avatar;
 
   void pickImage() async {
@@ -70,8 +71,7 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
           textAlign: TextAlign.center,
           style: AppTextStyles.mainBold.copyWith(fontSize: 20),
         ),
-        titlePadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        insetPadding: const EdgeInsets.only(top: 50, bottom: 50),
+        insetPadding: const EdgeInsets.only(top: 30, left: 10, right: 10),
         content: Column(
           children: [
             GestureDetector(
@@ -126,8 +126,9 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 40,
+                    height: 46,
                     child: CustomTextField(
+
                       isFilled: true,
                       color: UserToken.isDark
                           ? AppColors.textFieldColorDark
@@ -142,7 +143,7 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
                     height: 10,
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 46,
                     child: CustomTextField(
                       isFilled: true,
                       color: UserToken.isDark
@@ -158,7 +159,7 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
                     height: 10,
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 46,
                     child: CustomTextField(
                       isFilled: true,
                       color: UserToken.isDark
@@ -174,7 +175,7 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
                     height: 10,
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 46,
                     child: CustomTextField(
                       isFilled: true,
                       color: UserToken.isDark
@@ -188,7 +189,7 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
-                    height: 40,
+                    height: 48,
                     child: CustomTextField(
                       isFilled: true,
                       color: UserToken.isDark
@@ -204,7 +205,7 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
                     height: 10,
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 46,
                     child: CustomTextField(
                       isFilled: true,
                       color: UserToken.isDark
@@ -232,7 +233,7 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
                     color: AppColors.red,
                     title: 'cancel',
                     onTap: () => Navigator.pop(context),
-                    padding: UserToken.languageCode == 'ru' ? const EdgeInsets.symmetric(vertical: 15, horizontal: 40) : const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                    padding: UserToken.languageCode == 'ru' ? const EdgeInsets.symmetric(vertical: 15, horizontal: 33) : const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                   ),
                   const SizedBox(
                     width: 30,
@@ -257,7 +258,6 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
                           ),
                         );
                       }
-                      print(UserToken.languageCode);
                       Navigator.pop(context);
                     },
                     padding: UserToken.languageCode == 'ru' ? const EdgeInsets.symmetric(vertical: 15, horizontal: 40) : const EdgeInsets.symmetric(vertical: 15, horizontal: 50),

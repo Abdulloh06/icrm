@@ -1,5 +1,10 @@
-import 'package:avlo/core/models/leads_model.dart';
-import 'package:avlo/core/models/tasks_model.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o :)
+ */
+
+import 'package:icrm/core/models/leads_model.dart';
+import 'package:icrm/core/models/tasks_model.dart';
 
 class CalendarModel {
 

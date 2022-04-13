@@ -1,6 +1,13 @@
-import 'package:avlo/core/models/project_statuses_model.dart';
-import 'package:avlo/core/models/user_categories_model.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
+import 'package:icrm/core/models/project_statuses_model.dart';
+import 'package:icrm/core/models/user_categories_model.dart';
+import 'package:flutter/foundation.dart';
+
+@immutable
 class PortfolioModel {
   final int id;
   final int userId;
@@ -9,7 +16,7 @@ class PortfolioModel {
   final String name;
   final String description;
   final String notifyAt;
-  final double price;
+  final dynamic price;
   final String currency;
   final String createdAt;
   final String updatedAt;

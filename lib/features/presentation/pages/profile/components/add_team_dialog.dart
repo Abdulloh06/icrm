@@ -1,5 +1,10 @@
-import 'package:avlo/features/presentation/blocs/team_bloc/team_bloc.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_event.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/features/presentation/blocs/team_bloc/team_bloc.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -17,8 +22,6 @@ class AddTeamDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<UsersBloc>().add(UsersInitEvent(search: ''));
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: AlertDialog(
@@ -27,6 +30,14 @@ class AddTeamDialog extends StatelessWidget {
         insetPadding: const EdgeInsets.only(bottom: 100, top: 60),
         title: MainSearchBar(
           controller: _searchController,
+          icon: IconButton(
+            icon: Icon(
+              Icons.check,
+              color: AppColors.mainColor,
+            ),
+            splashRadius: 10,
+            onPressed: () {},
+          ),
           onComplete: () {
             FocusScope.of(context).unfocus();
             context.read<UsersBloc>().add(
@@ -35,13 +46,7 @@ class AddTeamDialog extends StatelessWidget {
               ),
             );
           },
-          onChanged: (value) {
-            context.read<UsersBloc>().add(
-              UsersInitEvent(
-                search: _searchController.text,
-              ),
-            );
-          },
+          onChanged: (value) {},
         ),
         content: SizedBox(
           width: MediaQuery.of(context).size.width - 80,
@@ -72,12 +77,6 @@ class AddTeamDialog extends StatelessWidget {
               } else if(state is UsersInitState && state.users.isEmpty){
                 return Center(
                   child: LocaleText("empty"),
-                );
-              } else if(state is UsersLoadingState){
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.mainColor,
-                  ),
                 );
               }else {
                 return SizedBox.shrink();

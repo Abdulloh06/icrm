@@ -1,9 +1,9 @@
-import 'package:avlo/core/service/api/auth/get_yandex_email.dart';
-import 'package:avlo/core/service/api/auth/login_service.dart';
-import 'package:avlo/core/service/api/auth/sign_up_service.dart';
-import 'package:avlo/core/service/api/auth/social_auth.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/auth_bloc/auth_event.dart';
+import 'package:icrm/core/service/api/auth/get_yandex_email.dart';
+import 'package:icrm/core/service/api/auth/login_service.dart';
+import 'package:icrm/core/service/api/auth/sign_up_service.dart';
+import 'package:icrm/core/service/api/auth/social_auth.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/auth_bloc/auth_event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -32,12 +32,16 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
 
         if (result == '') {
           emit(AuthSignInSuccessSate());
-        } else if (result == 'user_not_found') {
+        } else if (result.contains('user')) {
           emit(AuthErrorState(error: 'user_not_found'));
         }
       } catch (error) {
         print(error);
-        emit(AuthErrorState(error: error.toString()));
+        if(error.toString().contains('user')) {
+          emit(AuthErrorState(error: 'user_not_found'));
+        }else {
+          emit(AuthErrorState(error: "something_went_wrong"));
+        }
       }
     });
 
@@ -90,10 +94,10 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
 
       try {
         bool result = await getIt.get<SignUpService>().registerConfirmation(
-          via: event.via,
-          password: event.password,
-          confirmPassword: event.confirmPassword,
-        );
+              via: event.via,
+              password: event.password,
+              confirmPassword: event.confirmPassword,
+            );
 
         if (result) {
           emit(AuthSignUpSuccessConfirm());
@@ -102,7 +106,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         }
       } catch (e) {
         print('Sign up step-confirmation + $e');
-        emit(AuthErrorState(error: e.toString()));
+        emit(AuthErrorState(error: 'something_went_wrong'));
       }
     });
 
@@ -113,28 +117,28 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         Map<String, dynamic> result = await _getGoogleEmail();
 
         if (result['result']) {
-          String signIn = await getIt.get<SocialAuth>().socialAuth(
-            name: result['name'],
-            password: result['password'],
-            auth_type: 'google',
-            phone_number: result['phone'],
-            email: result['email'],
-          );
+          String signIn = await getIt.get<LoginService>().login(
+                username: result['email'],
+                password: result['password'],
+              );
 
           if (signIn == '') {
             emit(AuthSignInSuccessSate());
-          } else if (signIn == 'user_not_found') {
+          } else if (signIn.contains('user')) {
             emit(AuthErrorState(error: 'user_not_found'));
           } else {
             emit(AuthErrorState(error: 'something_went_wrong'));
           }
         } else {
-          emit(AuthErrorState(error: 'error'));
+          emit(AuthInitState());
         }
-      } catch (error, stackTrace) {
+      } catch (error) {
         print(error);
-        print(stackTrace);
-        emit(AuthErrorState(error: error.toString()));
+        if(error.toString().contains('user')) {
+          emit(AuthErrorState(error: 'user_not_found'));
+        }else {
+          emit(AuthErrorState(error: 'something_went_wrong'));
+        }
       }
     });
 
@@ -162,14 +166,10 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         switch (facebookAuth.status) {
           case LoginStatus.success:
             print(facebookAuth.accessToken!.token);
-            print(AccessToken.fromJson(facebookAuth.accessToken!.toJson()));
-            String signIn = await getIt.get<SocialAuth>().socialAuth(
-              name: userInfo['name'],
-              password: userInfo['id'] ?? "",
-              auth_type: 'facebook',
-              phone_number: userInfo['phone_number'],
-              email: userInfo['email'],
-            );
+            String signIn = await getIt.get<LoginService>().login(
+                  username: userInfo['email'],
+                  password: userInfo['id'],
+                );
 
             if (signIn == '') {
               emit(AuthSignInSuccessSate());
@@ -190,7 +190,11 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         }
       } catch (e) {
         print(e);
-        emit(AuthErrorState(error: e.toString()));
+        if(e.toString().contains('user')) {
+          emit(AuthErrorState(error: 'user_not_found'));
+        }else {
+          emit(AuthErrorState(error: 'something_went_wrong'));
+        }
       }
     });
 
@@ -201,20 +205,29 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         Map<String, dynamic> result = await _getGoogleEmail();
 
         if (result['result']) {
-          String signUp = await getIt.get<SignUpService>().signUpStepOne(
-              email: result['email'], phone: result['phone'] ?? '');
+          String signUp = await getIt.get<SocialAuth>().socialAuth(
+                name: result['name'],
+                password: result['password'],
+                auth_type: 'google',
+                phone_number: result['phone'] ?? '',
+                email: result['email'],
+              );
 
           if (signUp == '') {
             emit(AuthSignUpFromSocialSuccess(
                 email: result['email'], password: result['password']));
           } else {
-            emit(AuthErrorState(error: signUp));
+            emit(AuthErrorState(error: 'user_already_exists'));
           }
         } else {
           emit(AuthErrorState(error: 'something_went_wrong'));
         }
       } catch (error) {
-        emit(AuthErrorState(error: error.toString()));
+        if(error.toString().contains('email')) {
+          emit(AuthErrorState(error: 'user_already_exists'));
+        }else {
+          emit(AuthErrorState(error: 'something_went_wrong'));
+        }
       }
     });
 
@@ -225,17 +238,23 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         final facebookAuth = await FacebookAuth.instance.login();
         final userInfo = await FacebookAuth.i.getUserData();
 
-        print(userInfo);
-
+        String name = userInfo['name'].toString().split(' ').first;
+        String surname = userInfo['name'].toString().split(' ').last;
         switch (facebookAuth.status) {
           case LoginStatus.success:
-            String signIn = await getIt.get<SignUpService>().signUpStepOne(
+            String signIn = await getIt.get<SocialAuth>().socialAuth(
+              name: name,
+              surname: surname,
+              password: userInfo['id'],
+              auth_type: 'facebook',
+              phone_number: '',
               email: userInfo['email'],
-              phone: '',
             );
             if (signIn == '') {
               emit(AuthSignUpFromSocialSuccess(
-                  email: userInfo['email'], password: userInfo['id']));
+                email: userInfo['email'],
+                password: userInfo['id'],
+              ));
             } else if (signIn == 'user') {
               emit(AuthErrorState(error: "user_already_exists"));
             } else {
@@ -244,7 +263,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
 
             break;
           case LoginStatus.cancelled:
-            emit(AuthErrorState(error: facebookAuth.message.toString()));
+            emit(AuthInitState());
             break;
           case LoginStatus.failed:
             emit(AuthErrorState(error: facebookAuth.message.toString()));
@@ -255,7 +274,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         }
       } catch (e) {
         print(e);
-        emit(AuthErrorState(error: e.toString()));
+        emit(AuthErrorState(error: 'something_went_wrong'));
       }
     });
   }

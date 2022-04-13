@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/attachment_bloc/attachment_bloc.dart';
-import 'package:avlo/features/presentation/blocs/attachment_bloc/attachment_event.dart';
-import 'package:avlo/features/presentation/blocs/attachment_bloc/attachment_state.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_bloc.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_event.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_state.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,12 +42,6 @@ class _ProjectDocumentPageState extends State<ProjectDocumentPage> {
   }
 
   String fileType = '';
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<AttachmentBloc>().add(AttachmentShowEvent(content_type: widget.content_type, content_id: widget.project_id));
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,16 +1,21 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/service/api/auth/get_user.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/main_page.dart';
-import 'package:avlo/features/presentation/pages/drawer/archive/archive.dart';
-import 'package:avlo/features/presentation/pages/drawer/companies/pages/companies.dart';
-import 'package:avlo/features/presentation/pages/drawer/contacts/contacts.dart';
-import 'package:avlo/features/presentation/pages/drawer/create_note/create_note.dart';
-import 'package:avlo/features/presentation/pages/drawer/messages/pages/messages.dart';
-import 'package:avlo/features/presentation/pages/drawer/notifications/notifications.dart';
-import 'package:avlo/features/presentation/pages/drawer/settings/settings.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/service/api/auth/get_user.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/main_page.dart';
+import 'package:icrm/features/presentation/pages/drawer/archive/archive.dart';
+import 'package:icrm/features/presentation/pages/drawer/companies/pages/companies.dart';
+import 'package:icrm/features/presentation/pages/drawer/contacts/contacts.dart';
+import 'package:icrm/features/presentation/pages/drawer/create_note/create_note.dart';
+import 'package:icrm/features/presentation/pages/drawer/messages/pages/messages.dart';
+import 'package:icrm/features/presentation/pages/drawer/notifications/notifications.dart';
+import 'package:icrm/features/presentation/pages/drawer/settings/settings.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';

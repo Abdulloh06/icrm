@@ -1,3 +1,7 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
 class DashBoardModel {
   final String name;

@@ -1,53 +1,60 @@
-import 'package:avlo/core/models/tasks_model.dart';
-import 'package:avlo/features/presentation/blocs/home_bloc/home_bloc.dart';
-import 'package:avlo/features/presentation/blocs/home_bloc/home_state.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_bloc.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_state.dart';
-import 'package:avlo/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
-import 'package:avlo/features/presentation/pages/tasks/components/gridview_tasks.dart';
-import 'package:avlo/widgets/main_search_bar.dart';
-import 'package:avlo/widgets/main_tab_bar.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/tasks_model.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_bloc.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_state.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_state.dart';
+import 'package:icrm/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
+import 'package:icrm/features/presentation/pages/tasks/components/gridview_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../../core/repository/user_token.dart';
 import '../../../../core/util/colors.dart';
 import '../../../../core/util/text_styles.dart';
 import '../../../../widgets/main_lead_card.dart';
 import '../leads/pages/leads_page.dart';
 import '../project/pages/project_structe.dart';
+import '../tasks/pages/selected_tasks.dart';
 
+//ignore:must_be_immutable
 class SearchPage extends StatelessWidget {
-  const SearchPage({
+  SearchPage({
     Key? key,
     required this.search,
   }) : super(key: key);
 
   final String search;
+  bool _canBuild = true;
+  bool _canBuildLead = true;
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        extendBody: true,
         body: SafeArea(
           child: ScrollConfiguration(
             behavior: const ScrollBehavior().copyWith(overscroll: false),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 10),
               child: Column(
                 children: [
-                  MainSearchBar(
-                    controller: TextEditingController(),
-                    onComplete: () {
-                      FocusScope.of(context).unfocus();
-                    },
-                    onChanged: (value) {},
-                  ),
-                  const SizedBox(height: 20),
-                  MainTabBar(
+                  TabBar(
+                    labelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+                    unselectedLabelColor: AppColors.mainColor,
+                    indicatorPadding: const EdgeInsets.all(10),
+                    indicator: BoxDecoration(
+                      color: AppColors.mainColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
                     tabs: [
                       Tab(text: Locales.string(context, 'projects'),),
                       Tab(text: Locales.string(context, 'leads'),),
@@ -68,20 +75,8 @@ class SearchPage extends StatelessWidget {
                                     visible: state.projects[index].name.toLowerCase().contains(search.toLowerCase()),
                                     child: GestureDetector(
                                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectStructure(
-                                        name: state.projects[index].name,
-                                        id: state.projects[index].id,
-                                        description: state.projects[index].description,
-                                        created_at: state.projects[index].created_at,
-                                        updated_at: state.projects[index].updated_at,
-                                        project_status_id: state.projects[index].project_status_id,
-                                        user_category: state.projects[index].user_category_id,
-                                        user_id: state.projects[index].user_id,
-                                        price: state.projects[index].price,
-                                        notify_at: state.projects[index].notify_at,
-                                        currency: state.projects[index].currency,
-                                        leads: state.projects[index].leads ?? [],
-                                        tasks: state.projects[index].tasks ?? [],
-                                        company_id: state.projects[index].company_id,
+                                        project: state.projects[index],
+                                        projectStatus: state.projectStatus,
                                       ))),
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
@@ -128,6 +123,7 @@ class SearchPage extends StatelessWidget {
                           },
                         ),
                         BlocBuilder<HomeBloc, HomeState>(
+                          buildWhen: (context, state) => _canBuildLead,
                           builder: (context, state) {
                             if (state is HomeInitState && state.leads.isNotEmpty) {
                               return ListView.builder(
@@ -136,16 +132,19 @@ class SearchPage extends StatelessWidget {
                                     return Visibility(
                                       visible: state.leads[index].contact!.name.toLowerCase().contains(search.toLowerCase()),
                                       child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
+                                        onTap: () async {
+                                          _canBuildLead = false;
+                                          await Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => LeadsPage(
-                                                id: state.leads[index].id,
+                                                lead: state.leads[index],
+                                                leadStatuses: state.leadStatus,
                                                 phone_number: state.leads[index].contact != null ? state.leads[index].contact!.phone_number : "",
                                               ),
                                             ),
                                           );
+                                          _canBuildLead = true;
                                         },
                                         child: MainLeadCard(
                                           title: state.leads[index].project!.name,
@@ -176,6 +175,7 @@ class SearchPage extends StatelessWidget {
                           },
                         ),
                         BlocBuilder<TasksBloc, TasksState>(
+                          buildWhen: (context, state) => _canBuild,
                           builder: (context, state) {
                             if(state is TasksInitState && state.tasks.isNotEmpty) {
 
@@ -184,6 +184,16 @@ class SearchPage extends StatelessWidget {
                               return GridViewTasks(
                                 tasks: tasks,
                                 isSearch: true,
+                                onTap: () async {
+                                  _canBuild = false;
+
+                                  await Navigator.push(context, MaterialPageRoute(builder: (context) => TaskPage(
+                                    task: tasks.first,
+                                    taskStatuses: state.tasksStatuses,
+                                  )));
+
+                                  _canBuild = true;
+                                },
                               );
                             }else {
                               return SizedBox.shrink();

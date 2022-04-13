@@ -1,7 +1,19 @@
-import 'package:avlo/core/util/main_includes.dart';
-import 'package:avlo/core/util/text_styles.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/util/main_includes.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/pages/add_succes_pages/add_lead_page.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:telephony/telephony.dart';
+
+void backgroundMessageHandler(SmsMessage message) async {
+
+}
 
 void main() async {
 
@@ -37,16 +49,8 @@ void main() async {
   runApp(AvloApp());
 }
 
-class AvloApp extends StatefulWidget {
-  const AvloApp({Key? key}) : super(key: key);
 
-  @override
-  State<AvloApp> createState() => _AvloAppState();
-  static _AvloAppState? of(BuildContext context) =>
-      context.findAncestorStateOfType<_AvloAppState>();
-}
-
-class _AvloAppState extends State<AvloApp> {
+class AvloApp extends StatelessWidget {
 
   final _router = AppRouter();
 
@@ -83,18 +87,18 @@ class AvloLead extends StatefulWidget {
 }
 
 class _AvloLeadState extends State<AvloLead> {
-
-
   final _dynamicLinks = FirebaseDynamicLinks.instance;
+  final _firebaseMessaging = FirebaseMessaging.instance;
 
   Future<void> initDynamicLinks() async {
     _dynamicLinks.onLink.listen((event) {
-      _dynamicLinks.getDynamicLink(event.link).then((value) async {
-        print(value!.link);
-      });
+      String link = event.link.toString();
+      print(link);
+      if(UserToken.authStatus) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddLeadsPage(id: int.parse(link.split('/').last), phone_number: '')));
+      }
     });
   }
-
   Future<void> setLanguage() async {
     final _prefs = await SharedPreferences.getInstance();
 
@@ -108,6 +112,13 @@ class _AvloLeadState extends State<AvloLead> {
     super.initState();
     initDynamicLinks();
     setLanguage();
+    _firebaseMessaging.getToken().then((value) {
+      UserToken.fmToken = value.toString();
+      FirebaseMessaging.onMessage.listen((message) {
+
+      });
+    });
+    print(UserToken.id);
   }
 
   @override

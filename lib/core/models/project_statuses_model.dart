@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 class ProjectStatusesModel {
   final int id;
   final int user_id;

@@ -1,8 +1,8 @@
-import 'package:avlo/core/models/project_statuses_model.dart';
-import 'package:avlo/core/service/api/get_project_statuses.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/project_statuses_bloc/project_statuses_event.dart';
-import 'package:avlo/features/presentation/blocs/project_statuses_bloc/project_statuses_state.dart';
+import 'package:icrm/core/models/project_statuses_model.dart';
+import 'package:icrm/core/service/api/get_project_statuses.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/project_statuses_bloc/project_statuses_event.dart';
+import 'package:icrm/features/presentation/blocs/project_statuses_bloc/project_statuses_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProjectStatusBloc extends Bloc<ProjectStatusesEvent, ProjectStatusState>{

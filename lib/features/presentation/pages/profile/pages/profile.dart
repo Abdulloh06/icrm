@@ -1,13 +1,18 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/cubits/theme_cubit.dart';
-import 'package:avlo/features/presentation/blocs/profile_bloc/profile_bloc.dart';
-import 'package:avlo/features/presentation/blocs/profile_bloc/profile_state.dart';
-import 'package:avlo/features/presentation/pages/profile/components/change_user_info.dart';
-import 'package:avlo/features/presentation/pages/profile/components/profile_main_categories.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
-import 'package:avlo/widgets/main_button.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/cubits/theme_cubit.dart';
+import 'package:icrm/features/presentation/blocs/profile_bloc/profile_bloc.dart';
+import 'package:icrm/features/presentation/blocs/profile_bloc/profile_state.dart';
+import 'package:icrm/features/presentation/pages/profile/components/change_user_info.dart';
+import 'package:icrm/features/presentation/pages/profile/components/profile_main_categories.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
+import 'package:icrm/widgets/main_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -30,8 +35,8 @@ class _ProfileState extends State<Profile> {
   final _phoneController = TextEditingController();
   final _jobController = TextEditingController();
 
-  void changeUserInfo(BuildContext context) {
-    showDialog(
+  void changeUserInfo(BuildContext context) async {
+    await showDialog(
       context: context,
       builder: (context) {
         return ChangeUserInfoDialog(
@@ -44,6 +49,12 @@ class _ProfileState extends State<Profile> {
         );
       },
     );
+
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        print('smt');
+      });
+    });
   }
 
   @override
@@ -79,7 +90,7 @@ class _ProfileState extends State<Profile> {
                     builder: (context, state) {
                   return Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(20.0).copyWith(top: 10),
                       child: Column(
                         children: [
                           Row(
@@ -182,7 +193,7 @@ class _ProfileState extends State<Profile> {
                                 horizontal:
                                     MediaQuery.of(context).size.width * 0.26),
                             child: MainButton(
-                              onTap: () => changeUserInfo(context),
+                              onTap: () async => changeUserInfo(context),
                               title: 'edit',
                               color: AppColors.mainColor,
                               borderRadius: 8,

@@ -1,9 +1,15 @@
-import 'package:avlo/core/models/leads_model.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/features/presentation/blocs/home_bloc/home_bloc.dart';
-import 'package:avlo/features/presentation/blocs/home_bloc/home_event.dart';
-import 'package:avlo/features/presentation/blocs/home_bloc/home_state.dart';
-import 'package:avlo/features/presentation/pages/leads/components/lead_card.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/leads_model.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_bloc.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_event.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_state.dart';
+import 'package:icrm/features/presentation/pages/leads/components/lead_card.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -11,15 +17,16 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../../core/util/text_styles.dart';
 import '../../../../../widgets/main_button.dart';
 import '../../../../../widgets/main_tab_bar.dart';
+import '../../leads/pages/leads_page.dart';
 
 class ProjectLeadPage extends StatefulWidget {
   const ProjectLeadPage({
     Key? key,
     required this.projectId,
+
   }) : super(key: key);
 
   final int projectId;
-
   @override
   State<ProjectLeadPage> createState() => _ProjectLeadPageState();
 }
@@ -30,17 +37,16 @@ class _ProjectLeadPageState extends State<ProjectLeadPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          if(state is HomeInitState) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if(state is HomeInitState) {
 
-            return DefaultTabController(
-              length: state.leadStatus.length,
+          return DefaultTabController(
+            length: state.leadStatus.length,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 10),
               child: Column(
                 children: [
-                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -65,7 +71,8 @@ class _ProjectLeadPageState extends State<ProjectLeadPage> {
                       children: [
                         Expanded(
                           child: MainTabBar(
-                            isScrollable: state.leadStatus.length > 4,
+                            isScrollable: state.leadStatus.length >= 4,
+                            labelPadding: state.leadStatus.length >= 4 ? const EdgeInsets.symmetric(horizontal: 12, vertical: 0) : const EdgeInsets.all(0),
                             shadow: [
                               BoxShadow(
                                 blurRadius: 4,
@@ -123,16 +130,32 @@ class _ProjectLeadPageState extends State<ProjectLeadPage> {
                                       );
                                     },
                                     child: DragTarget<LeadCard>(
-                                      onLeave: (object) {
+                                      onAccept: (object) {
+                                        if (state.leadStatus.isNotEmpty) {
+                                          context.read<HomeBloc>().add(LeadsUpdateEvent(
+                                            id: object.lead.id,
+                                            project_id: object.lead.projectId,
+                                            contact_id: object.lead.contactId ?? null,
+                                            start_date: object.lead.startDate,
+                                            end_date: object.lead.endDate,
+                                            estimated_amount: object.lead.estimatedAmount,
+                                            lead_status: state.leadStatus[index].id,
+                                            seller_id: object.lead.seller_id,
+                                            description: object.lead.description,
+                                            currency: object.lead.currency,
+                                          ));
+                                        }
                                       },
                                       builder: (context, accept, reject) {
                                         String title = state.leadStatus[index].name;
 
                                         return Visibility(
-                                          replacement: Tab(
+                                          replacement: Container(
+                                            width: 70,
                                             child: TextFormField(
                                               textAlign: TextAlign.center,
                                               decoration: InputDecoration(
+                                                isDense: true,
                                                 border: InputBorder.none,
                                               ),
                                               initialValue: state.leadStatus[index].name,
@@ -145,7 +168,12 @@ class _ProjectLeadPageState extends State<ProjectLeadPage> {
                                             ),
                                           ),
                                           visible: !isEdit,
-                                          child: Tab(text: state.leadStatus[index].name),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              state.leadStatus[index].name,
+                                            ),
+                                          ),
                                         );
                                       },
                                     ),
@@ -176,28 +204,31 @@ class _ProjectLeadPageState extends State<ProjectLeadPage> {
                                     },
                                   ),
                                   actions: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        MainButton(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                                          color: AppColors.red,
-                                          title: 'cancel',
-                                        ),
-                                        MainButton(
-                                          onTap: () {
-                                            if(title != '') {
-                                              context.read<HomeBloc>().add(LeadsAddStatusEvent(name: title));
-                                            }
-                                            Navigator.pop(context);
-                                          },
-                                          color: AppColors.green,
-                                          title: 'save',
-                                        ),
-                                      ],
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          MainButton(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                                            color: AppColors.red,
+                                            title: 'cancel',
+                                          ),
+                                          MainButton(
+                                            onTap: () {
+                                              if(title != '') {
+                                                context.read<HomeBloc>().add(LeadsAddStatusEvent(name: title));
+                                              }
+                                              Navigator.pop(context);
+                                            },
+                                            color: AppColors.green,
+                                            title: 'save',
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 );
@@ -211,40 +242,75 @@ class _ProjectLeadPageState extends State<ProjectLeadPage> {
                   ),
                   const SizedBox(height: 20),
                   Expanded(
-                    child: Visibility(
-                      replacement: Center(
-                        child: LocaleText('empty'),
-                      ),
-                      visible: state.leads.isNotEmpty,
-                      child: TabBarView(
-                        children: List.generate(state.leadStatus.length, (index) {
+                    child: TabBarView(
+                      children: List.generate(state.leadStatus.length, (i) {
 
-                          List<LeadsModel> leads = state.leads.where((element) => element.projectId == widget.projectId && element.leadStatusId == state.leadStatus[index].id).toList();
+                        List<LeadsModel> leads = state.leads.where((element) => element.projectId == widget.projectId && element.leadStatusId == state.leadStatus[i].id).toList();
 
-                          return ListView.builder(
+                        return Visibility(
+                          replacement: Center(
+                            child: LocaleText('empty'),
+                          ),
+                          visible: leads.isNotEmpty,
+                          child: ListView.builder(
                             itemCount: leads.length,
                             itemBuilder: (context, index) {
-                              return LeadCard(
-                                lead: leads[index],
+                              return LongPressDraggable<LeadCard>(
+                                data: LeadCard(
+                                  lead: state.leads[index],
+                                ),
+                                feedback: Material(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(10),
+                                  elevation: 0,
+                                  type: MaterialType.card,
+                                  child: Container(
+                                    height: 120,
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    margin: EdgeInsets.only(
+                                        left: 20, right: 20),
+                                    child: LeadCard(
+                                      isDragging: true,
+                                      lead: state.leads[index],
+                                    ),
+                                  ),
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LeadsPage(
+                                          lead: state.leads[index],
+                                          leadStatuses: state.leadStatus,
+                                          phone_number: state.leads[index].contact != null ? state.leads[index].contact!.phone_number : "",
+                                        ),
+                                      ),
+                                    );
+
+                                  },
+                                  child: LeadCard(
+                                    lead: state.leads[index],
+                                  ),
+                                ),
+                                childWhenDragging: SizedBox(
+                                  height: 175,
+                                ),
                               );
                             },
-                          );
-                        }),
-                      ),
+                          ),
+                        );
+                      }),
                     ),
                   ),
                 ],
               ),
-            );
-          }else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.mainColor,
-              ),
-            );
-          }
+            ),
+          );
+        }else {
+          return Loading();
         }
-      ),
+      }
     );
   }
 }

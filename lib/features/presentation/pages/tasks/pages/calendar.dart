@@ -1,6 +1,12 @@
-import 'package:avlo/core/models/tasks_model.dart';
-import 'package:avlo/core/util/text_input_format.dart';
-import 'package:avlo/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/tasks_model.dart';
+import 'package:icrm/core/util/text_input_format.dart';
+import 'package:icrm/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
+import 'package:icrm/features/presentation/pages/tasks/components/main_info.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +41,22 @@ class _TasksCalendarState extends State<TasksCalendar> {
   DateTime focusedDate = DateTime.now();
   DateTime selected_date = DateTime.now();
   final _formKey = GlobalKey<FormState>();
-  int date_id = 1;
+
+  @override
+  void initState() {
+    super.initState();
+
+    try {
+      _startDateController.text = DateFormat("dd.MM.yyyy").format(DateTime.parse(widget.task.startDate));
+      _endDateController.text = DateFormat("dd.MM.yyyy").format(DateTime.parse(widget.task.deadline));
+    }catch(e) {
+      print(e);
+
+      _startDateController.text = widget.task.startDate;
+      _endDateController.text = widget.task.deadline;
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +135,7 @@ class _TasksCalendarState extends State<TasksCalendar> {
                             inputFormatters: [dateFormat],
                             keyboardType: TextInputType.datetime,
                             controller: _startDateController,
+                            readOnly:  true,
                             suffixIcon: 'assets/icons_svg/add_grey.svg',
                             hint: 'start',
                             validator: (value) => value!.isEmpty
@@ -123,21 +145,11 @@ class _TasksCalendarState extends State<TasksCalendar> {
                                         context, 'enter_valid_info')
                                     : null,
                             onChanged: (value) {},
-                            onTap: () {
-                              setState(() {
-                                date_id = 1;
-                              });
-                            },
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: CustomTextField(
-                            onTap: () {
-                              setState(() {
-                                date_id = 2;
-                              });
-                            },
                             isFilled: true,
                             color: UserToken.isDark
                                 ? AppColors.textFieldColorDark
@@ -226,20 +238,11 @@ class _TasksCalendarState extends State<TasksCalendar> {
                         setState(() {
                           focusedDate = _focusedDay;
                           selected_date = _selectedDay;
-
-                          switch (date_id) {
-                            case 1:
-                              _startDateController.text =
-                                  DateFormat("dd.MM.yyyy").format(_selectedDay);
-                              break;
-                            case 2:
-                              _endDateController.text =
-                                  DateFormat("dd.MM.yyyy").format(_selectedDay);
-                              break;
-                          }
+                          _endDateController.text =
+                              DateFormat("dd.MM.yyyy").format(_selectedDay);
                         });
                       },
-                      lastDay: DateTime(2025),
+                      lastDay: DateTime(2030),
                     ),
                   ),
                   Container(
@@ -309,10 +312,11 @@ class _TasksCalendarState extends State<TasksCalendar> {
                                 description: widget.task.description,
                                 status: widget.task.taskStatusId,
                                 parent_id: widget.task.parentId,
-                                taskType: widget.task.taskType.split('\\').last,
+                                taskType: widget.task.taskType.split('\\').last.toLowerCase(),
                                 taskId: widget.task.taskId,
                               ),
                             );
+                            MainTaskInfo.deadline = _endDateController.text;
                             Navigator.pop(context);
                           }
                         },

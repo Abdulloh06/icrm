@@ -1,16 +1,22 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
-import 'package:avlo/core/models/leads_model.dart';
-import 'package:avlo/core/models/project_statuses_model.dart';
-import 'package:avlo/core/models/tasks_model.dart';
-import 'package:avlo/core/models/team_model.dart';
-import 'package:avlo/core/models/user_categories_model.dart';
+import 'package:icrm/core/models/leads_model.dart';
+import 'package:icrm/core/models/project_statuses_model.dart';
+import 'package:icrm/core/models/tasks_model.dart';
+import 'package:icrm/core/models/team_model.dart';
+import 'package:icrm/core/models/user_categories_model.dart';
+import 'package:flutter/foundation.dart';
 
+@immutable
 class ProjectsModel {
   final int id;
   final int user_id;
   final int project_status_id;
-  final int user_category_id;
-  final int company_id;
+  final int? user_category_id;
+  final int? company_id;
   final String name;
   final String description;
   final String notify_at;
@@ -62,7 +68,7 @@ class ProjectsModel {
 
     return ProjectsModel(
       id: json['id'],
-      user_id: json['user_id'],
+      user_id: json['user_id'] ?? 0,
       project_status_id: json['project_status_id'],
       user_category_id: json['user_category_id'],
       company_id: json['company_id'] ?? 0,

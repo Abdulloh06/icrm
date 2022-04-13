@@ -1,8 +1,12 @@
-import 'dart:io';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
-import 'package:avlo/core/models/leads_status_model.dart';
-import 'package:avlo/core/repository/api_repository.dart';
-import 'package:avlo/core/repository/user_token.dart';
+import 'dart:io';
+import 'package:icrm/core/models/leads_status_model.dart';
+import 'package:icrm/core/repository/api_repository.dart';
+import 'package:icrm/core/repository/user_token.dart';
 import 'package:dio/dio.dart';
 
 class GetLeadsStatus {

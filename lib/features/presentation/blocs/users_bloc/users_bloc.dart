@@ -1,7 +1,7 @@
-import 'package:avlo/core/models/team_model.dart';
-import 'package:avlo/core/service/api/get_users.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/users_bloc/users_state.dart';
+import 'package:icrm/core/models/team_model.dart';
+import 'package:icrm/core/service/api/get_users.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/users_bloc/users_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

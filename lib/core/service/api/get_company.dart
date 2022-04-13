@@ -1,8 +1,11 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
-
-
-import 'package:avlo/core/models/company_model.dart';
-import 'package:avlo/core/repository/api_repository.dart';
+import 'package:icrm/core/models/company_model.dart';
+import 'package:icrm/core/repository/api_repository.dart';
 import 'package:dio/dio.dart';
 import '../../repository/user_token.dart';
 
@@ -72,24 +75,28 @@ class GetCompany {
 
   Future<CompanyModel> addCompany({
     required String name,
-    required File logo,
-    required int contactId,
-    required String url,
+    required File? logo,
+    required int? contactId,
+    required String? url,
     required String description,
   }) async {
     try {
 
-
-      String fileName = logo.path.split('/').last;
-
       FormData formData = await FormData.fromMap({
         "name": name,
         "description": description,
-        "site_url": url,
-        "main_contact_id": contactId,
       });
 
-      formData.files.add(MapEntry('logo', await MultipartFile.fromFile(logo.path, filename: fileName)));
+      if(url != null && url != '') {
+        formData.fields.add(MapEntry('site_url', url));
+      }
+      if(contactId != null) {
+        formData.fields.add(MapEntry('main_contact_id', contactId.toString()));
+      }
+      if(logo != null) {
+        String fileName = logo.path.split('/').last;
+        formData.files.add(MapEntry('logo', await MultipartFile.fromFile(logo.path, filename: fileName)));
+      }
 
       final response = await dio.post(
         ApiRepository.getCompany,
@@ -125,9 +132,9 @@ class GetCompany {
     required int id,
     required String name,
     required String description,
-    required String site_url,
-    required File logo,
-    required int contact_id,
+    required String? site_url,
+    required File? logo,
+    required int? contact_id,
     required bool hasLogo,
   }) async {
 
@@ -137,11 +144,15 @@ class GetCompany {
       FormData formData = await FormData.fromMap({
         "name": name,
         "description": description,
-        "site_url": site_url,
-        "main_contact_id": contact_id,
       });
 
-      if(hasLogo) {
+      if(site_url != null && site_url != '') {
+        formData.fields.add(MapEntry('site_url', site_url));
+      }
+      if(contact_id != null) {
+        formData.fields.add(MapEntry('main_contact_id', contact_id.toString()));
+      }
+      if(logo != null) {
         String fileName = logo.path.split('/').last;
         formData.files.add(MapEntry('logo', await MultipartFile.fromFile(logo.path, filename: fileName)));
       }

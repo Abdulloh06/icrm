@@ -1,22 +1,25 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/features/presentation/blocs/cubits/bottom_bar_cubit.dart';
-import 'package:avlo/features/presentation/pages/drawer/contacts/contacts.dart';
-import 'package:avlo/features/presentation/pages/profile/components/profile_category.dart';
-import 'package:avlo/features/presentation/pages/profile/pages/event_calendar.dart';
-import 'package:avlo/features/presentation/pages/profile/pages/notes/my_notes.dart';
-import 'package:avlo/features/presentation/pages/profile/pages/portfolio.dart';
-import 'package:avlo/features/presentation/pages/profile/pages/team.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/features/presentation/pages/drawer/contacts/contacts.dart';
+import 'package:icrm/features/presentation/pages/profile/components/profile_category.dart';
+import 'package:icrm/features/presentation/pages/profile/pages/event_calendar.dart';
+import 'package:icrm/features/presentation/pages/profile/pages/my_task_page.dart';
+import 'package:icrm/features/presentation/pages/profile/pages/notes/my_notes.dart';
+import 'package:icrm/features/presentation/pages/profile/pages/portfolio.dart';
+import 'package:icrm/features/presentation/pages/profile/pages/team.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileMainCategories extends StatelessWidget {
   const ProfileMainCategories({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 3.35,
+      height: MediaQuery.of(context).size.height / 3.3,
       child: GridView.count(
         crossAxisSpacing: 15,
         mainAxisSpacing: 15,
@@ -29,7 +32,7 @@ class ProfileMainCategories extends StatelessWidget {
             icon: UserToken.isDark ? "assets/icons_svg/portfolio_dark.svg" : "assets/icons_svg/portfolio.svg",
           ),
           ProfileCategory(
-            onTap: () => context.read<BottomBarCubit>().changePage(3),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyTasks())),
             title: "my_tasks",
             icon: UserToken.isDark ? "assets/icons_svg/tasks_dark.svg" : "assets/icons_svg/profile_tasks.svg",
           ),

@@ -1,5 +1,10 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +17,7 @@ class MainSearchBar extends StatelessWidget {
     required this.onComplete,
     this.borderWidth = 1,
     required this.onChanged,
+    this.icon = const SizedBox.shrink(),
   })
       : super(key: key);
   final TextEditingController controller;
@@ -19,6 +25,7 @@ class MainSearchBar extends StatelessWidget {
   final VoidCallback onComplete;
   final ValueChanged onChanged;
   final double borderWidth;
+  final Widget icon;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +33,7 @@ class MainSearchBar extends StatelessWidget {
       cursorColor: AppColors.mainColor,
       controller: controller,
       decoration: InputDecoration(
+        suffixIcon: icon,
         hintStyle: TextStyle(color: Colors.grey, height: 0.6),
         hintText: Locales.string(context, 'search'),
         fillColor: UserToken.isDark ? AppColors.cardColorDark : Colors.white,

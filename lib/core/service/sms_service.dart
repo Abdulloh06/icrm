@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:telephony/telephony.dart';
 import '../models/sms_model.dart';
 
@@ -6,6 +11,14 @@ class SMSService {
   static final Telephony _telephony = Telephony.instance;
 
   Future<void> initListening() async {}
+
+  Future<void> messageHandler() async {
+    _telephony.listenIncomingSms(
+      onNewMessage: (message) {
+        print("message");
+      }
+    );
+  }
 
   Future<void> sendSMS({
     required String phone,

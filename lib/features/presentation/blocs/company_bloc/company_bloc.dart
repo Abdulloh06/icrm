@@ -1,6 +1,11 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
-import 'package:avlo/core/models/company_model.dart';
-import 'package:avlo/core/service/api/get_company.dart';
+import 'package:icrm/core/models/company_model.dart';
+import 'package:icrm/core/service/api/get_company.dart';
 import 'package:equatable/equatable.dart';
 import '../../../../core/util/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,7 +57,6 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
           contact_id: event.contact_id,
           hasLogo: event.hasLogo,
         );
-
 
         final CompanyModel companyModel = await getIt.get<GetCompany>().showCompany(id: event.id);
 

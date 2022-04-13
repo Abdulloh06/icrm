@@ -1,4 +1,4 @@
-import 'package:avlo/core/models/team_model.dart';
+import 'package:icrm/core/models/team_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class HelperState extends Equatable {

@@ -1,36 +1,38 @@
-import 'package:avlo/core/models/tasks_model.dart';
-import 'package:avlo/core/models/tasks_status_model.dart';
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/pages/tasks/pages/selected_tasks.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/tasks_model.dart';
+import 'package:icrm/core/models/tasks_status_model.dart';
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class TasksCard extends StatelessWidget {
   const TasksCard({
     Key? key,
     required this.status,
     required this.task,
+    required this.onTap,
+    this.isDragging = false,
   });
 
   final TaskStatusModel status;
   final TasksModel task;
+  final VoidCallback onTap;
+  final bool isDragging;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: const BorderRadius.all(Radius.circular(10)),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TaskPage(
-            id: task.id,
-          ),
-        ),
-      ),
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -40,8 +42,8 @@ class TasksCard extends StatelessWidget {
           ),
           boxShadow: UserToken.isDark ? [] : [
             BoxShadow(
-              spreadRadius: 1.5,
-              blurRadius: 1,
+              spreadRadius: 0.5,
+              blurRadius: 0.5,
               color: Colors.grey.shade300,
             ),
           ],
@@ -53,14 +55,15 @@ class TasksCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  height: 40,
-                  width: MediaQuery.of(context).size.width * 0.1,
+                  height: isDragging ? 25 : 40,
+                  width: isDragging ? MediaQuery.of(context).size.width * 0.07 :MediaQuery.of(context).size.width * 0.1,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: task.members!.length,
+                    itemCount: task.members!.isNotEmpty ? task.members!.length : 0,
                     itemBuilder: (context, index) {
                       return CircleAvatar(
-                        radius: 20,
+                        radius: isDragging ? 15 : 20,
+                        backgroundColor: Colors.transparent,
                         child: ClipOval(
                           child: CachedNetworkImage(
                             imageUrl: task.members![index].social_avatar,
@@ -74,8 +77,8 @@ class TasksCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                    height: 24,
-                    width: 74,
+                    height: isDragging ? 16: 24,
+                    width: isDragging ? 45 : 74,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: task.priority == 1
@@ -96,7 +99,7 @@ class TasksCard extends StatelessWidget {
                           ? Locales.string(context, 'normal')
                           : Locales.string(context, 'low'),
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: isDragging ? 5 : 10,
                         color: task.priority == 1
                             ? AppColors.red
                             : task.priority == 2
@@ -109,35 +112,57 @@ class TasksCard extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: isDragging ? 5 : 10),
             Text(
               task.name,
               overflow: TextOverflow.ellipsis,
-              maxLines: 2,
+              maxLines: 1,
               style: AppTextStyles.mainBold.copyWith(
+                fontSize: isDragging ? 10 : 16,
                 color: UserToken.isDark ? Colors.white : Colors.black,
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: isDragging ? 5 : 10),
             Text(
               task.description,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.descriptionGrey,
+              style: AppTextStyles.descriptionGrey.copyWith(
+                fontSize: isDragging ? 8 : 12,
+              ),
             ),
-            const Spacer(),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons_svg/time.svg',
-                  height: 16,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  task.deadline,
-                  style: AppTextStyles.descriptionGrey,
-                ),
-              ],
+            SizedBox(height: isDragging ? 15 : 20),
+            Flexible(
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons_svg/time.svg',
+                    height: isDragging ? 10 : 16,
+                  ),
+                  const SizedBox(width: 5),
+                  Builder(
+                    builder: (context) {
+                      if(task.deadline != '') {
+                        return Text(
+                          DateFormat("dd.MM.yyyy").format(DateTime.parse(task.deadline)).toString(),
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.descriptionGrey.copyWith(
+                            fontSize: isDragging ? 8 : 12,
+                          ),
+                        );
+                      }else {
+                        return Text(
+                          DateFormat("dd.MM.yyyy").format(DateTime.parse(task.startDate)).toString(),
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.descriptionGrey.copyWith(
+                            fontSize: isDragging ? 8 : 12,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ),

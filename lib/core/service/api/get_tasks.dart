@@ -1,7 +1,14 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'dart:io';
 
-import 'package:avlo/core/models/tasks_model.dart';
-import 'package:avlo/core/models/user_model.dart';
+import 'package:icrm/core/models/comments_model.dart';
+import 'package:icrm/core/models/tasks_model.dart';
+import 'package:icrm/core/models/user_model.dart';
 import 'package:dio/dio.dart';
 
 import '../../repository/api_repository.dart';
@@ -10,11 +17,11 @@ import '../../repository/user_token.dart';
 class GetTasks {
   final dio = Dio();
 
-  Future<List<TasksModel>> getTasks() async {
+  Future<List<TasksModel>> getTasks({required int page, bool trash = false}) async {
     try {
       final response = await dio
           .get(
-        ApiRepository.getTasks + "?expand=comments,taskStatus,children,assigns",
+        ApiRepository.getTasks + "?paginate=true&expand=comments,taskStatus,children,assigns&trash=$trash&page=$page",
         options: Options(
           headers: {
             "Accept": "application/json",
@@ -51,9 +58,42 @@ class GetTasks {
     required String description,
     required String taskType,
     required int taskId,
-    required List<int> user,
+    required List<int>? user,
   }) async {
     try {
+
+      start_date = DateTime.now().toString();
+
+      Map<String, dynamic> formData = {
+        "name": name,
+        "priority": priority,
+        "task_status_id": status,
+        "taskable_type": taskType,
+        "taskable_id": taskId,
+        "start_date": start_date,
+      };
+
+      if(parent_id != null) {
+        formData.addAll({
+          "parent_id": parent_id,
+        });
+      }
+      if(deadline != '') {
+        formData.addAll({
+          "deadline": deadline,
+        });
+      }
+      if(description != '') {
+        formData.addAll({
+          "description": description,
+        });
+      }
+      if(user != null && user.isNotEmpty) {
+        formData.addAll({
+          "users": user,
+        });
+      }
+
 
       final response = await dio.post(
         ApiRepository.getTasks,
@@ -64,28 +104,7 @@ class GetTasks {
             "Content-Type": "application/json",
           },
         ),
-        data: parent_id != null ? {
-          "parent_id": parent_id,
-          "priority": priority,
-          "task_status_id": status,
-          "start_date": start_date,
-          "deadline": deadline,
-          "name": name,
-          "description": description,
-          "taskable_type": taskType,
-          "taskable_id": taskId,
-          "users": user,
-        } : {
-          "priority": priority,
-          "task_status_id": status,
-          "start_date": start_date,
-          "deadline": deadline,
-          "name": name,
-          "description": description,
-          "taskable_type": taskType,
-          "taskable_id": taskId,
-          "users": user,
-        },
+        data: formData,
       ).timeout(const Duration(minutes: 1), onTimeout: () {
         throw (Exception('TIME OUT'));
       });
@@ -169,7 +188,7 @@ class GetTasks {
     }
   }
 
-  Future<int> updateTasks({
+  Future<bool> updateTasks({
     required int id,
     required dynamic parent_id,
     required String name,
@@ -183,7 +202,6 @@ class GetTasks {
   }) async {
 
     try {
-      print(taskType.split("\\").last.toLowerCase());
 
       final response = await dio.put(
         ApiRepository.getTasks + "/$id",
@@ -206,10 +224,9 @@ class GetTasks {
         }
       );
 
-      final Map<String, dynamic> data = await response.data;
 
       if(response.statusCode == HttpStatus.ok) {
-        return data['data']['id'];
+        return true;
       }else if(response.statusCode == HttpStatus.internalServerError) {
         throw Exception('SERVER ERROR');
       }else {
@@ -223,7 +240,7 @@ class GetTasks {
 
   }
 
-  Future<bool> addComment({
+  Future<CommentsModel> addComment({
     required int id,
     required String comment,
     required String comment_type,
@@ -247,8 +264,10 @@ class GetTasks {
         }
       );
 
+      final Map<String, dynamic> data = await response.data;
+
       if(response.statusCode == HttpStatus.created) {
-        return true;
+        return CommentsModel.fromJson(data['data']);
       }else if(response.statusCode == HttpStatus.internalServerError) {
         throw Exception('SERVER ERROR');
       }else {
@@ -329,11 +348,14 @@ class GetTasks {
     }
   }
 
-  Future<bool> reassignUser({required int id}) async {
+  Future<bool> reassignUser({
+    required int user_id,
+    required int task_id,
+  }) async {
 
     try {
       final response = await dio.post(
-        ApiRepository.task_users + "-reassign",
+        ApiRepository.baseUrl + "task-user-reassign",
         options: Options(
           headers: {
             "Accept": "application/json",
@@ -341,6 +363,10 @@ class GetTasks {
             "Content-Type": "application/json",
           }
         ),
+        data: {
+          "task_id": task_id,
+          "user_id": user_id,
+        }
       );
 
       if(response.statusCode == HttpStatus.noContent || response.statusCode == HttpStatus.ok) {

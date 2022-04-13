@@ -1,18 +1,26 @@
-import 'package:avlo/core/models/profile_model.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/profile_model.dart';
 
 class UserModel {
 
-  final int id;
+  final int task_id;
+  final int user_id;
   final ProfileModel user;
 
   UserModel({
-    required this.id,
+    required this.task_id,
     required this.user,
+    required this.user_id,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'],
+      user_id: json['user_id'],
+      task_id: json['task_id'],
       user: ProfileModel.fromJson(json['user']),
     );
   }

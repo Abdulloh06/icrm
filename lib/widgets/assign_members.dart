@@ -1,24 +1,28 @@
-import 'package:avlo/core/models/leads_model.dart';
-import 'package:avlo/core/models/tasks_model.dart';
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/features/presentation/blocs/home_bloc/home_bloc.dart';
-import 'package:avlo/features/presentation/blocs/home_bloc/home_event.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_bloc.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_event.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_state.dart';
-import 'package:avlo/features/presentation/pages/leads/pages/leads_page.dart';
-import 'package:avlo/widgets/custom_text_field.dart';
-import 'package:avlo/widgets/main_person_contact.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/leads_model.dart';
+import 'package:icrm/core/models/tasks_model.dart';
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_bloc.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_event.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_event.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_event.dart';
+import 'package:icrm/widgets/custom_text_field.dart';
+import 'package:icrm/widgets/main_person_contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 
 import '../core/models/projects_model.dart';
-
+import '../features/presentation/blocs/team_bloc/team_bloc.dart';
+import '../features/presentation/blocs/team_bloc/team_state.dart';
 
 class AssignMembers extends StatelessWidget {
-
   const AssignMembers({
     Key? key,
     required this.id,
@@ -54,7 +58,9 @@ class AssignMembers extends StatelessWidget {
               onChanged: (value) {},
               validator: (value) => null,
               isFilled: true,
-              color: UserToken.isDark ? AppColors.textFieldColorDark : Colors.white,
+              color: UserToken.isDark
+                  ? AppColors.textFieldColorDark
+                  : Colors.white,
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -67,20 +73,42 @@ class AssignMembers extends StatelessWidget {
                         return InkWell(
                           radius: 20,
                           onTap: () {
-                            switch(id) {
+                            switch (id) {
                               case 1:
-                                Navigator.pop(context);
                                 context.read<HomeBloc>().add(
-                                  LeadsUpdateEvent(id: lead!.id, project_id: lead!.projectId, contact_id: lead!.contactId, start_date: lead!.startDate, end_date: lead!.endDate, estimated_amount: lead!.estimatedAmount, lead_status: lead!.leadStatusId, description: lead!.description, seller_id: state.team[index].id, currency: lead?.currency ?? "USD"),
+                                  LeadsUpdateEvent(
+                                          id: lead!.id,
+                                          project_id: lead!.projectId,
+                                          contact_id: lead!.contactId,
+                                          start_date: lead!.startDate,
+                                          end_date: lead!.endDate,
+                                          estimated_amount:
+                                              lead!.estimatedAmount,
+                                          lead_status: lead!.leadStatusId,
+                                          description: lead!.description,
+                                          seller_id: state.team[index].id,
+                                          currency: lead?.currency ?? "USD"),
                                 );
-                                context.read<HomeBloc>().add(LeadsShowEvent(id: lead!.id));
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LeadsPage(id: lead!.id, phone_number: lead!.contact!.phone_number,)));
                                 break;
                               case 2:
                                 break;
                               case 3:
+                                List<int> members = [];
+                                for (int i = 0; i < project!.members!.length; i++) {
+                                  members.add(project!.members![i].id);
+                                }
+                                members.add(state.team[index].id);
+                                members.toSet();
+                                context.read<ProjectsBloc>().add(ProjectsUpdateEvent(
+                                  id: project!.id,
+                                  name: project!.name,
+                                  description: project!.description,
+                                  project_status_id: project!.project_status_id,
+                                  users: members,
+                                ));
                                 break;
                             }
+                            Navigator.pop(context);
                           },
                           child: MainPersonContact(
                             name: state.team[index].first_name,

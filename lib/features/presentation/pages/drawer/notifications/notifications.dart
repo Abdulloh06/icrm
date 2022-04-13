@@ -1,6 +1,11 @@
-import 'package:avlo/features/presentation/pages/drawer/notifications/notifications_card.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
-import 'package:avlo/widgets/main_search_bar.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/features/presentation/pages/drawer/notifications/notifications_card.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
+import 'package:icrm/widgets/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 

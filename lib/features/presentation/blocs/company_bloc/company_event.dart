@@ -11,9 +11,9 @@ class CompanyInitEvent extends CompanyEvent {}
 
 class CompanyAddEvent extends CompanyEvent {
   final String name;
-  final File image;
-  final String url;
-  final int contactId;
+  final File? image;
+  final String? url;
+  final int? contactId;
   final String description;
 
   CompanyAddEvent({

@@ -1,18 +1,23 @@
-import 'package:avlo/core/models/team_model.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_bloc.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_event.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_state.dart';
-import 'package:avlo/features/presentation/pages/profile/components/add_team_dialog.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
-import 'package:avlo/widgets/main_person_contact.dart';
-import 'package:avlo/widgets/main_search_bar.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/team_model.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_bloc.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_event.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_state.dart';
+import 'package:icrm/features/presentation/pages/profile/components/add_team_dialog.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
+import 'package:icrm/widgets/main_person_contact.dart';
+import 'package:icrm/widgets/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:avlo/widgets/main_tab_bar.dart';
+import 'package:icrm/widgets/main_tab_bar.dart';
 
 class MyTeam extends StatelessWidget {
   MyTeam({Key? key}) : super(key: key);
@@ -127,6 +132,7 @@ class MyTeam extends StatelessWidget {
                                       response:
                                           state.team[index].jobTitle,
                                       photo: state.team[index].social_avatar,
+                                      phone_number: state.team[index].phoneNumber,
                                     ),
                                   );
                                 },
@@ -154,6 +160,7 @@ class MyTeam extends StatelessWidget {
                                       name: seldom[index].first_name +
                                           " " +
                                           seldom[index].last_name,
+                                      phone_number: seldom[index].phoneNumber,
                                       response: seldom[index].jobTitle,
                                       photo: seldom[index].social_avatar,
                                     ),
@@ -185,6 +192,7 @@ class MyTeam extends StatelessWidget {
                                           often[index].last_name,
                                       response: often[index].jobTitle,
                                       photo: often[index].social_avatar,
+                                      phone_number: often[index].phoneNumber,
                                     ),
                                   );
                                 },

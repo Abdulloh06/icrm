@@ -1,53 +1,38 @@
-import 'package:avlo/core/models/leads_model.dart';
-import 'package:avlo/core/models/tasks_model.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_bloc.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_event.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_state.dart';
-import 'package:avlo/features/presentation/pages/project/components/general_page.dart';
-import 'package:avlo/features/presentation/pages/project/pages/project_document_page.dart';
-import 'package:avlo/features/presentation/pages/project/pages/projects_task_page.dart';
-import 'package:avlo/widgets/drawer.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/project_statuses_model.dart';
+import 'package:icrm/core/models/projects_model.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_bloc.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_event.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_state.dart';
+import 'package:icrm/features/presentation/blocs/show_bloc/show_bloc.dart';
+import 'package:icrm/features/presentation/blocs/show_bloc/show_event.dart';
+import 'package:icrm/features/presentation/pages/project/components/general_page.dart';
+import 'package:icrm/features/presentation/pages/project/pages/project_document_page.dart';
+import 'package:icrm/features/presentation/pages/project/pages/projects_task_page.dart';
+import 'package:icrm/widgets/drawer.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import '../../../blocs/company_bloc/company_bloc.dart';
 import '../../../blocs/tasks_bloc/tasks_bloc.dart';
 import 'projects_lead_page.dart';
 
 class ProjectStructure extends StatefulWidget {
   ProjectStructure({
     Key? key,
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.user_id,
-    required this.company_id,
-    required this.project_status_id,
-    required this.user_category,
-    required this.notify_at,
-    required this.price,
-    required this.currency,
-    required this.created_at,
-    required this.updated_at,
-    required this.leads,
-    required this.tasks,
+    required this.project,
+    required this.projectStatus,
   }) : super(key: key);
 
-  final int id;
-  final int user_id;
-  final int project_status_id;
-  final int user_category;
-  final int company_id;
-  final String name;
-  final String description;
-  final String notify_at;
-  final dynamic price;
-  final String currency;
-  final String created_at;
-  final String updated_at;
-  final List<LeadsModel> leads;
-  final List<TasksModel> tasks;
+  final ProjectsModel project;
+  final List<ProjectStatusesModel> projectStatus;
 
   @override
   State<ProjectStructure> createState() => _ProjectStructureState();
@@ -57,106 +42,100 @@ class _ProjectStructureState extends State<ProjectStructure> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool isEdit = false;
+  
+  late ProjectsModel project;
+  late List<ProjectStatusesModel> projectStatus;
 
   @override
   void initState() {
     super.initState();
+    project = widget.project;
+    projectStatus = widget.projectStatus;
     context.read<TasksBloc>().add(TasksInitEvent());
-    context.read<ProjectsBloc>().add(ProjectsShowEvent(id: widget.id));
+    context.read<ShowBloc>().add(ShowProjectEvent(id: project.id));
+    context.read<AttachmentBloc>().add(AttachmentShowEvent(content_type: 'project', content_id: project.id));
+    if(project.company_id != null) {
+      context.read<CompanyBloc>().add(CompanyShowEvent(id: project.company_id!));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        context.read<ProjectsBloc>().add(ProjectsInitEvent());
-        return true;
-      },
-      child: DefaultTabController(
-        length: 4,
-        child: BlocBuilder<ProjectsBloc, ProjectsState>(
-          builder: (context, state) {
-            if(state is ProjectsShowState) {
-              return Scaffold(
-                key: _scaffoldKey,
-                appBar: PreferredSize(
-                  preferredSize: Size(double.infinity, 52),
-                  child: MainAppBar(
-                    scaffoldKey: _scaffoldKey,
-                    title: widget.name,
-                    project: true,
-                    onTap: () {
-                      context.read<ProjectsBloc>().add(ProjectsInitEvent());
-                      Navigator.pop(context);
-                    },
+    return DefaultTabController(
+      length: 4,
+      child: BlocListener<ProjectsBloc, ProjectsState>(
+        listener: (context, state) {
+          if(state is ProjectsInitState) {
+            project = state.projects.elementAt(state.projects.indexWhere((element) => element.id == project.id));
+            projectStatus = state.projectStatus;
+            setState(() {});
+          }
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: PreferredSize(
+            preferredSize: Size(double.infinity, 52),
+            child: MainAppBar(
+              scaffoldKey: _scaffoldKey,
+              title: project.name,
+              project: true,
+            ),
+          ),
+          endDrawer: const MainDrawer(),
+          body: Column(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                child: TabBar(
+                  labelPadding: const EdgeInsets.all(0),
+                  labelStyle: TextStyle(fontSize: 12),
+                  unselectedLabelColor: AppColors.mainColor,
+                  automaticIndicatorColorAdjustment: false,
+                  indicator: BoxDecoration(
+                    color: AppColors.mainColor,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ),
-                endDrawer: const MainDrawer(),
-                body: Column(
-                  children: [
-                    SizedBox(
-                      height: 20,
+                  tabs: [
+                    Tab(
+                      text: Locales.string(context, 'general'),
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                      child: TabBar(
-                        labelPadding: const EdgeInsets.all(0),
-                        labelStyle: TextStyle(fontSize: 12),
-                        unselectedLabelColor: AppColors.mainColor,
-                        automaticIndicatorColorAdjustment: false,
-                        indicator: BoxDecoration(
-                          color: AppColors.mainColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        tabs: [
-                          Tab(
-                            text: Locales.string(context, 'general'),
-                          ),
-                          Tab(
-                            text: Locales.string(context, 'led'),
-                          ),
-                          Tab(
-                            text: Locales.string(context, 'tasks'),
-                          ),
-                          Tab(
-                            text: Locales.string(context, 'documentation'),
-                          ),
-                        ],
-                      ),
+                    Tab(
+                      text: Locales.string(context, 'led'),
                     ),
-                    Expanded(
-                      child: ScrollConfiguration(
-                        behavior: const ScrollBehavior().copyWith(overscroll: false),
-                        child: TabBarView(
-                          children: [
-                            GeneralPage(
-                              company_id: widget.company_id,
-                              id: widget.id,
-                            ),
-                            ProjectLeadPage(
-                              projectId: widget.id,
-                            ),
-                            ProjectsTaskPage(id: widget.id),
-                            ProjectDocumentPage(
-                              project_id: widget.id,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
+                    Tab(
+                      text: Locales.string(context, 'tasks'),
+                    ),
+                    Tab(
+                      text: Locales.string(context, 'documentation'),
+                    ),
                   ],
                 ),
-              );
-            }else {
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.mainColor,
+              ),
+              Expanded(
+                child: ScrollConfiguration(
+                  behavior: const ScrollBehavior().copyWith(overscroll: false),
+                  child: TabBarView(
+                    children: [
+                      GeneralPage(
+                        project: project,
+                        projectStatus: projectStatus,
+                      ),
+                      ProjectLeadPage(
+                        projectId: project.id,
+                      ),
+                      ProjectsTaskPage(id: project.id),
+                      ProjectDocumentPage(
+                        project_id: project.id,
+                      ),
+                    ],
                   ),
                 ),
-              );
-            }
-          }
+              )
+            ],
+          ),
         ),
       ),
     );

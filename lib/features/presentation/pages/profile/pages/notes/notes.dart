@@ -1,9 +1,9 @@
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/notes_bloc/notes_bloc.dart';
-import 'package:avlo/features/presentation/blocs/notes_bloc/notes_event.dart';
-import 'package:avlo/features/presentation/blocs/notes_bloc/notes_state.dart';
-import 'package:avlo/features/presentation/pages/drawer/create_note/create_note.dart';
-import 'package:avlo/features/presentation/pages/profile/components/notes_card.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/notes_bloc/notes_bloc.dart';
+import 'package:icrm/features/presentation/blocs/notes_bloc/notes_event.dart';
+import 'package:icrm/features/presentation/blocs/notes_bloc/notes_state.dart';
+import 'package:icrm/features/presentation/pages/drawer/create_note/create_note.dart';
+import 'package:icrm/features/presentation/pages/profile/components/notes_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';

@@ -1,18 +1,26 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:avlo/features/presentation/blocs/auth_bloc/auth_event.dart';
-import 'package:avlo/features/presentation/blocs/auth_bloc/auth_state.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/forgot_password/forgot_password.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/local_widgets/auth_text_field.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/local_widgets/main_button.dart';
-import 'package:avlo/features/presentation/pages/widgets/change_user_profile.dart';
-import 'package:avlo/widgets/social_board.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:icrm/features/presentation/blocs/auth_bloc/auth_event.dart';
+import 'package:icrm/features/presentation/blocs/auth_bloc/auth_state.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/forgot_password/forgot_password.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/auth_text_field.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/main_button.dart';
+import 'package:icrm/features/presentation/pages/widgets/change_user_profile.dart';
+import 'package:icrm/widgets/social_board.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../../core/service/shared_preferences_service.dart';
+import '../../../main/main_page.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -37,9 +45,13 @@ class _LoginState extends State<Login> {
       backgroundColor: UserToken.isDark ? AppColors.mainDark : Colors.white,
       body: BlocConsumer<AuthBloc, AuthStates>(
         listener: (context, state) {
+          print(state);
           if(state is AuthSignInSuccessSate) {
             if(UserToken.name == '' || UserToken.surname == ''){
               Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeUserProfile()));
+            }else {
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainPage()), (route) => false);
+              SharedPreferencesService.instance.then((value) => value.setAuth(true));
             }
           } else if(state is AuthErrorState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -72,7 +84,7 @@ class _LoginState extends State<Login> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'I CRM',
+                          'icrm CRM',
                           style: AppTextStyles.primary,
                         ),
                         SizedBox(height: 70),

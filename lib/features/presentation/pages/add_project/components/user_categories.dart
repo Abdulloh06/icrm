@@ -1,11 +1,16 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_bloc.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_event.dart';
-import 'package:avlo/features/presentation/blocs/user_categories_bloc/user_categories_bloc.dart';
-import 'package:avlo/features/presentation/blocs/user_categories_bloc/user_categories_event.dart';
-import 'package:avlo/features/presentation/blocs/user_categories_bloc/user_categories_state.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_event.dart';
+import 'package:icrm/features/presentation/blocs/user_categories_bloc/user_categories_bloc.dart';
+import 'package:icrm/features/presentation/blocs/user_categories_bloc/user_categories_event.dart';
+import 'package:icrm/features/presentation/blocs/user_categories_bloc/user_categories_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';

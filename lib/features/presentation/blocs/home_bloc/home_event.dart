@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../../../core/models/leads_model.dart';
 
 abstract class HomeEvent extends Equatable {
 
@@ -6,18 +7,32 @@ abstract class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class HomeInitEvent extends HomeEvent {}
+class HomeInitEvent extends HomeEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class HomeGetNextPageEvent extends HomeEvent {
+  static int page = 1;
+  static bool hasReachedMax = false;
+  final List<LeadsModel> leads;
+
+  HomeGetNextPageEvent({required this.leads});
+
+  @override
+  List<Object> get props => [page];
+}
 
 class LeadsAddEvent extends HomeEvent {
   final int projectId;
   final dynamic contactId;
-  final int seller_id;
+  final int? seller_id;
   final dynamic estimated_amount;
-  final String startDate;
-  final String endDate;
-  final String description;
+  final String? startDate;
+  final String? endDate;
+  final String? description;
   final int leadStatus;
-  final String currency;
+  final String? currency;
 
   LeadsAddEvent({
     required this.projectId,
@@ -49,12 +64,12 @@ class LeadsUpdateEvent extends HomeEvent {
   final int project_id;
   final dynamic contact_id;
   final dynamic estimated_amount;
-  final String start_date;
-  final String end_date;
+  final String? start_date;
+  final String? end_date;
   final int lead_status;
-  final String description;
-  final int seller_id;
-  final String currency;
+  final String? description;
+  final int? seller_id;
+  final String? currency;
   final bool fromHome;
 
   LeadsUpdateEvent({
@@ -65,9 +80,9 @@ class LeadsUpdateEvent extends HomeEvent {
     required this.end_date,
     required this.estimated_amount,
     required this.lead_status,
-    required this.description,
-    required this.seller_id,
-    required this.currency,
+    this.description,
+    this.seller_id,
+    this.currency,
     this.fromHome = true,
   });
 

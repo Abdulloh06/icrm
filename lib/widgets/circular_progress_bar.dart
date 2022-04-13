@@ -1,5 +1,10 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -21,15 +26,11 @@ class CircularProgressBar extends StatelessWidget {
         radius: radius,
         lineWidth: lineWidth,
         percent: percent / 100,
-        center: Text(percent.toInt().toString() + '%', style: UserToken.isDark ? TextStyle(
+        center: Text(percent.toInt().toString() + '%', style:  TextStyle(
           fontSize: fontSize,
           fontWeight: FontWeight.w700,
-          color: Colors.white,
-        ) : TextStyle(
-          fontSize: fontSize,
-          color: Colors.black,
-          fontWeight: FontWeight.w700,
-        ),),
+          color: UserToken.isDark ? Colors.white : Colors.black,
+        )),
         progressColor: progressColor,
       ),
     );

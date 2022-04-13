@@ -1,8 +1,8 @@
-import 'package:avlo/core/models/attachment_model.dart';
-import 'package:avlo/core/service/api/get_attachment.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/attachment_bloc/attachment_event.dart';
-import 'package:avlo/features/presentation/blocs/attachment_bloc/attachment_state.dart';
+import 'package:icrm/core/models/attachment_model.dart';
+import 'package:icrm/core/service/api/get_attachment.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_event.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AttachmentBloc extends Bloc<AttachmentEvent, AttachmentState> {

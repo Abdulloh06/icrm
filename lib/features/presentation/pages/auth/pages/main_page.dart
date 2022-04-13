@@ -1,10 +1,15 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/features/presentation/blocs/cubits/auth_page_slider_cubit.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/local_widgets/auth_pages.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/local_widgets/main_button.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/login/login.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/sign_up/sign_up.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/features/presentation/blocs/cubits/auth_page_slider_cubit.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/auth_pages.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/main_button.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/login/login.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +36,7 @@ class AuthMainPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'I CRM',
+                    'icrm CRM',
                     style: TextStyle(
                       color: AppColors.mainColor,
                       fontSize: 25,

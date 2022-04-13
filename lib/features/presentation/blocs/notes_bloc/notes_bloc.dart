@@ -1,8 +1,8 @@
-import 'package:avlo/core/models/notes_model.dart';
-import 'package:avlo/core/service/api/get_notes.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/notes_bloc/notes_event.dart';
-import 'package:avlo/features/presentation/blocs/notes_bloc/notes_state.dart';
+import 'package:icrm/core/models/notes_model.dart';
+import 'package:icrm/core/service/api/get_notes.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/notes_bloc/notes_event.dart';
+import 'package:icrm/features/presentation/blocs/notes_bloc/notes_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NotesBloc extends Bloc<NotesEvent, NotesState>{

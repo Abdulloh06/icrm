@@ -1,7 +1,12 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
-import 'package:avlo/core/models/calendar_model.dart';
-import 'package:avlo/core/repository/api_repository.dart';
-import 'package:avlo/core/repository/user_token.dart';
+import 'package:icrm/core/models/calendar_model.dart';
+import 'package:icrm/core/repository/api_repository.dart';
+import 'package:icrm/core/repository/user_token.dart';
 import 'package:dio/dio.dart';
 
 class GetCalendar {

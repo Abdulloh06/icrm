@@ -1,13 +1,18 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:avlo/features/presentation/blocs/auth_bloc/auth_event.dart';
-import 'package:avlo/features/presentation/blocs/auth_bloc/auth_state.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/local_widgets/auth_text_field.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/local_widgets/main_button.dart';
-import 'package:avlo/features/presentation/pages/auth/pages/local_widgets/main_button_back.dart';
-import 'package:avlo/features/presentation/pages/widgets/change_user_profile.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:icrm/features/presentation/blocs/auth_bloc/auth_event.dart';
+import 'package:icrm/features/presentation/blocs/auth_bloc/auth_state.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/auth_text_field.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/main_button.dart';
+import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/main_button_back.dart';
+import 'package:icrm/features/presentation/pages/widgets/change_user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -72,7 +77,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                           children: [
                             const AuthButtonBack(),
                             Text(
-                              'I CRM',
+                              'icrm CRM',
                               style: AppTextStyles.primary,
                             ),
                           ],

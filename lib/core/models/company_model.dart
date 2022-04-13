@@ -1,4 +1,9 @@
-import 'package:avlo/core/models/contacts_model.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/contacts_model.dart';
 
 class CompanyModel {
   final int id;

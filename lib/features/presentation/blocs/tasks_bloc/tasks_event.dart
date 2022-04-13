@@ -1,11 +1,36 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 part of 'tasks_bloc.dart';
 
 abstract class TasksEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-class TasksInitEvent extends TasksEvent {}
+class TasksInitEvent extends TasksEvent {
+  final bool trash;
+
+  TasksInitEvent({this.trash = false});
+
+  @override
+  List<Object?> get props => [trash];
+}
+
+class TasksGetNextPageEvent extends TasksEvent {
+  static int page = 1;
+  final List<TasksModel> list;
+  static bool hasReachedMax = false;
+
+  TasksGetNextPageEvent({
+    required this.list,
+  });
+
+  @override
+  List<Object?> get props => [list];
+}
 
 class TasksAddEvent extends TasksEvent {
   final dynamic parent_id;
@@ -17,7 +42,7 @@ class TasksAddEvent extends TasksEvent {
   final String description;
   final String taskType;
   final int taskId;
-  final List<int> user;
+  final List<int>? user;
 
   TasksAddEvent({
     required this.priority,
@@ -33,7 +58,7 @@ class TasksAddEvent extends TasksEvent {
   });
 
   @override
-  List<Object> get props =>
+  List<Object?> get props =>
       [
         name,
         status,
@@ -73,7 +98,7 @@ class TasksUpdateEvent extends TasksEvent {
 
 
   @override
-  List<Object> get props =>
+  List<Object?> get props =>
       [
         id, name, parent_id, status, description, deadline, start_date
       ];
@@ -137,7 +162,7 @@ class TasksStatusUpdateEvent extends TasksEvent {
   TasksStatusUpdateEvent({required this.name,required this.id});
 
   @override
-  List<Object> get props => [name, id];
+  List<Object?> get props => [name, id];
 }
 
 class TasksAssignUsersEvent extends TasksEvent {
@@ -145,6 +170,19 @@ class TasksAssignUsersEvent extends TasksEvent {
   final List<int> users;
 
   TasksAssignUsersEvent({required this.users, required this.id});
+}
+
+class TasksDeleteUserEvent extends TasksEvent {
+  final int task_id;
+  final int user;
+
+  TasksDeleteUserEvent({
+   required this.user,
+   required this.task_id,
+  });
+
+  @override
+  List<Object?> get props => [task_id, user];
 }
 
 class TasksShowEvent extends TasksEvent {

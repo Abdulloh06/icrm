@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 class MessageModel {
   final int id;
   final int lead_id;
@@ -24,8 +29,8 @@ class MessageModel {
       user_id: json['user_id'],
       client_id: json['client_id'],
       message: json['message'],
-      created_at: json['created_at'],
-      updated_at: json['updated_at'],
+      created_at: json['created_at'] ?? "",
+      updated_at: json['updated_at'] ?? "",
     );
   }
 

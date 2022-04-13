@@ -1,10 +1,15 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/features/presentation/blocs/calendar_bloc/calendar_bloc.dart';
-import 'package:avlo/features/presentation/blocs/calendar_bloc/calendar_state.dart';
-import 'package:avlo/features/presentation/pages/leads/components/lead_card.dart';
-import 'package:avlo/features/presentation/pages/tasks/components/gridview_tasks.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
-import 'package:avlo/widgets/main_tab_bar.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/features/presentation/blocs/calendar_bloc/calendar_bloc.dart';
+import 'package:icrm/features/presentation/blocs/calendar_bloc/calendar_state.dart';
+import 'package:icrm/features/presentation/pages/leads/components/lead_card.dart';
+import 'package:icrm/features/presentation/pages/tasks/components/gridview_tasks.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
+import 'package:icrm/widgets/main_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';

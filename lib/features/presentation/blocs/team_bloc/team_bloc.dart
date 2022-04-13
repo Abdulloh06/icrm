@@ -1,8 +1,8 @@
-import 'package:avlo/core/models/team_model.dart';
-import 'package:avlo/core/service/api/get_team.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_event.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_state.dart';
+import 'package:icrm/core/models/team_model.dart';
+import 'package:icrm/core/service/api/get_team.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_event.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/service/api/get_team.dart';

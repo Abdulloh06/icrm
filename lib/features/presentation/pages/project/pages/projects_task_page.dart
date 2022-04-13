@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -5,11 +10,12 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../../core/models/tasks_model.dart';
 import '../../../../../core/util/colors.dart';
 import '../../../../../core/util/text_styles.dart';
+import '../../../../../widgets/loading.dart';
 import '../../../../../widgets/main_button.dart';
 import '../../../../../widgets/main_tab_bar.dart';
 import '../../../blocs/tasks_bloc/tasks_bloc.dart';
-import '../../tasks/components/gridview_tasks.dart';
 import '../../tasks/components/tasks_card.dart';
+import '../../tasks/pages/selected_tasks.dart';
 
 class ProjectsTaskPage extends StatefulWidget {
   const ProjectsTaskPage({Key? key, required this.id}) : super(key: key);
@@ -66,7 +72,8 @@ class _ProjectsTaskPageState extends State<ProjectsTaskPage> {
                                 children: [
                                   Expanded(
                                     child: MainTabBar(
-                                      isScrollable: state.tasksStatuses.length > 4,
+                                      isScrollable: state.tasksStatuses.length >= 4,
+                                      labelPadding: state.tasksStatuses.length >= 4 ? const EdgeInsets.symmetric(horizontal: 12, vertical: 0) : const EdgeInsets.all(0),
                                       shadow: [
                                         BoxShadow(
                                           blurRadius: 4,
@@ -124,45 +131,62 @@ class _ProjectsTaskPageState extends State<ProjectsTaskPage> {
                                               },
                                               child: DragTarget<TasksCard>(
                                                 onAccept: (object) {
-                                                  context.read<TasksBloc>().add(TasksUpdateEvent(
-                                                    name: object.task.name,
-                                                    deadline: object.task.deadline,
-                                                    status: state.tasksStatuses[index].id,
-                                                    description: object.task.description,
-                                                    id: object.task.id,
-                                                    parent_id: object.task.parentId,
-                                                    taskType: 'user',
-                                                    taskId: object.task.taskId,
-                                                    priority: object.task.priority,
-                                                    start_date: object.task.startDate,
-                                                  ));
+                                                  if(object.task.taskStatusId != state.tasksStatuses[index].id) {
+                                                    context.read<TasksBloc>().add(TasksUpdateEvent(
+                                                      name: object.task.name,
+                                                      deadline: object.task.deadline,
+                                                      status: state.tasksStatuses[index].id,
+                                                      description: object.task.description,
+                                                      id: object.task.id,
+                                                      parent_id: object.task.parentId,
+                                                      taskType: 'user',
+                                                      taskId: object.task.taskId,
+                                                      priority: object.task.priority,
+                                                      start_date: object.task.startDate,
+                                                    ));
+                                                  }
                                                 },
                                                 builder: (context, accept, reject) {
-                                                  List<String> titles = [];
-                                                  for(int i = 0; i < state.tasksStatuses.length; i++) {
-                                                    titles.add(state.tasksStatuses[i].name);
-                                                  }
+                                                  String title = state.tasksStatuses[index].name;
+
                                                   return Visibility(
-                                                    replacement: Tab(
+                                                    replacement: Container(
+                                                      width: 70,
                                                       child: TextFormField(
                                                         textAlign: TextAlign.center,
                                                         decoration: InputDecoration(
                                                           border: InputBorder.none,
+                                                          isDense: true,
                                                         ),
                                                         initialValue: state.tasksStatuses[index].name,
                                                         onChanged: (value) {
-                                                          titles[index] = value;
+                                                          title = value;
                                                         },
                                                         onEditingComplete: () {
+                                                          print("Complete");
                                                           context.read<TasksBloc>().add(TasksStatusUpdateEvent(
-                                                            name: titles[index],
+                                                            name: title,
                                                             id: state.tasksStatuses[index].id,
                                                           ));
+                                                          setState(() {
+                                                            isEdit != isEdit;
+                                                          });
+                                                        },
+                                                        onSaved: (value) {
+                                                          print("Saved");
+                                                        },
+                                                        onFieldSubmitted: (value) {
+                                                          print("Field");
                                                         },
                                                       ),
                                                     ),
                                                     visible: !isEdit,
-                                                    child: Tab(text: state.tasksStatuses[index].name),
+                                                    child: Container(
+                                                      alignment: Alignment.center,
+                                                      child: Text(
+                                                        title,
+                                                      ),
+                                                    ),
                                                   );
                                                 },
                                               ),
@@ -196,6 +220,41 @@ class _ProjectsTaskPageState extends State<ProjectsTaskPage> {
                                                 Navigator.pop(context);
                                               },
                                             ),
+                                            actions: [
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    MainButton(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 20,
+                                                          vertical: 15),
+                                                      color: AppColors.red,
+                                                      title: 'cancel',
+                                                    ),
+                                                    MainButton(
+                                                      onTap: () {
+                                                        if (title != '') {
+                                                          context.read<TasksBloc>().add(
+                                                            TasksStatusAddEvent(name: title),
+                                                          );
+                                                          Navigator.pop(context);
+                                                          isEdit = !isEdit;
+                                                        }
+                                                      },
+                                                      color: AppColors.green,
+                                                      title: 'save',
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           );
                                         });
                                       },
@@ -210,9 +269,68 @@ class _ProjectsTaskPageState extends State<ProjectsTaskPage> {
                               child: TabBarView(
                                 children: List.generate(state.tasksStatuses.length, (index) {
 
-                                  List<TasksModel> tasks = state.tasks.where((element) => element.taskStatus!.id == state.tasksStatuses[index].id && element.taskId == widget.id).toList();
+                                  List<TasksModel> list = state.tasks.where((element) => element.taskStatus!.id == state.tasksStatuses[index].id && element.taskId == widget.id).toList();
 
-                                  return GridViewTasks(tasks: tasks);
+                                  return Builder(
+                                      builder: (context) {
+                                        if (list.isNotEmpty) {
+                                          if(state is TasksLoadingState) {
+                                            return Loading();
+                                          }else {
+                                            return GridView.builder(
+                                              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                                                mainAxisSpacing: 10,
+                                                crossAxisSpacing: 10,
+                                                childAspectRatio: 1.05,
+                                                maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+                                              ),
+                                              itemCount: list.length,
+                                              itemBuilder: (context, index) {
+                                                return LongPressDraggable<TasksCard>(
+                                                  childWhenDragging: Container(),
+                                                  data: TasksCard(
+                                                    onTap: () {},
+                                                    status: list[index].taskStatus!,
+                                                    task: list[index],
+                                                  ),
+                                                  feedback: SizedBox(
+                                                    height: 120,
+                                                    width: MediaQuery.of(context).size.width / 3,
+                                                    child: Material(
+                                                      child: TasksCard(
+                                                        isDragging: true,
+                                                        onTap: () {},
+                                                        status: list[index].taskStatus!,
+                                                        task: list[index],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: TasksCard(
+                                                    onTap: () {
+                                                      Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => TaskPage(
+                                                            task: list[index],
+                                                            taskStatuses: state.tasksStatuses,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    status: list[index]
+                                                        .taskStatus!,
+                                                    task: list[index],
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          }
+                                        } else {
+                                          return Center(
+                                            child: LocaleText("empty"),
+                                          );
+                                        }
+                                      }
+                                  );
                                 }),
                               ),
                             ),
@@ -225,11 +343,7 @@ class _ProjectsTaskPageState extends State<ProjectsTaskPage> {
               ),
             );
           } else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.mainColor,
-              ),
-            );
+            return Loading();
           }
         });
   }

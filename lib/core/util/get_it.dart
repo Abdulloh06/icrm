@@ -1,22 +1,27 @@
-import 'package:avlo/core/service/api/auth/get_user.dart';
-import 'package:avlo/core/service/api/auth/get_yandex_email.dart';
-import 'package:avlo/core/service/api/auth/login_service.dart';
-import 'package:avlo/core/service/api/auth/sign_up_service.dart';
-import 'package:avlo/core/service/api/auth/social_auth.dart';
-import 'package:avlo/core/service/api/get_attachment.dart';
-import 'package:avlo/core/service/api/get_calendar.dart';
-import 'package:avlo/core/service/api/get_contacts.dart';
-import 'package:avlo/core/service/api/get_leads.dart';
-import 'package:avlo/core/service/api/get_notes.dart';
-import 'package:avlo/core/service/api/get_profile.dart';
-import 'package:avlo/core/service/api/get_project_statuses.dart';
-import 'package:avlo/core/service/api/get_projects.dart';
-import 'package:avlo/core/service/api/get_task_status.dart';
-import 'package:avlo/core/service/api/get_tasks.dart';
-import 'package:avlo/core/service/api/get_team.dart';
-import 'package:avlo/core/service/api/get_user_categories.dart';
-import 'package:avlo/core/service/api/get_users.dart';
-import 'package:avlo/core/service/api/leads_message.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/service/api/auth/get_user.dart';
+import 'package:icrm/core/service/api/auth/get_yandex_email.dart';
+import 'package:icrm/core/service/api/auth/login_service.dart';
+import 'package:icrm/core/service/api/auth/sign_up_service.dart';
+import 'package:icrm/core/service/api/auth/social_auth.dart';
+import 'package:icrm/core/service/api/get_attachment.dart';
+import 'package:icrm/core/service/api/get_calendar.dart';
+import 'package:icrm/core/service/api/get_contacts.dart';
+import 'package:icrm/core/service/api/get_leads.dart';
+import 'package:icrm/core/service/api/get_notes.dart';
+import 'package:icrm/core/service/api/get_profile.dart';
+import 'package:icrm/core/service/api/get_project_statuses.dart';
+import 'package:icrm/core/service/api/get_projects.dart';
+import 'package:icrm/core/service/api/get_task_status.dart';
+import 'package:icrm/core/service/api/get_tasks.dart';
+import 'package:icrm/core/service/api/get_team.dart';
+import 'package:icrm/core/service/api/get_user_categories.dart';
+import 'package:icrm/core/service/api/get_users.dart';
+import 'package:icrm/core/service/api/leads_message.dart';
 import 'package:get_it/get_it.dart';
 import '../service/api/get_company.dart';
 import '../service/api/get_dash_board.dart';

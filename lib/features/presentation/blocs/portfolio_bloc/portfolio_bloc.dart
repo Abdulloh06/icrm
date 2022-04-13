@@ -1,7 +1,7 @@
-import 'package:avlo/core/models/portfolio_model.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/portfolio_bloc/portfolio_event.dart';
-import 'package:avlo/features/presentation/blocs/portfolio_bloc/portfolio_state.dart';
+import 'package:icrm/core/models/portfolio_model.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/portfolio_bloc/portfolio_event.dart';
+import 'package:icrm/features/presentation/blocs/portfolio_bloc/portfolio_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/service/api/get_portfolio.dart';

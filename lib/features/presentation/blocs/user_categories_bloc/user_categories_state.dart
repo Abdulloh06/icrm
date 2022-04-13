@@ -1,5 +1,5 @@
 
-import 'package:avlo/core/models/user_categories_model.dart';
+import 'package:icrm/core/models/user_categories_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class UserCategoriesState extends Equatable {

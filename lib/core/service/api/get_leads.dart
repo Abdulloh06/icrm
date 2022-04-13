@@ -1,16 +1,21 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
-import 'package:avlo/core/models/leads_model.dart';
-import 'package:avlo/core/repository/api_repository.dart';
+import 'package:icrm/core/models/leads_model.dart';
+import 'package:icrm/core/repository/api_repository.dart';
 import 'package:dio/dio.dart';
 import '../../repository/user_token.dart';
 
 class GetLeads {
   final dio = Dio();
 
-  Future<List<LeadsModel>> getLeads() async {
+  Future<List<LeadsModel>> getLeads({required int page, bool trash = false}) async {
     try {
       final response = await dio.get(
-        ApiRepository.getLeads + "?expand=project.projectStatus,project.userCategory,project.members,leadStatus,seller,tasks.taskStatus,contact",
+        ApiRepository.getLeads + "?paginate=true&expand=project.projectStatus,project.userCategory,project.members,leadStatus,seller,tasks.taskStatus,messages,contact&trash=$trash&page=$page",
         options: Options(
           headers: {
             "Accept": "application/json",
@@ -42,14 +47,41 @@ class GetLeads {
     required int projectId,
     required dynamic contactId,
     required dynamic seller_id,
-    required String description,
-    required String estimated_amount,
-    required String startDate,
-    required String endDate,
+    required String? description,
+    required String? estimated_amount,
+    required String? startDate,
+    required String? endDate,
     required int leadStatus,
-    required String currency,
+    required String? currency,
   }) async {
     try {
+
+      startDate = DateTime.now().toString();
+
+      FormData formData = await FormData.fromMap({
+        "project_id": projectId,
+        "start_date": startDate,
+        "lead_status_id": leadStatus,
+        "contact_id": contactId,
+      });
+
+      if(endDate != '' && endDate != null) {
+        formData.fields.add(MapEntry('end_date', endDate));
+      }
+      if(currency != null && currency != '') {
+        formData.fields.add(MapEntry('currency', currency));
+      }
+      if(seller_id != null) {
+        formData.fields.add(MapEntry('seller_id', seller_id.toString()));
+      }
+      if(description != null && description != '') {
+        formData.fields.add(MapEntry('description', description));
+      }
+      if(estimated_amount != null) {
+        formData.fields.add(MapEntry('estimated_amount', estimated_amount.toString()));
+      }
+
+
       final response = await dio.post(
         ApiRepository.getLeads,
         options: Options(
@@ -59,17 +91,7 @@ class GetLeads {
             "Content-Type": "application/json",
           },
         ),
-        data: {
-          "project_id": projectId,
-          "contact_id": contactId,
-          "seller_id": seller_id,
-          "estimated_amount": estimated_amount,
-          "start_date": startDate,
-          "description": description,
-          "end_date": endDate,
-          "lead_status_id": leadStatus,
-          "currency": currency,
-        },
+        data: formData,
       ).timeout(const Duration(minutes: 1), onTimeout: () {
         throw (Exception('TIME OUT'));
       });
@@ -133,14 +155,47 @@ class GetLeads {
     required int projectId,
     required dynamic contactId,
     required dynamic estimatedAmount,
-    required String startDate,
-    required String endDate,
+    required String? startDate,
+    required String? endDate,
     required int leadStatusId,
-    required int seller_id,
-    required String description,
-    required String currency,
+    required int? seller_id,
+    required String? description,
+    required String? currency,
   }) async {
     try {
+      startDate = DateTime.now().toString();
+
+      Map<String, dynamic> formData = {
+        "project_id": projectId,
+        "lead_status_id": leadStatusId,
+        "contact_id": contactId,
+      };
+
+      if(endDate != '' && endDate != null) {
+        formData.addAll({
+          "end_date": endDate,
+        });
+      }
+      if(currency != null && currency != '') {
+        formData.addAll({
+          "currency": currency,
+        });
+      }
+      if(estimatedAmount != null && estimatedAmount != '') {
+        formData.addAll({
+          "estimated_amount": estimatedAmount,
+        });
+      }
+      if(description != null && description != '') {
+        formData.addAll({
+          "description": description,
+        });
+      }
+      if(seller_id != null) {
+        formData.addAll({
+          "seller_id": seller_id,
+        });
+      }
 
       final response = await dio.put(
         ApiRepository.getLeads + "/$id",
@@ -151,17 +206,7 @@ class GetLeads {
             "Content-Type": "application/json",
           },
         ),
-        data: {
-          "project_id": projectId,
-          "contact_id": contactId,
-          "estimated_amount": estimatedAmount,
-          "start_date": startDate,
-          "end_date": endDate,
-          "lead_status_id": leadStatusId,
-          "seller_id": seller_id,
-          "description": description,
-          "currency": currency,
-        },
+        data: formData,
       ).timeout(const Duration(minutes: 1), onTimeout: () {
         throw (Exception('TIME OUT'));
       });

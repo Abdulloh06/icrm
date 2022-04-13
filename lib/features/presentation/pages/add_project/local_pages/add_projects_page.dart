@@ -1,20 +1,23 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/features/presentation/blocs/helper_bloc/helper_bloc.dart';
-import 'package:avlo/features/presentation/blocs/helper_bloc/helper_state.dart';
-import 'package:avlo/features/presentation/blocs/project_statuses_bloc/project_statuses_bloc.dart';
-import 'package:avlo/features/presentation/blocs/project_statuses_bloc/project_statuses_state.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_bloc.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_event.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_state.dart';
-import 'package:avlo/features/presentation/pages/add_project/components/add_members.dart';
-import 'package:avlo/features/presentation/pages/add_project/components/reminder_calendar.dart';
-import 'package:avlo/features/presentation/pages/add_project/local_pages/company_add.dart';
-import 'package:avlo/features/presentation/pages/add_project/components/user_categories.dart';
-import 'package:avlo/features/presentation/pages/add_project/local_pages/contact_person.dart';
-import 'package:avlo/features/presentation/pages/project/pages/project_structe.dart';
-import 'package:avlo/features/presentation/pages/widgets/double_buttons.dart';
-import 'package:avlo/widgets/custom_text_field.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_bloc.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_state.dart';
+import 'package:icrm/features/presentation/blocs/project_statuses_bloc/project_statuses_bloc.dart';
+import 'package:icrm/features/presentation/blocs/project_statuses_bloc/project_statuses_state.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_event.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_state.dart';
+import 'package:icrm/features/presentation/pages/add_project/components/reminder_calendar.dart';
+import 'package:icrm/features/presentation/pages/add_project/local_pages/company_add.dart';
+import 'package:icrm/features/presentation/pages/add_project/components/user_categories.dart';
+import 'package:icrm/features/presentation/pages/add_project/local_pages/contact_person.dart';
+import 'package:icrm/features/presentation/pages/widgets/double_buttons.dart';
+import 'package:icrm/widgets/custom_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +29,8 @@ import 'package:speech_to_text/speech_to_text.dart';
 import '../../../../../core/models/team_model.dart';
 import '../../../../../core/util/text_styles.dart';
 import '../../../blocs/helper_bloc/helper_event.dart';
+import '../../main/main_page.dart';
+import '../components/add_members.dart';
 
 class Projects extends StatefulWidget {
   Projects({
@@ -129,27 +134,7 @@ class _ProjectsState extends State<Projects> {
         }
 
         if (state is ProjectsAddSuccessState) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProjectStructure(
-                id: state.project.id,
-                name: state.project.name,
-                description: state.project.description,
-                user_id: state.project.user_id,
-                project_status_id: state.project.project_status_id,
-                user_category: state.project.user_category_id,
-                notify_at: state.project.notify_at,
-                price: state.project.price,
-                currency: state.project.currency,
-                created_at: state.project.created_at,
-                updated_at: state.project.updated_at,
-                leads: [],
-                tasks: [],
-                company_id: company_id!,
-              ),
-            ),
-          );
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainPage()), (route) => false);
         }
 
         if (state is ProjectsErrorState) {
@@ -161,10 +146,11 @@ class _ProjectsState extends State<Projects> {
                   borderRadius: BorderRadius.circular(10)),
               margin: const EdgeInsets.all(20),
               backgroundColor: AppColors.red,
-              content: LocaleText(state.error,
+              content: LocaleText('something_went_wrong',
                   style: AppTextStyles.mainGrey.copyWith(color: Colors.white)),
             ),
           );
+          context.read<ProjectsBloc>().add(ProjectsInitEvent());
         }
       },
       child: Container(
@@ -217,7 +203,7 @@ class _ProjectsState extends State<Projects> {
                                 ),
                                 const SizedBox(height: 10),
                                 CustomTextField(
-                                  validator: (value) => value!.isEmpty ? Locales.string(context, 'must_fill_this_line') : null,
+                                  validator: (value) => null,
                                   controller: _personInfoController,
                                   onChanged: (value) {},
                                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPerson())),
@@ -238,7 +224,7 @@ class _ProjectsState extends State<Projects> {
                                       ),
                                     ),
                                   ),
-                                  validator: (value) => value!.isEmpty ? Locales.string(context, 'must_fill_this_line') : null,
+                                  validator: (value) => null,
                                   controller: _companyNameController,
                                   onChanged: (value) {},
                                   hint: 'company',
@@ -249,53 +235,53 @@ class _ProjectsState extends State<Projects> {
                                       : AppColors.textFieldColor,
                                 ),
                                 const SizedBox(height: 10),
-                                // SizedBox(
-                                //   height: 55,
-                                //   child: Row(
-                                //     children: [
-                                //       Expanded(
-                                //         child: CustomTextField(
-                                //           validator: (value) => members.isEmpty ? Locales.string(context, 'must_fill_this_line') : null,
-                                //           controller: TextEditingController(),
-                                //           suffixIcon: 'assets/icons_svg/add.svg',
-                                //           onChanged: (value) {},
-                                //           onTap: () {
-                                //             showDialog(context: context, builder: (context) {
-                                //               return AddMembers(id: 2);
-                                //             });
-                                //           },
-                                //           hint: 'appoint',
-                                //           readOnly: true,
-                                //           isFilled: true,
-                                //           color: UserToken.isDark
-                                //               ? AppColors.textFieldColorDark
-                                //               : AppColors.textFieldColor,
-                                //         ),
-                                //       ),
-                                //       const SizedBox(width: 10),
-                                //       Expanded(
-                                //         child: ListView.builder(
-                                //           scrollDirection: Axis.horizontal,
-                                //           itemCount: members.length,
-                                //           itemBuilder: (context, index) {
-                                //             return CachedNetworkImage(
-                                //               imageUrl:
-                                //               members[index].social_avatar,
-                                //               errorWidget:
-                                //                   (context, error, bt) {
-                                //                 return CircleAvatar(
-                                //                   backgroundImage: AssetImage(
-                                //                       'assets/png/no_user.png'),
-                                //                 );
-                                //               },
-                                //             );
-                                //           },
-                                //         ),
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
-                                // const SizedBox(height: 10),
+                                SizedBox(
+                                  height: 55,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: CustomTextField(
+                                          validator: (value) => null,
+                                          controller: TextEditingController(),
+                                          suffixIcon: 'assets/icons_svg/add.svg',
+                                          onChanged: (value) {},
+                                          onTap: () {
+                                            showDialog(context: context, builder: (context) {
+                                              return AddMembers(id: 2);
+                                            });
+                                          },
+                                          hint: 'appoint',
+                                          readOnly: true,
+                                          isFilled: true,
+                                          color: UserToken.isDark
+                                              ? AppColors.textFieldColorDark
+                                              : AppColors.textFieldColor,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: members.length,
+                                          itemBuilder: (context, index) {
+                                            return CachedNetworkImage(
+                                              imageUrl:
+                                              members[index].social_avatar,
+                                              errorWidget:
+                                                  (context, error, bt) {
+                                                return CircleAvatar(
+                                                  backgroundImage: AssetImage(
+                                                      'assets/png/no_user.png'),
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
                                 CustomTextField(
                                   onTap: () {
                                     showDialog(
@@ -303,12 +289,13 @@ class _ProjectsState extends State<Projects> {
                                       builder: (context) {
                                         return ReminderCalendar(
                                           id: 2,
+                                          isProject: true,
                                         );
                                       },
                                     );
                                   },
                                   readOnly: true,
-                                  validator: (value) => value!.isEmpty ? Locales.string(context, 'must_fill_this_line') : null,
+                                  validator: (value) => null,
                                   controller: _dateController,
                                   onChanged: (value) {},
                                   hint: 'reminder_date',
@@ -322,7 +309,7 @@ class _ProjectsState extends State<Projects> {
                                 const SizedBox(height: 10),
                                 CustomTextField(
                                   onTap: () => chooseUserCategory(context),
-                                  validator: (value) => value!.isEmpty ? Locales.string(context, 'must_fill_this_line') : null,
+                                  validator: (value) => null,
                                   controller: _categoryController,
                                   onChanged: (value) {},
                                   hint: 'project_category',
@@ -337,9 +324,11 @@ class _ProjectsState extends State<Projects> {
                                 SizedBox(
                                   height: 55,
                                   child: BlocBuilder<ProjectStatusBloc, ProjectStatusState>(
-                                      builder: (context, state) {
-                                    return StatefulBuilder(
-                                        builder: (context, setState) {
+                                    builder: (context, state) {
+                                      if(state is ProjectStatusInitState &&
+                                          state.projectStatuses.isNotEmpty) {
+                                        project_status_category = state.projectStatuses.first.id;
+                                      }
                                       return PopupMenuButton(
                                         offset: Offset(
                                           MediaQuery.of(context).size.width / 2,
@@ -355,7 +344,7 @@ class _ProjectsState extends State<Projects> {
                                               state.projectStatuses.isNotEmpty) {
                                             return List.generate(
                                               state.projectStatuses.length,
-                                              (index) {
+                                                  (index) {
                                                 return PopupMenuItem(
                                                   padding: const EdgeInsets.only(right: 10),
                                                   onTap: () {
@@ -370,11 +359,11 @@ class _ProjectsState extends State<Projects> {
                                                   child: Container(
                                                     alignment: Alignment.center,
                                                     decoration: BoxDecoration(
-                                                      color: Color(int.parse(state.projectStatuses[index]
-                                                          .color
-                                                          .split('#')
-                                                          .join('0xff'))),
-                                                      borderRadius: BorderRadius.circular(10)
+                                                        color: Color(int.parse(state.projectStatuses[index]
+                                                            .color
+                                                            .split('#')
+                                                            .join('0xff'))),
+                                                        borderRadius: BorderRadius.circular(10)
                                                     ),
                                                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                                                     child: Text(
@@ -411,12 +400,12 @@ class _ProjectsState extends State<Projects> {
                                               left: 10, right: 10),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
                                                 status == ''
                                                     ? Locales.string(
-                                                        context, 'project_status')
+                                                    context, 'project_status')
                                                     : status,
                                                 style: TextStyle(
                                                   fontSize: 16,
@@ -431,16 +420,17 @@ class _ProjectsState extends State<Projects> {
                                           ),
                                         ),
                                       );
-                                    });
-                                  }),
+                                    },
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 CustomTextField(
-                                  validator: (value) => value!.isEmpty ? Locales.string(context, 'must_fill_this_line') : null,
+                                  validator: (value) => null,
                                   controller: _descriptionController,
                                   onChanged: (value) {},
                                   hint: 'description',
                                   maxLines: 4,
+                                  onIconTap: () => listen(),
                                   suffixIcon: 'assets/icons_svg/microphone.svg',
                                   iconMargin: 20,
                                   isFilled: true,
@@ -457,7 +447,7 @@ class _ProjectsState extends State<Projects> {
                                       child: Container(
                                         height: 55,
                                         child: CustomTextField(
-                                          validator: (value) => value!.isEmpty ? Locales.string(context, 'must_fill_this_line') : null,
+                                          validator: (value) => null,
                                           controller: _amountController,
                                           onChanged: (value) {},
                                           keyboardType: TextInputType.number,
@@ -474,7 +464,7 @@ class _ProjectsState extends State<Projects> {
                                       child: Container(
                                         height: 55,
                                         child: CustomTextField(
-                                          validator: (value) => value!.isEmpty ? Locales.string(context, 'must_fill_this_line') : null,
+                                          validator: (value) => null,
                                           controller: _currencyController,
                                           onChanged: (value) {},
                                           hint: 'sum',
@@ -508,21 +498,25 @@ class _ProjectsState extends State<Projects> {
                       const SizedBox(height: 15),
                       DoubleButtons(
                         onCancel: () {
-                          context.read<ProjectsBloc>().add(ProjectsInitEvent());
                           Navigator.pop(context);
                         },
                         onSave: () {
+                          List<int> users = [];
+                          for (int i = 0; i < members.length; i++) {
+                            users.add(members[i].id);
+                          }
                           if(_formKey.currentState!.validate()) {
                             context.read<ProjectsBloc>().add(ProjectsAddEvent(
                               name: _projectNameController.text,
                               description: _descriptionController.text,
-                              user_category_id: user_category_id!,
+                              user_category_id: user_category_id,
                               project_status_id: project_status_category!,
-                              notify_at: DateFormat("dd.MM.yyyy").parse(notify_at).toString(),
+                              notify_at: notify_at != "" ? DateFormat("dd.MM.yyyy").parse(notify_at).toString() : notify_at,
                               currency: _currencyController.text,
                               is_owner: true,
                               price: _amountController.text,
-                              company_id: company_id!,
+                              company_id: company_id,
+                              members: users,
                             ));
                           }
                         },

@@ -1,6 +1,13 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 class ApiRepository {
   static const String baseUrl = 'https://avlocrm-api.eurosoft.site/api/';
-  static const String appUrl = 'https://avlolead.page.link/leads';
+  static const String appUrl = 'https://avlolead.page.link';
+  static const String botToken = '5038327212:AAHlxI6_ZtrV93_J1vy0xMKXGKisnIxQ6y8';
   static const String login = baseUrl + 'login';
   static const String registerStepOne = baseUrl + 'step-one';
   static const String registerStepTwo = baseUrl + 'step-two';

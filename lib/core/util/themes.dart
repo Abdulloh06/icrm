@@ -1,6 +1,10 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
 import 'package:flutter/material.dart';
 
 ThemeData dark = ThemeData(

@@ -1,7 +1,14 @@
-import 'package:avlo/core/models/comments_model.dart';
-import 'package:avlo/core/models/tasks_status_model.dart';
-import 'package:avlo/core/models/team_model.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
+import 'package:icrm/core/models/comments_model.dart';
+import 'package:icrm/core/models/tasks_status_model.dart';
+import 'package:icrm/core/models/team_model.dart';
+import 'package:flutter/foundation.dart';
+
+@immutable
 class TasksModel {
   final int id;
   final dynamic parentId;
@@ -53,10 +60,10 @@ class TasksModel {
       startDate: json['start_date'] ?? "",
       deadline: json['deadline'] ?? "",
       priority: json['priority'],
-      name: json['name'],
-      description: json['description'],
+      name: json['name'] ?? "",
+      description: json['description'] ?? "",
       taskType: json['taskable_type'] as String,
-      taskId: json['taskable_id'] ?? 0,
+      taskId: json['taskable_id'] ?? 1,
       createdAt: json['created_at'] ?? "",
       updatedAt: json['updated_at'] ?? "",
       comments: CommentsModel.fetchData(json['comments'] ?? []),

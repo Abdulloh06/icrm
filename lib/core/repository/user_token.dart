@@ -1,3 +1,7 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
 class UserToken {
   static dynamic id;
@@ -13,5 +17,6 @@ class UserToken {
   static String accessToken = '';
   static String refreshToken = '';
   static String responsibility = '';
+  static String fmToken = '';
 
 }

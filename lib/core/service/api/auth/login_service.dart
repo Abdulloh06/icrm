@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
 import 'package:dio/dio.dart';
 import '../../../repository/api_repository.dart';
@@ -13,11 +18,13 @@ class LoginService {
     required String password,
   }) async {
     try {
+      print(UserToken.fmToken);
       final response = await dio.post(
         ApiRepository.login,
         data: {
           "username": username,
           "password": password,
+          "firebase_reg_id": UserToken.fmToken,
         },
       );
 
@@ -48,7 +55,11 @@ class LoginService {
       }
     } catch (e) {
       print(e);
-      throw Exception('UNKNOWN');
+      if(e.toString().contains('400')) {
+        throw Exception('user_not_found');
+      }else {
+        throw Exception('UNKNOWN');
+      }
     }
   }
 

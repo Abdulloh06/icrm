@@ -1,5 +1,5 @@
 
-import 'package:avlo/core/models/notes_model.dart';
+import 'package:icrm/core/models/notes_model.dart';
 import 'package:equatable/equatable.dart';
 
 class NotesState extends Equatable{

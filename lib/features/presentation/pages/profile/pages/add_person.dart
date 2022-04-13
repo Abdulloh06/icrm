@@ -1,11 +1,18 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
 
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/features/presentation/blocs/contacts_bloc/contacts_event.dart';
-import 'package:avlo/widgets/custom_text_field.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
-import 'package:avlo/widgets/main_button.dart';
+import 'package:icrm/core/models/contacts_model.dart';
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_event.dart';
+import 'package:icrm/widgets/custom_text_field.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
+import 'package:icrm/widgets/main_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -15,7 +22,14 @@ import 'package:image_picker/image_picker.dart';
 import '../../../blocs/contacts_bloc/contacts_bloc.dart';
 
 class AddParticipant extends StatefulWidget {
-  const AddParticipant({Key? key}) : super(key: key);
+  const AddParticipant({
+    Key? key,
+    this.fromEdit = false,
+    this.contact,
+  }) : super(key: key);
+
+  final bool fromEdit;
+  final ContactModel? contact;
 
   @override
   State<AddParticipant> createState() => _AddParticipantState();
@@ -37,7 +51,6 @@ class _AddParticipantState extends State<AddParticipant> {
             avatar = File(image.path);
           });
         }
-
       } catch (error) {
         print(error);
       }
@@ -45,6 +58,18 @@ class _AddParticipantState extends State<AddParticipant> {
 
   File? avatar;
   static int selectedIndex = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.fromEdit) {
+      _userInfoController.text = widget.contact!.name;
+      _emailController.text = widget.contact!.email;
+      _positionController.text = widget.contact!.position;
+      _phoneController.text = widget.contact!.phone_number;
+      selectedIndex = widget.contact!.contact_type;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +100,23 @@ class _AddParticipantState extends State<AddParticipant> {
                               if(avatar != null){
                                 return Image.file(File(avatar!.path));
                               }else {
-                                return Image.asset('assets/png/no_user.png');
+                                if(widget.fromEdit) {
+                                  return CachedNetworkImage(
+                                    imageUrl: widget.contact!.avatar,
+                                    placeholder: (context, child) {
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: AppColors.mainColor,
+                                        ),
+                                      );
+                                    },
+                                    errorWidget: (context, error, stack) {
+                                      return Image.asset('assets/png/no_user.png');
+                                    },
+                                  );
+                                }else {
+                                  return Image.asset('assets/png/no_user.png');
+                                }
                               }
                             },
                           ),
@@ -206,14 +247,30 @@ class _AddParticipantState extends State<AddParticipant> {
                     color: AppColors.mainColor,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        context.read<ContactsBloc>().add(ContactsAddEvent(
-                          email: _emailController.text,
-                          phone_number: _phoneController.text,
-                          position: _positionController.text,
-                          name: _userInfoController.text,
-                          type: selectedIndex,
-                          avatar: avatar!,
-                        ));
+                        if(widget.fromEdit) {
+                          context.read<ContactsBloc>().add(
+                            ContactsUpdateEvent(
+                              id: widget.contact!.id,
+                              type: selectedIndex,
+                              avatar: avatar,
+                              hasAvatar: avatar != null,
+                              name: _userInfoController.text,
+                              phone_number: _phoneController.text,
+                              position: _positionController.text,
+                              email: _emailController.text,
+                              fromContact: true,
+                            ),
+                          );
+                        }else {
+                          context.read<ContactsBloc>().add(ContactsAddEvent(
+                            email: _emailController.text,
+                            phone_number: _phoneController.text,
+                            position: _positionController.text,
+                            name: _userInfoController.text,
+                            type: selectedIndex,
+                            avatar: avatar!,
+                          ));
+                        }
                         Navigator.pop(context);
                       }
                     },

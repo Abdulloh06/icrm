@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:avlo/core/repository/api_repository.dart';
+import 'package:icrm/core/repository/api_repository.dart';
 import 'package:dio/dio.dart';
 
 class YandexAuth {

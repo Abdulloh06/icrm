@@ -1,5 +1,5 @@
 
-import 'package:avlo/core/models/profile_model.dart';
+import 'package:icrm/core/models/profile_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ProfileState extends Equatable {

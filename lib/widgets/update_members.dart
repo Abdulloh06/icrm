@@ -1,11 +1,16 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_bloc.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_event.dart';
-import 'package:avlo/features/presentation/blocs/team_bloc/team_state.dart';
-import 'package:avlo/widgets/custom_text_field.dart';
-import 'package:avlo/widgets/main_person_contact.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_bloc.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_event.dart';
+import 'package:icrm/features/presentation/blocs/team_bloc/team_state.dart';
+import 'package:icrm/widgets/custom_text_field.dart';
+import 'package:icrm/widgets/main_person_contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -60,7 +65,6 @@ class UpdateMembers extends StatelessWidget {
                             assigns.add(state.team[index].id);
                             assigns.toSet();
                             context.read<TasksBloc>().add(TasksAssignUsersEvent(users: assigns, id: task_id));
-                            context.read<TasksBloc>().add(TasksShowEvent(id: task_id));
                             Navigator.pop(context);
                           },
                           child: MainPersonContact(

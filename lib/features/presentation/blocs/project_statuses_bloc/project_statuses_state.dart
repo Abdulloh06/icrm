@@ -1,4 +1,4 @@
-import 'package:avlo/core/models/project_statuses_model.dart';
+import 'package:icrm/core/models/project_statuses_model.dart';
 import 'package:equatable/equatable.dart';
 
 class ProjectStatusState extends Equatable{

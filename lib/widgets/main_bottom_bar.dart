@@ -1,8 +1,13 @@
-import 'package:avlo/features/presentation/blocs/cubits/bottom_bar_cubit.dart';
-import 'package:avlo/features/presentation/blocs/home_bloc/home_event.dart';
-import 'package:avlo/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
-import 'package:avlo/features/presentation/pages/add_project/add_project.dart';
-import 'package:avlo/features/presentation/pages/tasks/pages/create_task.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/features/presentation/blocs/cubits/bottom_bar_cubit.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_event.dart';
+import 'package:icrm/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
+import 'package:icrm/features/presentation/pages/add_project/add_project.dart';
+import 'package:icrm/features/presentation/pages/tasks/pages/create_task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,12 +17,10 @@ import '../features/presentation/blocs/home_bloc/home_bloc.dart';
 class MainBottomBar extends StatelessWidget {
   const MainBottomBar({
     Key? key,
-    this.index = 1,
     this.isMain = true,
   }) : super(key: key);
 
   final bool isMain;
-  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,7 @@ class MainBottomBar extends StatelessWidget {
               if(isMain) {
                 if(index != 2) {
                   context.read<BottomBarCubit>().changePage(index);
+
                 } else if(index == 2 && value == 3) {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => CreateTask()));
                 } else {
@@ -41,9 +45,14 @@ class MainBottomBar extends StatelessWidget {
               }else {
                 if(index != 2) {
                   Navigator.pop(context);
-                  context.read<BottomBarCubit>().changePage(index);
-                  context.read<HomeBloc>().add(HomeInitEvent());
-                  context.read<TasksBloc>().add(TasksInitEvent());
+                  if(index != 0) {
+                    context.read<BottomBarCubit>().changePage(index);
+                    context.read<HomeBloc>().add(HomeInitEvent());
+                  }
+                  if(index != 3) {
+                    context.read<BottomBarCubit>().changePage(index);
+                    context.read<TasksBloc>().add(TasksInitEvent());
+                  }
                 } else if(index == 2 && value == 3) {
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CreateTask()));
                 } else {

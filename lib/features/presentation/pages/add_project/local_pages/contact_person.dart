@@ -1,17 +1,22 @@
-import 'package:avlo/core/models/contacts_model.dart';
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/contacts_bloc/contacts_bloc.dart';
-import 'package:avlo/features/presentation/blocs/contacts_bloc/contacts_event.dart';
-import 'package:avlo/features/presentation/blocs/contacts_bloc/contacts_state.dart';
-import 'package:avlo/features/presentation/blocs/helper_bloc/helper_bloc.dart';
-import 'package:avlo/features/presentation/blocs/helper_bloc/helper_event.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_bloc.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_event.dart';
-import 'package:avlo/features/presentation/pages/widgets/one_button.dart';
-import 'package:avlo/widgets/custom_text_field.dart';
-import 'package:avlo/widgets/main_person_contact.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/contacts_model.dart';
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_bloc.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_event.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_state.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_bloc.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_event.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_event.dart';
+import 'package:icrm/features/presentation/pages/widgets/one_button.dart';
+import 'package:icrm/widgets/custom_text_field.dart';
+import 'package:icrm/widgets/main_person_contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -132,8 +137,7 @@ class _ContactPersonState extends State<ContactPerson> {
                                         if(widget.fromProject) {
                                           context.read<ProjectsBloc>().add(
                                             ProjectsNameEvent(
-                                              contact_id:
-                                              contacts[index].id,
+                                              contact_id: contacts[index].id,
                                               name: contacts[index].name,
                                             ),
                                           );
@@ -168,9 +172,7 @@ class _ContactPersonState extends State<ContactPerson> {
                       height: 20,
                     ),
                     CustomTextField(
-                      validator: (value) => value!.isEmpty
-                          ? Locales.string(context, 'must_fill_this_line')
-                          : null,
+                      validator: (value) => null,
                       controller: _positionController,
                       onChanged: (value) {},
                       hint: 'position',
@@ -199,11 +201,7 @@ class _ContactPersonState extends State<ContactPerson> {
                       height: 20,
                     ),
                     CustomTextField(
-                      validator: (value) => value!.isEmpty
-                          ? Locales.string(context, 'must_fill_this_line')
-                          : value.contains('@') && value.length > 4
-                              ? null
-                              : Locales.string(context, 'enter_valid_info'),
+                      validator: (value) => null,
                       controller: _emailController,
                       onChanged: (value) {},
                       hint: 'email',

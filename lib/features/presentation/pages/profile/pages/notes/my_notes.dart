@@ -1,8 +1,8 @@
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/features/presentation/pages/drawer/create_note/create_note.dart';
-import 'package:avlo/features/presentation/pages/profile/pages/notes/notes.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
-import 'package:avlo/widgets/main_search_bar.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/features/presentation/pages/drawer/create_note/create_note.dart';
+import 'package:icrm/features/presentation/pages/profile/pages/notes/notes.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
+import 'package:icrm/widgets/main_search_bar.dart';
 import 'package:flutter/material.dart';
 
 class MyNotes extends StatelessWidget {

@@ -1,5 +1,10 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/text_styles.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/text_styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -26,7 +31,7 @@ class MessageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.all(20).copyWith(top: 0),
+      margin: const EdgeInsets.all(20).copyWith(top: 0, bottom: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -38,6 +43,7 @@ class MessageCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 25,
+                    backgroundColor: Colors.transparent,
                     child: ClipOval(
                       child: CachedNetworkImage(
                         imageUrl: UserToken.userPhoto,
@@ -48,20 +54,11 @@ class MessageCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: AppTextStyles.mainBold.copyWith(
-                          color: UserToken.isDark ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      Text(
-                        job,
-                        style: AppTextStyles.mainGrey,
-                      ),
-                    ],
+                  Text(
+                    name,
+                    style: AppTextStyles.mainBold.copyWith(
+                      color: UserToken.isDark ? Colors.white : Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -71,12 +68,16 @@ class MessageCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Text(
             message,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.mainGrey.copyWith(fontSize: 15),
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w300,
+              color: UserToken.isDark ? Colors.white : Colors.black,
+            ),
           ),
         ],
       ),

@@ -1,25 +1,33 @@
-import 'package:avlo/core/models/tasks_model.dart';
-import 'package:avlo/core/models/team_model.dart';
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/helper_bloc/helper_bloc.dart';
-import 'package:avlo/features/presentation/blocs/helper_bloc/helper_event.dart';
-import 'package:avlo/features/presentation/blocs/helper_bloc/helper_state.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_bloc.dart';
-import 'package:avlo/features/presentation/blocs/projects_bloc/projects_state.dart';
-import 'package:avlo/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
-import 'package:avlo/features/presentation/pages/add_project/components/add_members.dart';
-import 'package:avlo/features/presentation/pages/add_project/components/reminder_calendar.dart';
-import 'package:avlo/features/presentation/pages/tasks/pages/selected_tasks.dart';
-import 'package:avlo/widgets/custom_text_field.dart';
-import 'package:avlo/widgets/main_button.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/tasks_model.dart';
+import 'package:icrm/core/models/team_model.dart';
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_bloc.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_event.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_state.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_bloc.dart';
+import 'package:icrm/features/presentation/blocs/home_bloc/home_event.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/blocs/projects_bloc/projects_state.dart';
+import 'package:icrm/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
+import 'package:icrm/features/presentation/pages/add_project/components/add_members.dart';
+import 'package:icrm/features/presentation/pages/add_project/components/reminder_calendar.dart';
+import 'package:icrm/features/presentation/pages/widgets/double_buttons.dart';
+import 'package:icrm/widgets/custom_text_field.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import '../../add_succes_pages/add_task_page.dart';
 import '../components/priority.dart';
 
 class CreateTask extends StatefulWidget {
@@ -29,6 +37,7 @@ class CreateTask extends StatefulWidget {
     this.task_id = 1,
     this.task_type = 'user',
     this.fromEdit = false,
+    this.fromTask = true,
     this.task,
   }) : super(key: key);
 
@@ -36,6 +45,7 @@ class CreateTask extends StatefulWidget {
   final String task_type;
   final int task_id;
   final bool fromEdit;
+  final bool fromTask;
   final TasksModel? task;
 
   @override
@@ -47,15 +57,18 @@ class _CreateTaskState extends State<CreateTask> {
   final _descriptionController = TextEditingController();
   final _calendarController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   static String statusText = '';
   static String priorityText = '';
 
   static int? status;
-  static int? priority;
+  static int priority = 9;
   static int? project;
   static String start_date = '';
   static String deadline = '';
   static List<TeamModel> members = [];
+  List<TeamModel> projectMembers = [];
   String taskType = '';
   int? taskId;
 
@@ -124,25 +137,24 @@ class _CreateTaskState extends State<CreateTask> {
           }
 
           if (state is TasksAddState) {
-            if (state.task.parentId == null) {
-              Navigator.pushReplacement(
+            if(widget.task_type == 'lead') {
+              Navigator.pop(context);
+            }else {
+              if (state.task.parentId == null) {
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => TaskPage(id: state.task.id)));
-            } else {
-              Navigator.pop(context);
+                    builder: (context) => AddTaskPage(id: state.task.id),
+                  ),
+                );
+              } else {
+                Navigator.pop(context);
+              }
             }
-          }
-          if(state is TasksUpdateState) {
-            Navigator.pop(context);
           }
         }, builder: (context, state) {
           if (state is TasksLoadingState) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.mainColor,
-              ),
-            );
+            return Loading();
           } else {
             return SingleChildScrollView(
               child: Padding(
@@ -171,6 +183,7 @@ class _CreateTaskState extends State<CreateTask> {
                       },
                       builder: (context, help) {
                         return Form(
+                          key: _formKey,
                             child: Column(
                           children: [
                             CustomTextField(
@@ -188,55 +201,63 @@ class _CreateTaskState extends State<CreateTask> {
                               onTap: () {},
                             ),
                             SizedBox(height: 15),
-                            BlocBuilder<ProjectsBloc, ProjectsState>(
-                              builder: (context, state) {
-                                if(state is ProjectsInitState) {
+                            Visibility(
+                              visible: !widget.fromEdit && widget.fromTask,
+                              child: Column(
+                                children: [
+                                  BlocBuilder<ProjectsBloc, ProjectsState>(
+                                      builder: (context, state) {
+                                        if(state is ProjectsInitState) {
 
-                                  return SizedBox(
-                                    height: 31,
-                                    child: ScrollConfiguration(
-                                      behavior: const ScrollBehavior().copyWith(overscroll: false),
-                                      child: ListView.builder(
-                                        itemCount: state.projects.length,
-                                        itemBuilder: (context, index) {
-                                          return InkWell(
-                                            borderRadius: BorderRadius.circular(15),
-                                            onTap: () {
-                                              setState(() {
-                                                project = state.projects[index].id;
-                                                taskId = project;
-                                                taskType = 'project';
-                                              });
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.symmetric(horizontal: 4),
-                                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(15),
-                                                border: Border.all(color: project == state.projects[index].id ? AppColors.mainColor : Color(0xffF5F6FB)),
-                                                color: project == state.projects[index].id ? AppColors.mainColor : Colors.white,
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  state.projects[index].name,
-                                                  style: TextStyle(
-                                                    color: project == state.projects[index].id ? Colors.white : Color(0xff737989),
-                                                  ),
-                                                ),
+                                          return SizedBox(
+                                            height: 31,
+                                            child: ScrollConfiguration(
+                                              behavior: const ScrollBehavior().copyWith(overscroll: false),
+                                              child: ListView.builder(
+                                                itemCount: state.projects.length,
+                                                itemBuilder: (context, index) {
+                                                  return InkWell(
+                                                    borderRadius: BorderRadius.circular(15),
+                                                    onTap: () {
+                                                      setState(() {
+                                                        project = state.projects[index].id;
+                                                        taskId = project;
+                                                        taskType = 'project';
+                                                        projectMembers = state.projects[index].members ?? [];
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.symmetric(horizontal: 4),
+                                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        border: Border.all(color: project == state.projects[index].id ? AppColors.mainColor : Color(0xffF5F6FB)),
+                                                        color: project == state.projects[index].id ? AppColors.mainColor : Colors.white,
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          state.projects[index].name,
+                                                          style: TextStyle(
+                                                            color: project == state.projects[index].id ? Colors.white : Color(0xff737989),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                scrollDirection: Axis.horizontal,
                                               ),
                                             ),
                                           );
-                                        },
-                                        scrollDirection: Axis.horizontal,
-                                      ),
-                                    ),
-                                  );
-                                }else {
-                                  return SizedBox.shrink();
-                                }
-                              }
+                                        }else {
+                                          return SizedBox.shrink();
+                                        }
+                                      }
+                                  ),
+                                  SizedBox(height: 15),
+                                ],
+                              ),
                             ),
-                            SizedBox(height: 15),
                             SizedBox(
                               height: 55,
                               child: Row(
@@ -249,14 +270,12 @@ class _CreateTaskState extends State<CreateTask> {
                                           builder: (context) {
                                             return AddMembers(
                                               id: 3,
+                                              members: projectMembers,
                                             );
                                           },
                                         );
                                       },
-                                      validator: (value) => members.isEmpty
-                                          ? Locales.string(
-                                              context, 'at_least_one_employee')
-                                          : null,
+                                      validator: (value) => null,
                                       controller: TextEditingController(),
                                       suffixIcon: 'assets/icons_svg/add.svg',
                                       onChanged: (value) {},
@@ -302,10 +321,7 @@ class _CreateTaskState extends State<CreateTask> {
                                   : 'assets/icons_svg/cal.svg',
                               readOnly: true,
                               hint: 'timing',
-                              validator: (value) => value!.isEmpty
-                                  ? Locales.string(
-                                      context, 'must_fill_this_line')
-                                  : null,
+                              validator: (value) => null,
                               onChanged: (value) {},
                               onTap: () {
                                 showDialog(
@@ -320,6 +336,11 @@ class _CreateTaskState extends State<CreateTask> {
                             const SizedBox(height: 15),
                             BlocBuilder<TasksBloc, TasksState>(
                                 builder: (context, state) {
+                                  if(state is TasksInitState) {
+                                    if(state.tasksStatuses.isNotEmpty) {
+                                      status = state.tasksStatuses.first.id;
+                                    }
+                                  }
                               return PopupMenuButton(
                                 offset: Offset(
                                   MediaQuery.of(context).size.width / 2,
@@ -434,9 +455,7 @@ class _CreateTaskState extends State<CreateTask> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        status == null
-                                            ? Locales.string(context, 'status')
-                                            : statusText,
+                                        statusText == '' ? Locales.string(context, 'status') : statusText,
                                         style: const TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey,
@@ -537,16 +556,13 @@ class _CreateTaskState extends State<CreateTask> {
                                     color: AppColors.greyLight,
                                   ),
                                 ),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      priority == null
-                                          ? Locales.string(context, 'priority')
-                                          : priorityText,
+                                      priorityText == '' ? Locales.string(context, 'priority') : priorityText,
                                       style: const TextStyle(
                                         fontSize: 16,
                                         color: Colors.grey,
@@ -567,76 +583,62 @@ class _CreateTaskState extends State<CreateTask> {
                               controller: _descriptionController,
                               hint: 'description',
                               maxLines: 4,
-                              validator: (value) => value!.isEmpty
-                                  ? Locales.string(
-                                      context, 'must_fill_this_line')
-                                  : null,
+                              validator: (value) => null,
                               onChanged: (value) {},
-                              onTap: () {},
                             ),
                           ],
                         ));
                       },
                     ),
                     const SizedBox(height: 80),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        MainButton(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 34, vertical: 12),
-                          color: AppColors.red,
-                          title: 'cancel',
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        MainButton(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 34, vertical: 12),
-                          onTap: () {
-                            List<int> users = [];
-                            for (int i = 0; i < members.length; i++) {
-                              users.add(members[i].id);
-                            }
+                    DoubleButtons(
+                      onCancel: () {
+                        Navigator.pop(context);
+                      },
+                      onSave: () {
+                        if(_formKey.currentState!.validate()) {
+                          List<int> users = [];
+                          for (int i = 0; i < members.length; i++) {
+                            users.add(members[i].id);
+                          }
 
-                            if (widget.fromEdit) {
-                              context.read<TasksBloc>().add(TasksUpdateEvent(
-                                    id: widget.task!.id,
-                                    parent_id: widget.task!.parentId,
-                                    priority: priority!,
-                                    status: status!,
-                                    start_date: start_date.toString(),
-                                    deadline: deadline.toString(),
-                                    name: _nameController.text,
-                                    description: _descriptionController.text,
-                                    taskType: widget.task!.taskType,
-                                    taskId: widget.task!.taskId,
-                                  ));
-                            } else {
-                              context.read<TasksBloc>().add(
-                                TasksAddEvent(
-                                  parent_id: widget.parent_id,
-                                  priority: priority!,
-                                  status: status!,
-                                  start_date: DateFormat("dd.MM.yyyy").parse(start_date)
-                                      .toString(),
-                                  deadline: DateFormat("dd.MM.yyyy")
-                                      .parse(deadline)
-                                      .toString(),
-                                  name: _nameController.text,
-                                  description: _descriptionController.text,
-                                  taskType: taskType,
-                                  taskId: taskId!,
-                                  user: users,
-                                ),
-                              );
-                            }
-                          },
-                          color: AppColors.green,
-                          title: 'create',
-                        ),
-                      ],
+                          if (widget.fromEdit) {
+                            context.read<TasksBloc>().add(TasksUpdateEvent(
+                              id: widget.task!.id,
+                              parent_id: widget.task!.parentId,
+                              priority: priority,
+                              status: status!,
+                              start_date: start_date.toString(),
+                              deadline: deadline.toString(),
+                              name: _nameController.text,
+                              description: _descriptionController.text,
+                              taskType: widget.task!.taskType,
+                              taskId: widget.task!.taskId,
+                            ));
+                            Navigator.pop(context);
+                          } else {
+                            context.read<TasksBloc>().add(
+                              TasksAddEvent(
+                                parent_id: widget.parent_id,
+                                priority: priority,
+                                status: status!,
+                                start_date: '',
+                                deadline: deadline != '' ? DateFormat("dd.MM.yyyy")
+                                    .parse(deadline)
+                                    .toString() : deadline,
+                                name: _nameController.text,
+                                description: _descriptionController.text,
+                                taskType: taskType,
+                                taskId: taskId!,
+                                user: users,
+                              ),
+                            );
+                          }
+                          if(widget.task_type == 'lead') {
+                            context.read<HomeBloc>().add(HomeInitEvent());
+                          }
+                        }
+                      },
                     ),
                   ],
                 ),

@@ -1,7 +1,7 @@
-import 'package:avlo/core/models/message_model.dart';
-import 'package:avlo/core/service/api/leads_message.dart';
-import 'package:avlo/core/util/get_it.dart';
-import 'package:avlo/features/presentation/blocs/lead_messages_bloc/lead_messages_event.dart';
+import 'package:icrm/core/models/message_model.dart';
+import 'package:icrm/core/service/api/leads_message.dart';
+import 'package:icrm/core/util/get_it.dart';
+import 'package:icrm/features/presentation/blocs/lead_messages_bloc/lead_messages_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'lead_messages_state.dart';
 

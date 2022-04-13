@@ -32,12 +32,6 @@ class TasksShowState extends TasksState {
 }
 
 
-class TasksUpdateState extends TasksState {
-  final int id;
-
-  TasksUpdateState({required this.id});
-}
-
 class TasksErrorState extends TasksState {
   final String error;
 

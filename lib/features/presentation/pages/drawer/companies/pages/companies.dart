@@ -1,7 +1,12 @@
-import 'package:avlo/features/presentation/pages/drawer/companies/components/company_card.dart';
-import 'package:avlo/features/presentation/pages/drawer/companies/pages/sub_company.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
-import 'package:avlo/widgets/main_search_bar.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/features/presentation/pages/drawer/companies/components/company_card.dart';
+import 'package:icrm/features/presentation/pages/drawer/companies/pages/sub_company.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
+import 'package:icrm/widgets/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/util/colors.dart';
@@ -42,9 +47,10 @@ class _CompaniesState extends State<Companies> {
                 controller: _searchController,
                 onComplete: () {
                   FocusScope.of(context).unfocus();
+                },
+                onChanged: (value) {
                   setState(() {});
                 },
-                onChanged: (value) {},
               ),
               const SizedBox(height: 20),
               Expanded(

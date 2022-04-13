@@ -1,8 +1,13 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
 
-import 'package:avlo/core/models/profile_model.dart';
-import 'package:avlo/core/repository/api_repository.dart';
-import 'package:avlo/core/service/shared_preferences_service.dart';
+import 'package:icrm/core/models/profile_model.dart';
+import 'package:icrm/core/repository/api_repository.dart';
+import 'package:icrm/core/service/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 
 import '../../repository/user_token.dart';

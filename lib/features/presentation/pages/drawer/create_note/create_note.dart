@@ -1,11 +1,16 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
-import 'package:avlo/features/presentation/blocs/notes_bloc/notes_bloc.dart';
-import 'package:avlo/features/presentation/blocs/notes_bloc/notes_event.dart';
-import 'package:avlo/features/presentation/pages/profile/pages/notes/my_notes.dart';
-import 'package:avlo/widgets/main_app_bar.dart';
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/notes_bloc/notes_bloc.dart';
+import 'package:icrm/features/presentation/blocs/notes_bloc/notes_event.dart';
+import 'package:icrm/features/presentation/pages/profile/pages/notes/my_notes.dart';
+import 'package:icrm/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';

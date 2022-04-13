@@ -1,4 +1,4 @@
-import 'package:avlo/core/models/contacts_model.dart';
+import 'package:icrm/core/models/contacts_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ContactsState extends Equatable {

@@ -1,6 +1,11 @@
-import 'package:avlo/core/repository/user_token.dart';
-import 'package:avlo/core/util/colors.dart';
-import 'package:avlo/core/util/text_styles.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,19 +40,12 @@ class MainPersonContact extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
+                  backgroundColor: Colors.transparent,
                   child: ClipOval(
                     child: CachedNetworkImage(
                       imageUrl: photo,
-                      color: Colors.transparent,
                       errorWidget: (context, error, stack) {
                         return Image.asset('assets/png/no_user.png');
-                      },
-                      placeholder: (context, widget) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.mainColor,
-                          ),
-                        );
                       },
                     ),
                   ),

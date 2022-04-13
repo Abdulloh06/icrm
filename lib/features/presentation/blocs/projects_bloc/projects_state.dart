@@ -1,5 +1,11 @@
-import 'package:avlo/core/models/project_statuses_model.dart';
-import 'package:avlo/core/models/projects_model.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
+import 'package:icrm/core/models/project_statuses_model.dart';
+import 'package:icrm/core/models/projects_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ProjectsState extends Equatable {
@@ -10,8 +16,12 @@ abstract class ProjectsState extends Equatable {
 class ProjectsInitState extends ProjectsState {
 
   final List<ProjectsModel> projects;
-
-  ProjectsInitState({required this.projects});
+  final List<ProjectStatusesModel> projectStatus;
+  static bool hasReachedMax = false;
+  ProjectsInitState({
+    required this.projects,
+    required this.projectStatus,
+  });
 
   @override
   List<Object?> get props => [projects];

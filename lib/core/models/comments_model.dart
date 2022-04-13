@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 class CommentsModel {
   final dynamic parent_id;
   final String content;

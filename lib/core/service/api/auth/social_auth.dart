@@ -1,5 +1,10 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
-import 'package:avlo/core/repository/api_repository.dart';
+import 'package:icrm/core/repository/api_repository.dart';
 import 'package:dio/dio.dart';
 import '../../../repository/user_token.dart';
 import '../../shared_preferences_service.dart';
@@ -13,9 +18,27 @@ class SocialAuth {
     required String auth_type,
     required String phone_number,
     required String email,
+    String surname = '',
   }) async {
 
     try {
+
+      Map<String, dynamic> formData = {
+        "client_id": "95c1af20-7626-4a65-be25-c83d07e7be5b",
+        "client_secret": "E5lebmGUQwxCpjnG9mqa5RJI7FIdTknoNZYh4ibx",
+        "oauth_id": password,
+        "oauth_type": auth_type,
+        "email": email,
+        "username": name,
+        "name": name,
+        "password": password,
+      };
+
+      if(phone_number != '') {
+        formData.addAll({
+          "phone_number": phone_number,
+        });
+      }
 
       final response = await dio.post(
         ApiRepository.social_auth,
@@ -25,17 +48,7 @@ class SocialAuth {
             "Content-type": "application/json",
           }
         ),
-        data: {
-          "client_id": "95c1af20-7626-4a65-be25-c83d07e7be5b",
-          "client_secret": "E5lebmGUQwxCpjnG9mqa5RJI7FIdTknoNZYh4ibx",
-          "oauth_id": password,
-          "oauth_type": auth_type,
-          "email": email,
-          "phone_number": phone_number,
-          "username": name,
-          "name": name,
-          "password": password,
-        }
+        data: formData,
       );
 
       final  Map<String, dynamic> data = await response.data;
@@ -57,12 +70,21 @@ class SocialAuth {
       }else if(response.statusCode == HttpStatus.internalServerError){
         return 'SERVER ERROR';
       }else {
-        throw Exception(response.statusMessage);
+        if(data['errors']['email'] != null) {
+          return 'email_has_been_taken';
+        }else {
+          throw Exception('something_went_wrong');
+        }
       }
 
     } catch(error) {
       print(error);
-      throw Exception('UNKNOWN $error');
+      if(error.toString().contains('400') || error.toString().contains('422')) {
+        return 'email_has_been_taken';
+      }
+      else {
+        throw Exception('UNKNOWN');
+      }
     }
 
   }

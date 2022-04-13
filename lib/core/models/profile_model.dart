@@ -1,3 +1,9 @@
+
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 class ProfileModel {
   final int id;
   final String first_name;
