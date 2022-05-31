@@ -3,15 +3,12 @@
   15 y.o
  */
 
-import 'package:icrm/core/models/project_statuses_model.dart';
 import 'package:icrm/core/models/projects_model.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_bloc.dart';
 import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_event.dart';
 import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
 import 'package:icrm/features/presentation/blocs/projects_bloc/projects_state.dart';
-import 'package:icrm/features/presentation/blocs/show_bloc/show_bloc.dart';
-import 'package:icrm/features/presentation/blocs/show_bloc/show_event.dart';
 import 'package:icrm/features/presentation/pages/project/components/general_page.dart';
 import 'package:icrm/features/presentation/pages/project/pages/project_document_page.dart';
 import 'package:icrm/features/presentation/pages/project/pages/projects_task_page.dart';
@@ -20,6 +17,7 @@ import 'package:icrm/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import '../../../../../core/models/status_model.dart';
 import '../../../blocs/company_bloc/company_bloc.dart';
 import '../../../blocs/tasks_bloc/tasks_bloc.dart';
 import 'projects_lead_page.dart';
@@ -32,7 +30,7 @@ class ProjectStructure extends StatefulWidget {
   }) : super(key: key);
 
   final ProjectsModel project;
-  final List<ProjectStatusesModel> projectStatus;
+  final List<StatusModel> projectStatus;
 
   @override
   State<ProjectStructure> createState() => _ProjectStructureState();
@@ -44,7 +42,7 @@ class _ProjectStructureState extends State<ProjectStructure> {
   bool isEdit = false;
   
   late ProjectsModel project;
-  late List<ProjectStatusesModel> projectStatus;
+  late List<StatusModel> projectStatus;
 
   @override
   void initState() {
@@ -52,7 +50,6 @@ class _ProjectStructureState extends State<ProjectStructure> {
     project = widget.project;
     projectStatus = widget.projectStatus;
     context.read<TasksBloc>().add(TasksInitEvent());
-    context.read<ShowBloc>().add(ShowProjectEvent(id: project.id));
     context.read<AttachmentBloc>().add(AttachmentShowEvent(content_type: 'project', content_id: project.id));
     if(project.company_id != null) {
       context.read<CompanyBloc>().add(CompanyShowEvent(id: project.company_id!));
@@ -66,7 +63,9 @@ class _ProjectStructureState extends State<ProjectStructure> {
       child: BlocListener<ProjectsBloc, ProjectsState>(
         listener: (context, state) {
           if(state is ProjectsInitState) {
-            project = state.projects.elementAt(state.projects.indexWhere((element) => element.id == project.id));
+            project = state.projects.elementAt(
+              state.projects.indexWhere((element) => element.id == project.id),
+            );
             projectStatus = state.projectStatus;
             setState(() {});
           }
@@ -103,7 +102,7 @@ class _ProjectStructureState extends State<ProjectStructure> {
                       text: Locales.string(context, 'general'),
                     ),
                     Tab(
-                      text: Locales.string(context, 'led'),
+                      text: Locales.string(context, 'lead'),
                     ),
                     Tab(
                       text: Locales.string(context, 'tasks'),
@@ -121,12 +120,16 @@ class _ProjectStructureState extends State<ProjectStructure> {
                     children: [
                       GeneralPage(
                         project: project,
-                        projectStatus: projectStatus,
+                        projectStatus: projectStatus.where((element) => element.userLabel != null).toList(),
                       ),
                       ProjectLeadPage(
-                        projectId: project.id,
+                        project: project,
+                        leads: project.leads ?? [],
                       ),
-                      ProjectsTaskPage(id: project.id),
+                      ProjectsTaskPage(
+                        id: project.id,
+                        tasks: project.tasks ?? [],
+                      ),
                       ProjectDocumentPage(
                         project_id: project.id,
                       ),

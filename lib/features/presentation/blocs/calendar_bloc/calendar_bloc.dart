@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:icrm/core/models/calendar_model.dart';
 import 'package:icrm/core/service/api/get_calendar.dart';
 import 'package:equatable/equatable.dart';

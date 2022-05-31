@@ -1,9 +1,16 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'dart:io';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
 import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_bloc.dart';
 import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_event.dart';
 import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_state.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,14 +38,15 @@ class _ProjectDocumentPageState extends State<ProjectDocumentPage> {
   File? file;
 
   void pickFile() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+      setState(() {
+        file = File(result!.files.single.path.toString());
+      });
 
-    setState(() {
-      file = File(result!.files.single.path.toString());
-    });
-
-    context.read<AttachmentBloc>().add(AttachmentAddEvent(content_id: widget.project_id, content_type: widget.content_type, file: file!));
+      context.read<AttachmentBloc>().add(AttachmentAddEvent(content_id: widget.project_id, content_type: widget.content_type, file: file!));
+    } catch(_) {}
   }
 
   String fileType = '';
@@ -185,19 +193,9 @@ class _ProjectDocumentPageState extends State<ProjectDocumentPage> {
                                 itemBuilder: (context) {
                                   return [
                                     popupItem(
-                                      icon: 'assets/icons_svg/change.svg',
-                                      title: 'change',
-                                      onTap: () {},
-                                    ),
-                                    popupItem(
                                       icon: 'assets/icons_svg/delete.svg',
                                       title: 'delete',
                                       onTap: () => context.read<AttachmentBloc>().add(AttachmentDeleteEvent(id: state.documents[index].id, content_id: widget.project_id, content_type: widget.content_type)),
-                                    ),
-                                    popupItem(
-                                      icon: 'assets/icons_svg/share_note.svg',
-                                      title: 'share',
-                                      onTap: () {},
                                     ),
                                   ];
                                 },
@@ -215,11 +213,7 @@ class _ProjectDocumentPageState extends State<ProjectDocumentPage> {
                     child: LocaleText('empty'),
                   );
                 }else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.mainColor,
-                    ),
-                  );
+                  return Loading();
                 }
               },
             ),

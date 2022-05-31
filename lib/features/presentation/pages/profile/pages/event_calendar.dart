@@ -8,6 +8,7 @@ import 'package:icrm/features/presentation/blocs/calendar_bloc/calendar_bloc.dar
 import 'package:icrm/features/presentation/blocs/calendar_bloc/calendar_state.dart';
 import 'package:icrm/features/presentation/pages/leads/components/lead_card.dart';
 import 'package:icrm/features/presentation/pages/tasks/components/gridview_tasks.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:icrm/widgets/main_app_bar.dart';
 import 'package:icrm/widgets/main_tab_bar.dart';
 import 'package:flutter/material.dart';
@@ -162,11 +163,7 @@ class _EventCalendarState extends State<EventCalendar> {
                       ),
                     );
                   } else {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.mainColor,
-                      ),
-                    );
+                    return Loading();
                   }
                 },
               ),

@@ -36,10 +36,9 @@ class GetCalendar {
         throw Exception('UNKNOWN');
       }
 
-    } catch(error) {
-      print(error);
-
-      throw Exception('UNKNOWN' + error.toString());
+    } on DioError catch(e) {
+      print(e.response!.data);
+      throw Exception('UNKNOWN');
     }
 
   }

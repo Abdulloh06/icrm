@@ -1,4 +1,9 @@
-import 'package:icrm/core/models/project_statuses_model.dart';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+import 'package:icrm/core/models/status_model.dart';
 import 'package:equatable/equatable.dart';
 
 class ProjectStatusState extends Equatable{
@@ -7,7 +12,7 @@ class ProjectStatusState extends Equatable{
 }
 
 class ProjectStatusInitState extends ProjectStatusState {
-  final List<ProjectStatusesModel> projectStatuses;
+  final List<StatusModel> projectStatuses;
 
   ProjectStatusInitState({required this.projectStatuses});
 

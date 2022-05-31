@@ -1,12 +1,13 @@
+
 /*
   Developer Muhammadjonov Abdulloh
   15 y.o
  */
 
 
-import 'package:icrm/core/models/project_statuses_model.dart';
 import 'package:icrm/core/models/projects_model.dart';
 import 'package:equatable/equatable.dart';
+import '../../../../core/models/status_model.dart';
 
 abstract class ProjectsState extends Equatable {
   @override
@@ -16,7 +17,7 @@ abstract class ProjectsState extends Equatable {
 class ProjectsInitState extends ProjectsState {
 
   final List<ProjectsModel> projects;
-  final List<ProjectStatusesModel> projectStatus;
+  final List<StatusModel> projectStatus;
   static bool hasReachedMax = false;
   ProjectsInitState({
     required this.projects,
@@ -38,7 +39,7 @@ class ProjectsAddSuccessState extends ProjectsState {
 
 class ProjectsShowState extends ProjectsState {
   final ProjectsModel project;
-  final List<ProjectStatusesModel> projectsStatuses;
+  final List<StatusModel> projectsStatuses;
 
   ProjectsShowState({
     required this.project,

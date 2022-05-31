@@ -1,6 +1,12 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'package:icrm/core/models/dash_board_model.dart';
 import 'package:icrm/core/models/leads_model.dart';
-import 'package:icrm/core/models/leads_status_model.dart';
+import 'package:icrm/core/models/status_model.dart';
 import 'package:equatable/equatable.dart';
 
 
@@ -13,7 +19,7 @@ abstract class HomeState extends Equatable {
 class HomeInitState extends HomeState {
   final List<LeadsModel> leads;
   final List<DashBoardModel> dashboard;
-  final List<LeadsStatusModel> leadStatus;
+  final List<StatusModel> leadStatus;
 
   HomeInitState({
     required this.leads,
@@ -33,7 +39,7 @@ class LeadAddSuccessState extends HomeState {
 
 class LeadShowState extends HomeState {
   final LeadsModel lead;
-  final List<LeadsStatusModel> leadStatus;
+  final List<StatusModel> leadStatus;
 
   LeadShowState({
     required this.lead,

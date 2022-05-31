@@ -3,6 +3,10 @@
   15 y.o
  */
 
+
+import 'package:flutter/foundation.dart';
+
+@immutable
 class MessageModel {
   final int id;
   final int lead_id;

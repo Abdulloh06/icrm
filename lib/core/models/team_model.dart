@@ -3,6 +3,9 @@
   15 y.o
  */
 
+import 'package:flutter/foundation.dart';
+
+@immutable
 class TeamModel {
   final int id;
   final String first_name;

@@ -3,7 +3,13 @@
   15 y.o
  */
 
+import 'dart:io';
 import 'package:icrm/core/models/leads_model.dart';
+import 'package:icrm/core/models/projects_model.dart';
+import 'package:icrm/features/presentation/blocs/lead_messages_bloc/lead_messages_bloc.dart';
+import 'package:icrm/features/presentation/blocs/lead_messages_bloc/lead_messages_event.dart';
+import 'package:icrm/features/presentation/pages/add_project/components/reminder_calendar.dart';
+import 'package:icrm/features/presentation/pages/add_project/components/user_categories.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +20,7 @@ import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../../core/models/leads_status_model.dart';
+import '../../../../../core/models/status_model.dart';
 import '../../../../../core/repository/api_repository.dart';
 import '../../../../../core/repository/user_token.dart';
 import '../../../../../core/util/colors.dart';
@@ -26,17 +32,49 @@ import '../../../blocs/home_bloc/home_bloc.dart';
 import '../../../blocs/home_bloc/home_event.dart';
 import '../../add_project/local_pages/add_leads_page.dart';
 
-class MainLeadInfo extends StatelessWidget {
+class MainLeadInfo extends StatefulWidget {
   MainLeadInfo({
     Key? key,
     required this.lead,
     required this.leadStatus,
+    this.fromProject = false,
+    this.project,
   }) : super(key: key);
 
   final LeadsModel lead;
-  final List<LeadsStatusModel> leadStatus;
+  final List<StatusModel> leadStatus;
+  final bool fromProject;
+  final ProjectsModel? project;
 
+  static String userCategory = "";
+
+  @override
+  State<MainLeadInfo> createState() => _MainLeadInfoState();
+}
+
+class _MainLeadInfoState extends State<MainLeadInfo> {
   final _dynamicLink = FirebaseDynamicLinks.instance;
+  late int leadStatusId;
+  late ProjectsModel? project;
+
+  @override
+  void initState() {
+    super.initState();
+    leadStatusId = widget.lead.leadStatusId;
+    if(widget.fromProject) {
+      project = widget.project;
+      if(widget.project!.userCategory != null) {
+        MainLeadInfo.userCategory = widget.project!.userCategory!.title;
+      }
+    }else {
+      if(widget.lead.project != null) {
+        project = widget.lead.project;
+        if(widget.lead.project!.userCategory != null) {
+          MainLeadInfo.userCategory = widget.lead.project!.userCategory!.title;
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +83,11 @@ class MainLeadInfo extends StatelessWidget {
     String deadline = '';
 
     try {
-      start_date = DateFormat("dd.MM.yyyy").format(DateTime.parse(lead.startDate));
-      deadline = DateFormat("dd.MM.yyyy").format(DateTime.parse(lead.endDate));
+      start_date = DateFormat("dd.MM.yyyy").format(DateTime.parse(widget.lead.startDate));
+      deadline = DateFormat("dd.MM.yyyy").format(DateTime.parse(widget.lead.endDate));
     } catch (error) {
-      start_date = lead.startDate;
-      deadline = lead.endDate;
+      start_date = widget.lead.startDate;
+      deadline = widget.lead.endDate;
     }
 
     return Container(
@@ -70,8 +108,8 @@ class MainLeadInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                lead.contact != null
-                    ? lead.contact!.phone_number
+                widget.lead.contact != null
+                    ? widget.lead.contact!.phone_number
                     : "",
                 style: AppTextStyles.headerLeads,
               ),
@@ -98,7 +136,7 @@ class MainLeadInfo extends StatelessWidget {
                           .buildShortLink(DynamicLinkParameters(
                         uriPrefix: ApiRepository.appUrl,
                         link: Uri.parse(ApiRepository.appUrl +
-                            "/leads/${lead.id}"),
+                            "/leads/${widget.lead.id}"),
                         androidParameters: const AndroidParameters(
                           packageName: 'uz.eurosoft.icrmlead',
                           minimumVersion: 1,
@@ -107,10 +145,8 @@ class MainLeadInfo extends StatelessWidget {
                           bundleId: "uz.eurosoft.icrmlead",
                           minimumVersion: '2',
                         ),
-                      ))
-                          .then((value) {
-                        return Share.share(
-                            value.shortUrl.toString());
+                      )).then((value) {
+                        return Share.share(value.shortUrl.toString());
                       });
                     },
                   ),
@@ -127,7 +163,8 @@ class MainLeadInfo extends StatelessWidget {
                             child: SafeArea(
                               child: Leads(
                                 fromEdit: true,
-                                lead: lead,
+                                name: widget.fromProject ? project!.name : null,
+                                lead: widget.lead,
                               ),
                             ),
                           ),
@@ -144,23 +181,26 @@ class MainLeadInfo extends StatelessWidget {
             children: [
               Builder(
                 builder: (context) {
-                  if(leadStatus.indexWhere((element) => element.id == lead.leadStatusId).isNegative) {
-                    return CircularProgressBar(percent: 20);
-                  } else {
-                    if (leadStatus.elementAt(leadStatus.indexWhere((element) => element.id == lead.leadStatusId)).sequence == 0) {
+                  try {
+                    if (widget.leadStatus.indexWhere((element) => element.id == leadStatusId) == 0) {
                       return CircularProgressBar(percent: 5);
-                    } else if (lead.leadStatusId == leadStatus.last.id) {
+                    } else if (leadStatusId == widget.leadStatus.last.id) {
                       return CircularProgressBar(percent: 100);
-                    } else if(leadStatus.elementAt(leadStatus.indexWhere((element) => element.id == lead.leadStatusId)).sequence == -1) {
+                    } else if(widget.leadStatus.elementAt(widget.leadStatus.indexWhere((element) => element.id == leadStatusId)).id == 3) {
                       return CircularProgressBar(percent: 20);
                     } else {
                       return CircularProgressBar(
-                        percent: 95 / (leadStatus.length - 1) * (leadStatus.indexWhere((element) => element.id == lead.leadStatusId) - 1),
+                        percent: 95 / (widget.leadStatus.length - 1) *
+                            (widget.leadStatus.indexWhere(
+                                    (element) => element.id == leadStatusId)),
                       );
                     }
-
+                  } catch(e) {
+                    print(e);
+                    return CircularProgressBar(
+                      percent: 20,
+                    );
                   }
-
                 },
               ),
               SizedBox(width: 40),
@@ -185,17 +225,24 @@ class MainLeadInfo extends StatelessWidget {
                           children: [
                             Builder(
                               builder: (context) {
-                                if(lead.member != null) {
+                                if(widget.lead.member != null) {
                                   return CircleAvatar(
                                     radius: 18,
-                                    child: ClipOval(
-                                      child: CachedNetworkImage(
-                                        imageUrl: lead.member!.social_avatar,
-                                        errorWidget:
-                                            (context, error, stackTrace) {
-                                          return Image.asset(
-                                              'assets/png/no_user.png');
-                                        },
+                                    backgroundColor: Colors.transparent,
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      child: ClipOval(
+                                        child: CachedNetworkImage(
+                                          imageUrl: widget.lead.member!.social_avatar,
+                                          fit: BoxFit.fill,
+                                          errorWidget: (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/png/no_user.png',
+                                              fit: BoxFit.fill,
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ),
                                   );
@@ -215,7 +262,7 @@ class MainLeadInfo extends StatelessWidget {
                                     context: context,
                                     builder: (_) => AssignMembers(
                                       id: 1,
-                                      lead: lead,
+                                      lead: widget.lead,
                                     ),
                                   );
                                 },
@@ -224,8 +271,9 @@ class MainLeadInfo extends StatelessWidget {
                                     borderRadius:
                                     BorderRadius.circular(50),
                                     border: Border.all(
-                                        width: 1,
-                                        color: Colors.white),
+                                      width: 1,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                   child: SvgPicture.asset(
                                     'assets/icons_svg/add_icon.svg',
@@ -239,27 +287,57 @@ class MainLeadInfo extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons_svg/calendar_bg.svg',
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          '${start_date} - ${deadline}',
-                          style: AppTextStyles.descriptionGrey,
-                        )
-                      ],
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ReminderCalendar(
+                            id: 3,
+                            fromLead: true,
+                            lead: widget.lead,
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons_svg/calendar_bg.svg',
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Builder(
+                            builder: (context) {
+                              if(start_date.isEmpty) {
+                                return Text(
+                                  deadline,
+                                  style: AppTextStyles.descriptionGrey,
+                                );
+                              }else if(deadline.isEmpty){
+                                return Text(
+                                  start_date,
+                                  style: AppTextStyles.descriptionGrey,
+                                );
+                              }else {
+                                return Text(
+                                  '${start_date} - ${deadline}',
+                                  style: AppTextStyles.descriptionGrey,
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -279,14 +357,22 @@ class MainLeadInfo extends StatelessWidget {
               Projects(
                 fontSize: 14,
                 borderWidth: 1,
-                title: lead.contact != null
-                    ? lead.contact!.name
+                title: widget.lead.contact != null
+                    ? widget.lead.contact!.name
                     : "",
               ),
               SizedBox(width: 8),
               GestureDetector(
                 onTap: () async {
-                  await launch('tel: ${lead.contact != null ? lead.contact!.phone_number : ""}');
+                  String phone = widget.lead.contact != null ? widget.lead.contact!.phone_number : "";
+
+                  phone = phone.split('+').join('');
+                  phone = "+" + phone;
+                  if(Platform.isIOS) {
+                    await launch('tel:// $phone');
+                  }else {
+                    await launch('tel: $phone');
+                  }
                 },
                 child: Projects(
                   horizontalPadding: 7,
@@ -306,7 +392,7 @@ class MainLeadInfo extends StatelessWidget {
                 onTap: () async{
                   final Uri _emailLaunchUri = Uri(
                     scheme: 'mailto',
-                    path: lead.contact!.email,
+                    path: widget.lead.contact!.email,
                   );
                   await launch(_emailLaunchUri.toString());
                 },
@@ -326,9 +412,7 @@ class MainLeadInfo extends StatelessWidget {
               SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
-                  context
-                      .read<HomeBloc>()
-                      .add(LeadsDeleteEvent(id: lead.id));
+                  context.read<HomeBloc>().add(LeadsDeleteEvent(id: widget.lead.id));
                   Navigator.pop(context);
                 },
                 child: Projects(
@@ -350,24 +434,50 @@ class MainLeadInfo extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                    width: 130,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 5, horizontal: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: AppColors.greenLight,
-                    ),
-                    child: Text(
-                      lead.project!.userCategory!.title,
-                      style: TextStyle(
-                        color: AppColors.green,
-                      ),
-                    ),
+                  Builder(
+                    builder: (context) {
+                      if(project!.userCategory != null) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 15,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: AppColors.greenLight,
+                          ),
+                          child: Text(
+                            MainLeadInfo.userCategory,
+                            style: TextStyle(
+                              color: AppColors.green,
+                            ),
+                          ),
+                        );
+                      }else {
+                        return SizedBox.shrink();
+                      }
+                    },
                   ),
-                  const SizedBox(width: 5),
+                  SizedBox(width: 5),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () async {
+                      await showDialog(context: context, builder: (context) {
+                        return AlertDialog(
+                          scrollable: true,
+                          backgroundColor: UserToken.isDark ? AppColors.mainDark : Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          insetPadding: const EdgeInsets.only(top: 60, bottom: 60),
+                          content: SizedBox(
+                            height: MediaQuery.of(context).size.height / 1.5,
+                            width: MediaQuery.of(context).size.width - 80,
+                            child: UserCategories(
+                              fromProject: false,
+                              project: widget.lead.project,
+                            ),
+                          ),
+                        );
+                      });
+                      setState(() {});
+                    },
                     child: SvgPicture.asset(
                       'assets/icons_svg/add_icon.svg',
                       height: 35,
@@ -378,25 +488,37 @@ class MainLeadInfo extends StatelessWidget {
               const Spacer(),
               PopupMenuButton(
                 elevation: 0,
+                padding: const EdgeInsets.all(0),
                 color: Colors.transparent,
                 itemBuilder: (context) {
-                  return List.generate(leadStatus.length,
+                  return List.generate(widget.leadStatus.length,
                           (index) {
                         return PopupMenuItem(
-                          padding: const EdgeInsets.only(),
+                          padding: const EdgeInsets.all(0),
                           onTap: () {
+                            setState(() {
+                              leadStatusId = widget.leadStatus[index].id;
+                            });
                             context.read<HomeBloc>().add(
                               LeadsUpdateEvent(
-                                id: lead.id,
-                                project_id: lead.projectId,
-                                contact_id: lead.contactId,
-                                start_date: lead.startDate,
-                                end_date: lead.endDate,
-                                estimated_amount: lead.estimatedAmount,
-                                lead_status: leadStatus[index].id,
-                                description: lead.description,
-                                seller_id: lead.seller_id,
-                                currency: lead.currency,
+                                id: widget.lead.id,
+                                project_id: widget.lead.projectId,
+                                contact_id: widget.lead.contactId,
+                                start_date: widget.lead.startDate,
+                                end_date: widget.lead.endDate,
+                                estimated_amount: widget.lead.estimatedAmount,
+                                lead_status: widget.leadStatus[index].id,
+                                description: widget.lead.description,
+                                seller_id: widget.lead.seller_id,
+                                currency: widget.lead.currency,
+                              ),
+                            );
+                            context.read<LeadMessageBloc>().add(
+                              LeadMessagesSendEvent(
+                                message: 'Внес изменения в статус лида',
+                                client_id: null,
+                                user_id: widget.lead.createdBy,
+                                lead_id: widget.lead.id,
                               ),
                             );
                           },
@@ -407,9 +529,9 @@ class MainLeadInfo extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               color: Color(
-                                int.parse(leadStatus[index].color
-                                    .split('#')
-                                    .join('0xff')),
+                                int.parse(widget.leadStatus[index].userLabel!.color
+                                    .split('#').join('0xff'),
+                                ),
                               ),
                             ),
                             child: Row(
@@ -417,13 +539,13 @@ class MainLeadInfo extends StatelessWidget {
                               MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  leadStatus[index].name,
+                                  widget.leadStatus[index].userLabel!.name,
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.white,
                                   ),
                                 ),
-                                const SizedBox(width: 30),
+                                SizedBox(width: 30),
                                 SvgPicture.asset(
                                   'assets/icons_svg/menu_icon.svg',
                                   height: 20,
@@ -434,35 +556,76 @@ class MainLeadInfo extends StatelessWidget {
                         );
                       });
                 },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 5)
-                      .copyWith(left: 20, right: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(
-                      int.parse(lead.leadStatus!.color
-                          .split('#')
-                          .join('0xff')),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        lead.leadStatus!.name,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
+                child: Builder(
+                  builder: (context) {
+                    if(widget.leadStatus.isNotEmpty) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(vertical: 5)
+                            .copyWith(left: 20, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(
+                            int.parse(
+                                widget.leadStatus.elementAt(
+                                    widget.leadStatus.indexWhere((element) =>
+                                    element.id == leadStatusId)).userLabel!.color.split('#').join('0xff')
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 30),
-                      SvgPicture.asset(
-                        'assets/icons_svg/menu_icon.svg',
-                        height: 20,
-                      ),
-                    ],
-                  ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.leadStatus.elementAt(
+                                  widget.leadStatus.indexWhere((element) =>
+                                  element.id == leadStatusId)).userLabel!.name,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 30),
+                            SvgPicture.asset(
+                              'assets/icons_svg/menu_icon.svg',
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      );
+                    }else {
+                      return Container(
+                        padding: EdgeInsets.symmetric(vertical: 5)
+                            .copyWith(left: 20, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(
+                            int.parse(
+                              widget.lead.leadStatus!.color.split('#').join('0xff'),
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.lead.leadStatus!.name,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 30),
+                            SvgPicture.asset(
+                              'assets/icons_svg/menu_icon.svg',
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
                 ),
               ),
             ],

@@ -3,16 +3,16 @@
   15 y.o
  */
 
-import 'package:icrm/core/models/project_statuses_model.dart';
+import 'package:icrm/core/models/status_model.dart';
 import 'package:icrm/core/models/user_categories_model.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
 class PortfolioModel {
   final int id;
-  final int userId;
-  final int projectStatusId;
-  final int userCategoryId;
+  final dynamic userId;
+  final dynamic projectStatusId;
+  final dynamic userCategoryId;
   final String name;
   final String description;
   final String notifyAt;
@@ -20,8 +20,8 @@ class PortfolioModel {
   final String currency;
   final String createdAt;
   final String updatedAt;
-  final UserCategoriesModel userCategory;
-  final ProjectStatusesModel projectStatus;
+  final UserCategoriesModel? userCategory;
+  final StatusModel? projectStatus;
   final bool isOwner;
 
   PortfolioModel({
@@ -43,20 +43,26 @@ class PortfolioModel {
 
 
   factory PortfolioModel.fromJson(Map<String, dynamic> json) {
+
+    UserCategoriesModel? userCategory;
+    if(json['userCategory'] != null) {
+      userCategory = UserCategoriesModel.fromJson(json['userCategory']);
+    }
+
     return PortfolioModel(
       id: json['id'],
       userId: json['user_id'],
       projectStatusId: json['project_status_id'],
       userCategoryId: json['user_category_id'],
-      name: json['name'],
-      description: json['description'],
-      notifyAt: json['notify_at'],
+      name: json['name'] ?? "",
+      description: json['description'] ?? "",
+      notifyAt: json['notify_at'] ?? "",
       price: json['price'],
-      currency: json['currency'],
+      currency: json['currency'] ?? "",
       createdAt: json['created_at'] ?? "",
       updatedAt: json['updated_at'] ?? "",
-      userCategory: UserCategoriesModel.fromJson(json['userCategory']),
-      projectStatus: ProjectStatusesModel.fromJson(json['projectStatus']),
+      userCategory: userCategory,
+      projectStatus: StatusModel.fromJson(json['label']),
       isOwner: json['is_owner'],
     );
   }

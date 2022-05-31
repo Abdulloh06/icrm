@@ -3,74 +3,14 @@
   15 y.o
  */
 
+import 'package:icrm/core/models/notes_model.dart';
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
-import 'package:icrm/widgets/projects.dart';
+import 'package:icrm/features/presentation/pages/drawer/create_note/create_note.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-class PhoneCallsCard extends StatelessWidget {
-  const PhoneCallsCard({
-    Key? key,
-    required this.people,
-    required this.title,
-    required this.date,
-  }) : super(key: key);
-
-  final List people;
-  final String title;
-  final String date;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: UserToken.isDark ? AppColors.cardColorDark : Colors.white,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Projects(title: people[0]),
-              const SizedBox(width: 6),
-              Projects(title: people[1]),
-              const Spacer(),
-              SvgPicture.asset('assets/icons_svg/menu_icon.svg', color: UserToken.isDark ? AppColors.greyLight : Colors.black, height: 20),
-            ],
-          ),
-          Row(
-            children: [
-              IconButton(
-                icon: Icon(Icons.play_circle_outlined),
-                onPressed: () {},
-                iconSize: 50,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: AppTextStyles.mainGrey.copyWith(fontSize: 12),),
-                    const SizedBox(height: 10,),
-                    LinearProgressIndicator(
-                      value: 0.6,
-                      color: AppColors.mainColor,
-                      backgroundColor: AppColors.greyLight,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class NotesCard extends StatelessWidget {
   const NotesCard({
@@ -78,15 +18,15 @@ class NotesCard extends StatelessWidget {
     required this.title,
     required this.date,
     required this.description,
-    required this.changeTap,
     required this.deleteTap,
     required this.shareTap,
+    required this.note,
   }) : super(key: key);
 
   final String title;
   final String description;
   final String date;
-  final VoidCallback changeTap;
+  final NotesModel note;
   final VoidCallback deleteTap;
   final VoidCallback shareTap;
 
@@ -107,18 +47,37 @@ class NotesCard extends StatelessWidget {
               Theme(
                 data: ThemeData(splashColor: Colors.transparent),
                 child: SizedBox(
-                  height: 13,
+                  height: 20,
                   width: 10,
                   child: PopupMenuButton(
+                    onSelected: (index) {
+                      if(index == 1) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return CreateNote(
+                            isSubNote: true,
+                            title: note.title,
+                            id: note.id,
+                            description: note.content,
+                          );
+                        }));
+                      }
+                    },
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)
                     ),
                     itemBuilder: (context) {
                       return [
-                        popupItem(
-                          icon: 'assets/icons_svg/change.svg',
-                          title: 'change',
-                          onTap: changeTap,
+                        PopupMenuItem(
+                          height: 30,
+                          value: 1,
+                          padding: const EdgeInsets.all(0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SvgPicture.asset('assets/icons_svg/change.svg', height: 16,),
+                              LocaleText('change', style: TextStyle(fontSize: 10),),
+                            ],
+                          ),
                         ),
                         popupItem(
                           icon: 'assets/icons_svg/delete.svg',
@@ -136,7 +95,7 @@ class NotesCard extends StatelessWidget {
                     icon: SvgPicture.asset(
                       'assets/icons_svg/menu_icon.svg',
                       color: UserToken.isDark ? AppColors.greyLight : Colors.black,
-                      height: 13,
+                      height: 16,
                     ),
                   ),
                 ),
@@ -158,16 +117,20 @@ class NotesCard extends StatelessWidget {
   }
 }
 
-PopupMenuItem popupItem({required String icon, required String title, required VoidCallback onTap}) {
+PopupMenuItem popupItem({
+  required String icon,
+  required String title,
+  required VoidCallback onTap,
+}) {
   return PopupMenuItem(
     onTap: onTap,
-    height: 20,
+    height: 30,
     padding: const EdgeInsets.all(0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SvgPicture.asset(icon, height: 12,),
-        LocaleText(title, style: TextStyle(fontSize: 8),),
+        SvgPicture.asset(icon, height: 16,),
+        LocaleText(title, style: TextStyle(fontSize: 10),),
       ],
     ),
   );

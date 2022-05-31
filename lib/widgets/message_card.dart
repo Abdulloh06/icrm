@@ -18,10 +18,12 @@ class MessageCard extends StatelessWidget {
     required this.id,
     required this.date,
     required this.message,
+    required this.userPhoto,
   }) : super(key: key);
 
   final String message;
   final String name;
+  final String userPhoto;
   final String job;
   final int id;
   final dynamic parent_id;
@@ -46,7 +48,7 @@ class MessageCard extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     child: ClipOval(
                       child: CachedNetworkImage(
-                        imageUrl: UserToken.userPhoto,
+                        imageUrl: userPhoto,
                         errorWidget: (context, error, stack) {
                           return Image.asset('assets/png/no_user.png');
                         },

@@ -1,3 +1,4 @@
+import 'package:icrm/core/models/contacts_model.dart';
 import 'package:icrm/core/models/team_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -55,6 +56,17 @@ class HelperLeadContactState extends HelperState {
     required this.id,
     required this.name,
   });
+}
+
+class HelperCompanyContactState extends HelperState {
+  final ContactModel contact;
+
+  HelperCompanyContactState({
+    required this.contact,
+  });
+
+  @override
+  List<Object> get props => [contact];
 }
 
 class HelperLoadingState extends HelperState {}

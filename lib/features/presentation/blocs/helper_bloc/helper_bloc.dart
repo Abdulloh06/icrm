@@ -1,3 +1,5 @@
+
+
 import 'package:icrm/features/presentation/blocs/helper_bloc/helper_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -100,6 +102,8 @@ class HelperBloc extends Bloc<HelperEvent, HelperState> {
       }
 
     });
+
+    on<HelperCompanyContactEvent>((event, emit) async => emit(HelperCompanyContactState(contact: event.contact)));
 
   }
 

@@ -4,14 +4,15 @@
  */
 
 
-import 'package:icrm/core/models/project_statuses_model.dart';
 import 'package:icrm/core/models/projects_model.dart';
-import 'package:icrm/core/service/api/get_project_statuses.dart';
 import 'package:icrm/core/service/api/get_projects.dart';
+import 'package:icrm/core/service/api/get_status.dart';
 import 'package:icrm/core/util/get_it.dart';
 import 'package:icrm/features/presentation/blocs/projects_bloc/projects_event.dart';
 import 'package:icrm/features/presentation/blocs/projects_bloc/projects_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../core/models/status_model.dart';
 
 class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
   ProjectsBloc(ProjectsState initialState) : super(initialState) {
@@ -19,26 +20,6 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     on<ProjectsNextPageEvent>((event, emit) => _getProjectsNextPage(event: event, emit: emit, list: event.list));
     on<ProjectsAddEvent>((event, emit) => _addProject(event: event, emit: emit));
     on<ProjectsUpdateEvent>((event, emit) => _updateProject(event: event, emit: emit));
-
-    on<ProjectsShowEvent>((event, emit) async {
-      emit(ProjectsLoadingState());
-
-      try {
-        ProjectsModel project =
-            await getIt.get<GetProjects>().showProject(id: event.id);
-
-        List<ProjectStatusesModel> projectStatuses = await getIt.get<GetProjectStatuses>().getProjectStatuses();
-
-        emit(ProjectsShowState(
-          project: project,
-          projectsStatuses: projectStatuses,
-        ));
-      } catch (error) {
-        print(error);
-
-        emit(ProjectsErrorState(error: error.toString()));
-      }
-    });
 
     on<ProjectsNameEvent>((event, emit) {
       try {
@@ -91,7 +72,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
         if(result) {
 
           final List<ProjectsModel> projects = await getIt.get<GetProjects>().getProjects(page: 1);
-          final List<ProjectStatusesModel> projectStatus = await getIt.get<GetProjectStatuses>().getProjectStatuses();
+          final List<StatusModel> projectStatus = await getIt.get<GetStatus>().getStatus(type: 'project');
 
           emit(ProjectsInitState(
             projects: projects,
@@ -118,8 +99,13 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     emit(ProjectsLoadingState());
 
     try {
-      final List<ProjectsModel> projects = await getIt.get<GetProjects>().getProjects(page: 1);
-      final List<ProjectStatusesModel> projectStatus = await getIt.get<GetProjectStatuses>().getProjectStatuses();
+
+      ProjectsNextPageEvent.page = 1;
+      ProjectsNextPageEvent.hasReachedMax = false;
+      final List<ProjectsModel> projects = await getIt.get<GetProjects>().getProjects(
+        page: 1,
+      );
+      final List<StatusModel> projectStatus = await getIt.get<GetStatus>().getStatus(type: 'project');
 
       emit(ProjectsInitState(
         projects: projects,
@@ -139,7 +125,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     try {
       ProjectsNextPageEvent.page += 1;
       final List<ProjectsModel> projects = await getIt.get<GetProjects>().getProjects(page: ProjectsNextPageEvent.page);
-      final List<ProjectStatusesModel> projectStatus = await getIt.get<GetProjectStatuses>().getProjectStatuses();
+      final List<StatusModel> projectStatus = await getIt.get<GetStatus>().getStatus(type: 'project');
 
       if(projects.isNotEmpty) {
         print("NOT EMPTY");
@@ -210,7 +196,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
 
       if(result) {
         final List<ProjectsModel> projects = await getIt.get<GetProjects>().getProjects(page: 1);
-        final List<ProjectStatusesModel> projectStatus = await getIt.get<GetProjectStatuses>().getProjectStatuses();
+        final List<StatusModel> projectStatus = await getIt.get<GetStatus>().getStatus(type: 'project');
 
         emit(ProjectsInitState(
           projects: projects,

@@ -4,11 +4,15 @@
  */
 
 import 'package:icrm/core/repository/user_token.dart';
+import 'package:icrm/features/presentation/blocs/company_bloc/company_bloc.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_bloc.dart';
+import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_event.dart';
 import 'package:icrm/features/presentation/pages/add_project/local_pages/add_leads_page.dart';
 import 'package:icrm/features/presentation/pages/add_project/local_pages/add_projects_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:icrm/core/util/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class AddProject extends StatefulWidget {
@@ -29,9 +33,11 @@ class _AddProjectState extends State<AddProject> with TickerProviderStateMixin{
     super.initState();
     controller = TabController(length: 2, vsync: this);
 
-    if(widget.page == 1) {
+    if(widget.page == 0) {
       controller.animateTo(1);
     }
+    context.read<ContactsBloc>().add(ContactsInitEvent());
+    context.read<CompanyBloc>().add(CompanyInitEvent());
   }
 
   @override
@@ -70,10 +76,10 @@ class _AddProjectState extends State<AddProject> with TickerProviderStateMixin{
                       ),
                       tabs: [
                         Tab(
-                          text: Locales.string(context, 'led'),
+                          text: Locales.string(context, 'project'),
                         ),
                         Tab(
-                          text: Locales.string(context, 'project'),
+                          text: Locales.string(context, 'lead'),
                         ),
                       ],
                     ),
@@ -87,8 +93,8 @@ class _AddProjectState extends State<AddProject> with TickerProviderStateMixin{
             child: TabBarView(
               controller: controller,
               children: [
-                Leads(),
                 Projects(),
+                Leads(),
               ],
             ),
           )),

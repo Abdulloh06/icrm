@@ -19,7 +19,7 @@ class ProfileMainCategories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 3.3,
+      height: 245,
       child: GridView.count(
         crossAxisSpacing: 15,
         mainAxisSpacing: 15,

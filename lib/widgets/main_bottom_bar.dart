@@ -18,9 +18,13 @@ class MainBottomBar extends StatelessWidget {
   const MainBottomBar({
     Key? key,
     this.isMain = true,
+    this.fromTask = false,
+    this.fromLead = false,
   }) : super(key: key);
 
   final bool isMain;
+  final bool fromLead;
+  final bool fromTask;
 
   @override
   Widget build(BuildContext context) {
@@ -36,37 +40,35 @@ class MainBottomBar extends StatelessWidget {
               if(isMain) {
                 if(index != 2) {
                   context.read<BottomBarCubit>().changePage(index);
-
                 } else if(index == 2 && value == 3) {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => CreateTask()));
                 } else {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => AddProject(page: value)));
                 }
               }else {
+                if(fromTask) {
+                  context.read<TasksBloc>().add(TasksInitEvent());
+                }
+                if(fromLead) {
+                  context.read<HomeBloc>().add(HomeInitEvent());
+                }
                 if(index != 2) {
                   Navigator.pop(context);
-                  if(index != 0) {
-                    context.read<BottomBarCubit>().changePage(index);
-                    context.read<HomeBloc>().add(HomeInitEvent());
-                  }
-                  if(index != 3) {
-                    context.read<BottomBarCubit>().changePage(index);
-                    context.read<TasksBloc>().add(TasksInitEvent());
-                  }
+                  context.read<BottomBarCubit>().changePage(index);
                 } else if(index == 2 && value == 3) {
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CreateTask()));
                 } else {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddProject(page: index)));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AddProject(page: index)));
                 }
               }
             },
             type: BottomNavigationBarType.fixed,
             items: [
-              item('assets/icons_svg/home.svg', 'assets/icons_svg/home_active.svg'),
-              item('assets/icons_svg/projects.svg', 'assets/icons_svg/projects_active.svg'),
-              item('assets/icons_svg/add_icon.svg', ''),
-              item('assets/icons_svg/tasks.svg', 'assets/icons_svg/tasks_active.svg'),
-              item('assets/icons_svg/profile.svg', 'assets/icons_svg/profile_active.svg'),
+              item('home'),
+              item('projects'),
+              item('add_icon'),
+              item('tasks'),
+              item('profile'),
             ],
           ),
         );
@@ -75,10 +77,10 @@ class MainBottomBar extends StatelessWidget {
   }
 }
 
-BottomNavigationBarItem item(String icon, activeIcon) {
+BottomNavigationBarItem item(String icon) {
   return BottomNavigationBarItem(
-    icon: SvgPicture.asset(icon),
-    activeIcon: SvgPicture.asset(activeIcon),
+    icon: SvgPicture.asset("assets/icons_svg/" + icon + ".svg"),
+    activeIcon: SvgPicture.asset("assets/icons_svg/" + icon + "_active.svg"),
     label: '',
   );
 }

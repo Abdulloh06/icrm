@@ -18,6 +18,7 @@ import 'package:icrm/features/presentation/blocs/projects_bloc/projects_state.da
 import 'package:icrm/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
 import 'package:icrm/features/presentation/pages/add_project/components/add_members.dart';
 import 'package:icrm/features/presentation/pages/add_project/components/reminder_calendar.dart';
+import 'package:icrm/features/presentation/pages/profile/pages/my_task_page.dart';
 import 'package:icrm/features/presentation/pages/widgets/double_buttons.dart';
 import 'package:icrm/widgets/custom_text_field.dart';
 import 'package:icrm/widgets/loading.dart';
@@ -27,7 +28,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import '../../add_succes_pages/add_task_page.dart';
+import '../../../../../core/models/status_model.dart';
+import '../../../blocs/cubits/bottom_bar_cubit.dart';
+import '../../main/main_page.dart';
 import '../components/priority.dart';
 
 class CreateTask extends StatefulWidget {
@@ -59,15 +62,15 @@ class _CreateTaskState extends State<CreateTask> {
 
   final _formKey = GlobalKey<FormState>();
 
-  static String statusText = '';
-  static String priorityText = '';
+  String statusText = '';
+  String priorityText = '';
 
-  static int? status;
-  static int priority = 9;
-  static int? project;
-  static String start_date = '';
-  static String deadline = '';
-  static List<TeamModel> members = [];
+  int? status;
+  int priority = 9;
+  int? project;
+  String start_date = '';
+  String deadline = '';
+  List<TeamModel> members = [];
   List<TeamModel> projectMembers = [];
   String taskType = '';
   int? taskId;
@@ -98,6 +101,9 @@ class _CreateTaskState extends State<CreateTask> {
 
   @override
   Widget build(BuildContext context) {
+    if(priority == 9) {
+      priorityText = Locales.string(context, "normal");
+    }
     if (widget.fromEdit) {
       switch (widget.task!.priority) {
         case 1:
@@ -135,19 +141,22 @@ class _CreateTaskState extends State<CreateTask> {
               ),
             );
           }
-
           if (state is TasksAddState) {
             if(widget.task_type == 'lead') {
               Navigator.pop(context);
+              context.read<HomeBloc>().add(HomeInitEvent());
+              context.read<TasksBloc>().add(TasksInitEvent());
             }else {
               if (state.task.parentId == null) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddTaskPage(id: state.task.id),
-                  ),
-                );
+                if(project != null) {
+                  context.read<BottomBarCubit>().changePage(3);
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainPage()), (route) => false);
+                }else {
+                  context.read<TasksBloc>().add(TasksInitEvent());
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyTasks()));
+                }
               } else {
+                context.read<TasksBloc>().add(TasksInitEvent());
                 Navigator.pop(context);
               }
             }
@@ -156,192 +165,327 @@ class _CreateTaskState extends State<CreateTask> {
           if (state is TasksLoadingState) {
             return Loading();
           } else {
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    LocaleText(
-                      'new_tasks',
-                      style: AppTextStyles.headerTask,
-                    ),
-                    const SizedBox(height: 29),
-                    BlocConsumer<HelperBloc, HelperState>(
-                      listener: (context, state) {
-                        if (state is HelperTaskMemberState) {
-                          members.add(state.team);
-                          context.read<HelperBloc>().add(HelperInitEvent());
-                        }
-                        if (state is HelperTaskDateState) {
-                          start_date = state.start_date;
-                          deadline = state.deadline;
+            return ScrollConfiguration(
+              behavior: const ScrollBehavior().copyWith(overscroll: false),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      LocaleText(
+                        'new_tasks',
+                        style: AppTextStyles.headerTask,
+                      ),
+                      const SizedBox(height: 29),
+                      BlocConsumer<HelperBloc, HelperState>(
+                        listener: (context, state) {
+                          if (state is HelperTaskMemberState) {
+                            if(!members.any((element) => element.id == state.team.id)) {
+                              members.add(state.team);
+                            }
+                            context.read<HelperBloc>().add(HelperInitEvent());
+                          }
+                          if (state is HelperTaskDateState) {
+                            start_date = state.start_date;
+                            deadline = state.deadline;
 
-                          _calendarController.text =
-                              start_date + " - " + deadline;
-                        }
-                      },
-                      builder: (context, help) {
-                        return Form(
-                          key: _formKey,
-                            child: Column(
-                          children: [
-                            CustomTextField(
-                              color: UserToken.isDark
-                                  ? AppColors.textFieldColorDark
-                                  : Colors.white,
-                              isFilled: true,
-                              hint: 'task_name',
-                              controller: _nameController,
-                              validator: (value) => value!.isEmpty
-                                  ? Locales.string(
-                                      context, 'must_fill_this_line')
-                                  : null,
-                              onChanged: (value) {},
-                              onTap: () {},
-                            ),
-                            SizedBox(height: 15),
-                            Visibility(
-                              visible: !widget.fromEdit && widget.fromTask,
+                            _calendarController.text =
+                                start_date + " - " + deadline;
+                            context.read<HelperBloc>().add(HelperInitEvent());
+                          }
+                        },
+                        builder: (context, help) {
+                          return Form(
+                            key: _formKey,
                               child: Column(
-                                children: [
-                                  BlocBuilder<ProjectsBloc, ProjectsState>(
-                                      builder: (context, state) {
-                                        if(state is ProjectsInitState) {
+                            children: [
+                              CustomTextField(
+                                color: UserToken.isDark
+                                    ? AppColors.textFieldColorDark
+                                    : Colors.white,
+                                isFilled: true,
+                                hint: 'task_name',
+                                controller: _nameController,
+                                validator: (value) => value!.isEmpty
+                                    ? Locales.string(
+                                        context, 'must_fill_this_line')
+                                    : null,
+                                onChanged: (value) {},
+                                onTap: () {},
+                              ),
+                              SizedBox(height: 15),
+                              Visibility(
+                                visible: !widget.fromEdit && widget.fromTask,
+                                child: Column(
+                                  children: [
+                                    BlocBuilder<ProjectsBloc, ProjectsState>(
+                                        builder: (context, state) {
+                                          if(state is ProjectsInitState) {
 
-                                          return SizedBox(
-                                            height: 31,
-                                            child: ScrollConfiguration(
-                                              behavior: const ScrollBehavior().copyWith(overscroll: false),
-                                              child: ListView.builder(
-                                                itemCount: state.projects.length,
-                                                itemBuilder: (context, index) {
-                                                  return InkWell(
-                                                    borderRadius: BorderRadius.circular(15),
-                                                    onTap: () {
-                                                      setState(() {
-                                                        project = state.projects[index].id;
-                                                        taskId = project;
-                                                        taskType = 'project';
-                                                        projectMembers = state.projects[index].members ?? [];
-                                                      });
-                                                    },
-                                                    child: Container(
-                                                      margin: EdgeInsets.symmetric(horizontal: 4),
-                                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(15),
-                                                        border: Border.all(color: project == state.projects[index].id ? AppColors.mainColor : Color(0xffF5F6FB)),
-                                                        color: project == state.projects[index].id ? AppColors.mainColor : Colors.white,
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          state.projects[index].name,
-                                                          style: TextStyle(
-                                                            color: project == state.projects[index].id ? Colors.white : Color(0xff737989),
+                                            return SizedBox(
+                                              height: 31,
+                                              child: ScrollConfiguration(
+                                                behavior: const ScrollBehavior().copyWith(overscroll: false),
+                                                child: ListView.builder(
+                                                  itemCount: state.projects.length,
+                                                  itemBuilder: (context, index) {
+                                                    return InkWell(
+                                                      borderRadius: BorderRadius.circular(15),
+                                                      onTap: () {
+                                                        setState(() {
+                                                          project = state.projects[index].id;
+                                                          taskId = state.projects[index].id;
+                                                          taskType = 'project';
+                                                          projectMembers = state.projects[index].members ?? [];
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        margin: EdgeInsets.symmetric(horizontal: 4),
+                                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(15),
+                                                          border: Border.all(color: project == state.projects[index].id ? AppColors.mainColor : Color(0xffF5F6FB)),
+                                                          color: project == state.projects[index].id ? AppColors.mainColor : Colors.white,
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            state.projects[index].name,
+                                                            style: TextStyle(
+                                                              color: project == state.projects[index].id ? Colors.white : Color(0xff737989),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
-                                                scrollDirection: Axis.horizontal,
+                                                    );
+                                                  },
+                                                  scrollDirection: Axis.horizontal,
+                                                ),
+                                              ),
+                                            );
+                                          }else {
+                                            return SizedBox.shrink();
+                                          }
+                                        }
+                                    ),
+                                    SizedBox(height: 15),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 55,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: CustomTextField(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AddMembers(
+                                                id: 3,
+                                                members: projectMembers,
+                                              );
+                                            },
+                                          );
+                                        },
+                                        validator: (value) => null,
+                                        controller: TextEditingController(),
+                                        suffixIcon: 'assets/icons_svg/add.svg',
+                                        onChanged: (value) {},
+                                        hint: 'appoint',
+                                        readOnly: true,
+                                        isFilled: true,
+                                        color: UserToken.isDark
+                                            ? AppColors.textFieldColorDark
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: members.length,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onLongPress: () {
+                                              members.removeAt(index);
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                              width: 55,
+                                              child: ClipOval(
+                                                child: CachedNetworkImage(
+                                                  imageUrl: members[index].social_avatar,
+                                                  fit: BoxFit.fill,
+                                                  errorWidget: (context, error, bt) {
+                                                    return Image.asset(
+                                                      'assets/png/no_user.png',
+                                                      fit: BoxFit.fill,
+                                                    );
+                                                  },
+                                                ),
                                               ),
                                             ),
                                           );
-                                        }else {
-                                          return SizedBox.shrink();
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              CustomTextField(
+                                color: UserToken.isDark
+                                    ? AppColors.textFieldColorDark
+                                    : Colors.white,
+                                isFilled: true,
+                                iconMargin: 13,
+                                suffixIcon: UserToken.isDark
+                                    ? 'assets/icons_svg/calDark.svg'
+                                    : 'assets/icons_svg/cal.svg',
+                                readOnly: true,
+                                hint: 'timing',
+                                validator: (value) => null,
+                                onChanged: (value) {},
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => ReminderCalendar(
+                                      id: 3,
+                                    ),
+                                  );
+                                },
+                                controller: _calendarController,
+                              ),
+                              const SizedBox(height: 15),
+                              BlocBuilder<TasksBloc, TasksState>(
+                                  builder: (context, state) {
+                                    if(state is TasksInitState) {
+                                      if(state.tasksStatuses.isNotEmpty && status == null) {
+                                        List<StatusModel> visibleStatuses = state.tasksStatuses.where((element) => element.userLabel != null).toList();
+                                        if(visibleStatuses.isNotEmpty) {
+                                          status = visibleStatuses.first.id;
+                                          statusText = visibleStatuses.first.userLabel!.name;
                                         }
                                       }
+                                    }
+                                return PopupMenuButton(
+                                  offset: Offset(
+                                    MediaQuery.of(context).size.width / 2,
+                                    0,
                                   ),
-                                  SizedBox(height: 15),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 55,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: CustomTextField(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AddMembers(
-                                              id: 3,
-                                              members: projectMembers,
-                                            );
-                                          },
-                                        );
-                                      },
-                                      validator: (value) => null,
-                                      controller: TextEditingController(),
-                                      suffixIcon: 'assets/icons_svg/add.svg',
-                                      onChanged: (value) {},
-                                      hint: 'appoint',
-                                      readOnly: true,
-                                      isFilled: true,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  elevation: 0,
+                                  color: Colors.transparent,
+                                  itemBuilder: (BuildContext context) {
+                                    if (state is TasksInitState &&
+                                        state.tasksStatuses.isNotEmpty) {
+                                      List<StatusModel> visibleStatuses = state.tasksStatuses.where((element) => element.userLabel != null).toList();
+                                      return List.generate(
+                                        visibleStatuses.length,
+                                        (index) {
+                                          String title = visibleStatuses[index].userLabel!.name;
+                                          String color = visibleStatuses[index].userLabel!.color;
+                                          return PopupMenuItem(
+                                            onTap: () {
+                                              setState(() {
+                                                status = visibleStatuses[index].id;
+                                                statusText = title;
+                                              });
+                                            },
+                                            padding:
+                                                const EdgeInsets.only(right: 10),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Color(int.parse(color.split('#').join('0xff')),
+                                                ),
+                                              ),
+                                              alignment: Alignment.center,
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 8,
+                                              ),
+                                              child: Text(
+                                                title,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      return [
+                                        PopupMenuItem(
+                                          child: LocaleText('empty'),
+                                        ),
+                                      ];
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 48,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
                                       color: UserToken.isDark
                                           ? AppColors.textFieldColorDark
                                           : Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: AppColors.greyLight,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: members.length,
-                                      itemBuilder: (context, index) {
-                                        return CachedNetworkImage(
-                                          imageUrl:
-                                              members[index].social_avatar,
-                                          errorWidget: (context, error, bt) {
-                                            return CircleAvatar(
-                                              backgroundImage: AssetImage(
-                                                  'assets/png/no_user.png'),
-                                            );
-                                          },
-                                        );
-                                      },
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          statusText == '' ? Locales.string(context, 'status') : statusText,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: statusText == '' ? Colors.grey : UserToken.isDark ? Colors.white : Colors.black,
+                                          ),
+                                        ),
+                                        SvgPicture.asset(
+                                          'assets/icons_svg/plus.svg',
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 15),
-                            CustomTextField(
-                              color: UserToken.isDark
-                                  ? AppColors.textFieldColorDark
-                                  : Colors.white,
-                              isFilled: true,
-                              iconMargin: 13,
-                              suffixIcon: UserToken.isDark
-                                  ? 'assets/icons_svg/calDark.svg'
-                                  : 'assets/icons_svg/cal.svg',
-                              readOnly: true,
-                              hint: 'timing',
-                              validator: (value) => null,
-                              onChanged: (value) {},
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) => ReminderCalendar(
-                                    id: 3,
                                   ),
                                 );
-                              },
-                              controller: _calendarController,
-                            ),
-                            const SizedBox(height: 15),
-                            BlocBuilder<TasksBloc, TasksState>(
-                                builder: (context, state) {
-                                  if(state is TasksInitState) {
-                                    if(state.tasksStatuses.isNotEmpty) {
-                                      status = state.tasksStatuses.first.id;
+                              }),
+                              const SizedBox(height: 15),
+                              PopupMenuButton<int>(
+                                onSelected: (index) {
+                                  setState(() {
+                                    priority = index;
+                                    switch (index) {
+                                      case 1:
+                                        priorityText =
+                                            Locales.string(context, 'urgent');
+                                        break;
+                                      case 2:
+                                        priorityText =
+                                            Locales.string(context, 'important');
+                                        break;
+                                      case 9:
+                                        priorityText =
+                                            Locales.string(context, 'normal');
+                                        break;
+                                      case 10:
+                                        priorityText =
+                                            Locales.string(context, 'low');
+                                        break;
                                     }
-                                  }
-                              return PopupMenuButton(
+                                  });
+                                },
                                 offset: Offset(
                                   MediaQuery.of(context).size.width / 2,
                                   0,
@@ -352,88 +496,45 @@ class _CreateTaskState extends State<CreateTask> {
                                 elevation: 0,
                                 color: Colors.transparent,
                                 itemBuilder: (BuildContext context) {
-                                  if (state is TasksInitState &&
-                                      state.tasksStatuses.isNotEmpty) {
-                                    return List.generate(
-                                      state.tasksStatuses.length,
-                                      (index) {
-                                        return PopupMenuItem(
-                                          onTap: () {
-                                            setState(() {
-                                              status =
-                                                  state.tasksStatuses[index].id;
-                                              statusText = state
-                                                  .tasksStatuses[index].name;
-                                            });
-                                          },
-                                          padding:
-                                              const EdgeInsets.only(right: 10),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Color(int.parse(state
-                                                  .tasksStatuses[index].color
-                                                  .split('#')
-                                                  .join('0xff'))),
-                                            ),
-                                            alignment: Alignment.center,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 8),
-                                            child: Text(
-                                              state.tasksStatuses[index].name,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  } else if (state is TasksShowState) {
-                                    return List.generate(
-                                      state.taskStatuses.length,
-                                      (index) {
-                                        return PopupMenuItem(
-                                          onTap: () {
-                                            setState(() {
-                                              status =
-                                                  state.taskStatuses[index].id;
-                                              statusText = state
-                                                  .taskStatuses[index].name;
-                                            });
-                                          },
-                                          padding:
-                                              const EdgeInsets.only(right: 10),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Color(int.parse(state
-                                                  .taskStatuses[index].color
-                                                  .split('#')
-                                                  .join('0xff'))),
-                                            ),
-                                            alignment: Alignment.center,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 8),
-                                            child: Text(
-                                              state.taskStatuses[index].name,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    return [
-                                      PopupMenuItem(
-                                        child: LocaleText('empty'),
+                                  return [
+                                    PopupMenuItem(
+                                      value: 1,
+                                      height: 40,
+                                      child: Priority(
+                                        text: 'urgent',
+                                        textColor: AppColors.red,
+                                        backgroundColor: AppColors.redLight,
                                       ),
-                                    ];
-                                  }
+                                    ),
+                                    PopupMenuItem(
+                                      value: 2,
+                                      height: 40,
+                                      child: Priority(
+                                        text: 'important',
+                                        textColor: AppColors.mainColor,
+                                        backgroundColor: Color(0xfffDFDAF4),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      value: 9,
+                                      height: 40,
+                                      child: Priority(
+                                        text: 'normal',
+                                        textColor: AppColors.green,
+                                        backgroundColor: AppColors.greenLight,
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      height: 40,
+                                      value: 10,
+                                      child: Priority(
+                                        text: 'low',
+                                        textColor: AppColors.greyDark,
+                                        backgroundColor:
+                                            AppColors.greyDark.withOpacity(0.1),
+                                      ),
+                                    ),
+                                  ];
                                 },
                                 child: Container(
                                   height: 48,
@@ -448,17 +549,16 @@ class _CreateTaskState extends State<CreateTask> {
                                       color: AppColors.greyLight,
                                     ),
                                   ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        statusText == '' ? Locales.string(context, 'status') : statusText,
-                                        style: const TextStyle(
+                                        priorityText == '' ? Locales.string(context, 'priority') : priorityText,
+                                        style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.grey,
+                                          color: priorityText == '' ? Colors.grey : UserToken.isDark ? Colors.white : Colors.black,
                                         ),
                                       ),
                                       SvgPicture.asset(
@@ -466,181 +566,78 @@ class _CreateTaskState extends State<CreateTask> {
                                     ],
                                   ),
                                 ),
-                              );
-                            }),
-                            const SizedBox(height: 15),
-                            PopupMenuButton<int>(
-                              onSelected: (index) {
-                                setState(() {
-                                  priority = index;
-                                  switch (index) {
-                                    case 1:
-                                      priorityText =
-                                          Locales.string(context, 'urgent');
-                                      break;
-                                    case 2:
-                                      priorityText =
-                                          Locales.string(context, 'important');
-                                      break;
-                                    case 9:
-                                      priorityText =
-                                          Locales.string(context, 'normal');
-                                      break;
-                                    case 10:
-                                      priorityText =
-                                          Locales.string(context, 'low');
-                                      break;
-                                  }
-                                });
-                              },
-                              offset: Offset(
-                                MediaQuery.of(context).size.width / 2,
-                                0,
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                              const SizedBox(height: 15),
+                              CustomTextField(
+                                color: UserToken.isDark
+                                    ? AppColors.textFieldColorDark
+                                    : Colors.white,
+                                isFilled: true,
+                                controller: _descriptionController,
+                                hint: 'description',
+                                maxLines: 4,
+                                validator: (value) => null,
+                                onChanged: (value) {},
                               ),
-                              elevation: 0,
-                              color: Colors.transparent,
-                              itemBuilder: (BuildContext context) {
-                                return [
-                                  PopupMenuItem(
-                                    value: 1,
-                                    height: 30,
-                                    child: Priority(
-                                      text: 'urgent',
-                                      textColor: AppColors.red,
-                                      backgroundColor: AppColors.redLight,
-                                    ),
-                                  ),
-                                  PopupMenuItem(
-                                    value: 2,
-                                    height: 30,
-                                    child: Priority(
-                                      text: 'important',
-                                      textColor: AppColors.mainColor,
-                                      backgroundColor: Color(0xfffDFDAF4),
-                                    ),
-                                  ),
-                                  PopupMenuItem(
-                                    value: 9,
-                                    height: 30,
-                                    child: Priority(
-                                      text: 'normal',
-                                      textColor: AppColors.green,
-                                      backgroundColor: AppColors.greenLight,
-                                    ),
-                                  ),
-                                  PopupMenuItem(
-                                    height: 30,
-                                    value: 10,
-                                    child: Priority(
-                                      text: 'low',
-                                      textColor: AppColors.greyDark,
-                                      backgroundColor:
-                                          AppColors.greyDark.withOpacity(0.1),
-                                    ),
-                                  ),
-                                ];
-                              },
-                              child: Container(
-                                height: 48,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: UserToken.isDark
-                                      ? AppColors.textFieldColorDark
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    width: 1,
-                                    color: AppColors.greyLight,
-                                  ),
-                                ),
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      priorityText == '' ? Locales.string(context, 'priority') : priorityText,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    SvgPicture.asset(
-                                        'assets/icons_svg/plus.svg'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 15),
-                            CustomTextField(
-                              color: UserToken.isDark
-                                  ? AppColors.textFieldColorDark
-                                  : Colors.white,
-                              isFilled: true,
-                              controller: _descriptionController,
-                              hint: 'description',
-                              maxLines: 4,
-                              validator: (value) => null,
-                              onChanged: (value) {},
-                            ),
-                          ],
-                        ));
-                      },
-                    ),
-                    const SizedBox(height: 80),
-                    DoubleButtons(
-                      onCancel: () {
-                        Navigator.pop(context);
-                      },
-                      onSave: () {
-                        if(_formKey.currentState!.validate()) {
-                          List<int> users = [];
-                          for (int i = 0; i < members.length; i++) {
-                            users.add(members[i].id);
-                          }
-
-                          if (widget.fromEdit) {
-                            context.read<TasksBloc>().add(TasksUpdateEvent(
-                              id: widget.task!.id,
-                              parent_id: widget.task!.parentId,
-                              priority: priority,
-                              status: status!,
-                              start_date: start_date.toString(),
-                              deadline: deadline.toString(),
-                              name: _nameController.text,
-                              description: _descriptionController.text,
-                              taskType: widget.task!.taskType,
-                              taskId: widget.task!.taskId,
-                            ));
-                            Navigator.pop(context);
-                          } else {
-                            context.read<TasksBloc>().add(
-                              TasksAddEvent(
-                                parent_id: widget.parent_id,
+                            ],
+                          ));
+                        },
+                      ),
+                      const SizedBox(height: 80),
+                      DoubleButtons(
+                        onCancel: () {
+                          Navigator.pop(context);
+                        },
+                        onSave: () {
+                          if(_formKey.currentState!.validate()) {
+                            List<int> users = [];
+                            for (int i = 0; i < members.length; i++) {
+                              users.add(members[i].id);
+                            }
+                            if (widget.fromEdit) {
+                              context.read<TasksBloc>().add(TasksUpdateEvent(
+                                id: widget.task!.id,
+                                parent_id: widget.task!.parentId,
                                 priority: priority,
                                 status: status!,
-                                start_date: '',
-                                deadline: deadline != '' ? DateFormat("dd.MM.yyyy")
-                                    .parse(deadline)
-                                    .toString() : deadline,
+                                start_date: start_date.toString(),
+                                deadline: deadline.toString(),
                                 name: _nameController.text,
                                 description: _descriptionController.text,
-                                taskType: taskType,
-                                taskId: taskId!,
-                                user: users,
-                              ),
-                            );
+                                taskType: widget.task!.taskType,
+                                taskId: widget.task!.taskId,
+                              ));
+                              Navigator.pop(context);
+                            } else {
+                              String endDate;
+                              try {
+                                endDate = DateFormat("dd.MM.yyyy").parse(deadline).toString();
+                              } catch(_) {
+                                endDate = deadline;
+                              }
+                              context.read<TasksBloc>().add(
+                                TasksAddEvent(
+                                  parent_id: widget.parent_id,
+                                  priority: priority,
+                                  status: status!,
+                                  start_date: '',
+                                  deadline: endDate,
+                                  name: _nameController.text,
+                                  description: _descriptionController.text,
+                                  taskType: taskType,
+                                  taskId: taskId!,
+                                  user: users,
+                                ),
+                              );
+                            }
+                            if(widget.task_type == 'lead') {
+                              context.read<HomeBloc>().add(HomeInitEvent());
+                            }
                           }
-                          if(widget.task_type == 'lead') {
-                            context.read<HomeBloc>().add(HomeInitEvent());
-                          }
-                        }
-                      },
-                    ),
-                  ],
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 
+import '../../../blocs/archive_bloc/archive_event.dart';
+
 class Archive extends StatelessWidget {
   Archive({Key? key}) : super(key: key);
 
@@ -61,11 +63,11 @@ class Archive extends StatelessWidget {
                         const SizedBox(height: 20),
                         ScrollConfiguration(
                           behavior: const ScrollBehavior().copyWith(overscroll: false),
-                          child: BlocBuilder<ArchiveBloc, ArchiveState>(
-                              builder: (context, state) {
-                                if(state is ArchiveInitState) {
-                                  return Expanded(
-                                    child: TabBarView(
+                          child: Expanded(
+                            child: BlocBuilder<ArchiveBloc, ArchiveState>(
+                                builder: (context, state) {
+                                  if(state is ArchiveInitState) {
+                                    return TabBarView(
                                       children: [
                                         ArchiveProjects(
                                           projects: state.projects,
@@ -80,12 +82,12 @@ class Archive extends StatelessWidget {
                                           search: _searchController.text,
                                         ),
                                       ],
-                                    ),
-                                  );
-                                }else {
-                                  return Loading();
+                                    );
+                                  }else {
+                                    return Loading();
+                                  }
                                 }
-                              }
+                            ),
                           ),
                         ),
                       ],

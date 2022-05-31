@@ -3,6 +3,7 @@
   15 y.o
  */
 
+import 'package:icrm/core/models/leads_model.dart';
 import 'package:icrm/core/util/text_input_format.dart';
 import 'package:icrm/features/presentation/blocs/helper_bloc/helper_bloc.dart';
 import 'package:icrm/features/presentation/blocs/helper_bloc/helper_event.dart';
@@ -19,17 +20,21 @@ import '../../../../../core/util/text_styles.dart';
 import '../../../../../widgets/custom_text_field.dart';
 import '../../../../../widgets/main_app_bar.dart';
 import '../../../../../widgets/main_button.dart';
+import '../../../blocs/home_bloc/home_bloc.dart';
+import '../../../blocs/home_bloc/home_event.dart';
 
 //ignore:must_be_immutable
 class ReminderCalendar extends StatefulWidget {
   ReminderCalendar({
     Key? key,
     required this.id,
-    this.isProject = false,
+    this.fromLead = false,
+    this.lead,
   }) : super(key: key);
 
   final int id;
-  final bool isProject;
+  final bool fromLead;
+  final LeadsModel? lead;
 
   @override
   State<ReminderCalendar> createState() => _ReminderCalendarState();
@@ -145,7 +150,10 @@ class _ReminderCalendarState extends State<ReminderCalendar> {
                             hint: 'end',
                             inputFormatters: [dateFormat],
                             keyboardType: TextInputType.datetime,
-                            validator: (value) => value!.isEmpty ? Locales.string(context, 'must_fill_this_line') : value.length < 10 ? Locales.string(context, 'enter_valid_info') : null,
+                            validator: (value) =>
+                            value!.isEmpty ? Locales.string(context, 'must_fill_this_line')
+                                : value.length < 10 ? Locales.string(context, 'enter_valid_info')
+                                : null,
                             onChanged: (value) {},
                             onEditingComplete: () {
                               FocusScope.of(context).unfocus();
@@ -280,19 +288,71 @@ class _ReminderCalendarState extends State<ReminderCalendar> {
                       MainButton(
                         borderRadius: 33,
                         onTap: () {
+                          print(_endDateController.text);
                           if(_formKey.currentState!.validate()) {
-                            if (widget.id == 1) {
-                              context.read<HelperBloc>().add(HelperLeadDateEvent(
-                                deadline: _endDateController.text,
-                                start_date: _startDateController.text,
-                              ));
-                            }else if(widget.id == 2){
-                              context.read<HelperBloc>().add(HelperProjectDateEvent(deadline: _endDateController.text, start_date: _startDateController.text));
+                            if(DateTime.now().isBefore(
+                              DateFormat("dd.MM.yyyy").parse(_endDateController.text),
+                            )) {
+                              if(!widget.fromLead) {
+                                if (widget.id == 1) {
+                                  context.read<HelperBloc>().add(HelperLeadDateEvent(
+                                    deadline: _endDateController.text + " " +_timeController.text,
+                                    start_date: _startDateController.text,
+                                  ));
+                                }else if(widget.id == 2){
+                                  context.read<HelperBloc>().add(
+                                    HelperProjectDateEvent(
+                                      deadline: _endDateController.text + " " +_timeController.text,
+                                      start_date: _startDateController.text,
+                                    ),
+                                  );
+                                }else {
+                                  context.read<HelperBloc>().add(HelperTaskDateEvent(
+                                    deadline: _endDateController.text + " " + _timeController.text,
+                                    start_date: _startDateController.text,
+                                  ));
+                                }
+                              }else {
+                                String date;
+                                try {
+                                  date = DateFormat("dd.MM.yyyy").add_H().parse(
+                                    _endDateController.text + " " +_timeController.text,
+                                  ).toString();
+                                }catch(_) {
+                                  date = DateFormat("dd.MM.yyyy").parse(
+                                    _endDateController.text + " " +_timeController.text,
+                                  ).toString();
+                                }
+                                context.read<HomeBloc>().add(
+                                  LeadsUpdateEvent(
+                                    id: widget.lead!.id,
+                                    project_id: widget.lead!.projectId,
+                                    contact_id: widget.lead!.contactId,
+                                    start_date: widget.lead!.startDate,
+                                    end_date: date,
+                                    estimated_amount: widget.lead!.estimatedAmount,
+                                    lead_status: widget.lead!.leadStatusId,
+                                    description: widget.lead!.description,
+                                    seller_id: widget.lead!.seller_id,
+                                    currency: widget.lead!.currency,
+                                  ),
+                                );
+                              }
+                              Navigator.pop(context);
                             }else {
-                              context.read<HelperBloc>().add(HelperTaskDateEvent(deadline: _endDateController.text, start_date: _startDateController.text));
-
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.all(20),
+                                  duration: Duration(seconds: 1),
+                                  backgroundColor: AppColors.mainColor,
+                                  content: LocaleText("enter_valid_date", style: AppTextStyles.mainGrey.copyWith(color: Colors.white)),
+                                ),
+                              );
                             }
-                            Navigator.pop(context);
+
                           }
                         },
                         color: AppColors.mainColor,

@@ -1,4 +1,4 @@
-package uz.eurosoft.avlolead
+package uz.madorgroup.icrm
 
 import io.flutter.embedding.android.FlutterActivity
 

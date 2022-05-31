@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:icrm/core/models/team_model.dart';
 import 'package:icrm/core/service/api/get_users.dart';
 import 'package:icrm/core/util/get_it.dart';

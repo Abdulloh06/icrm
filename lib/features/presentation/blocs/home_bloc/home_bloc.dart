@@ -1,9 +1,15 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'package:icrm/core/models/dash_board_model.dart';
 import 'package:icrm/core/models/leads_model.dart';
-import 'package:icrm/core/models/leads_status_model.dart';
+import 'package:icrm/core/models/status_model.dart';
 import 'package:icrm/core/service/api/get_dash_board.dart';
 import 'package:icrm/core/service/api/get_leads.dart';
-import 'package:icrm/core/service/api/get_leads_status.dart';
+import 'package:icrm/core/service/api/get_status.dart';
 import 'package:icrm/core/util/get_it.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_event.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_state.dart';
@@ -16,10 +22,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LeadsAddEvent>((event, emit) => _addLead(event: event, emit: emit));
     on<LeadsUpdateEvent>((event, emit) => _updateLead(event: event, emit: emit));
     on<LeadsShowEvent>((event, emit) => _showLead(event: event, emit: emit));
-    on<LeadsAddStatusEvent>((event, emit) => _addLeadStatus(event: event, emit: emit));
     on<LeadsStatusUpdateEvent>((event, emit) =>_updateLeadStatus(event: event, emit: emit));
-    on<LeadsStatusDeleteEvent>((event, emit) => _deleteLeadStatus(event: event, emit: emit));
-    on<HomeGetNextPageEvent>((event, emit) => _getNextPage(event: event, emit: emit, list: event.leads));
+    on<HomeGetNextPageEvent>((event, emit) => _getNextPage(event: event, emit: emit));
+    on<LeadStatusDeleteEvent>((event, emit) => _deleteLeadStatus(event: event, emit: emit));
   }
 
   Future<void> _init({
@@ -29,10 +34,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(HomeLoadingState());
 
     try {
+      HomeGetNextPageEvent.page = 1;
+      HomeGetNextPageEvent.hasReachedMax = false;
+
       List<LeadsModel> leads = await getIt.get<GetLeads>().getLeads(page: 1);
       List<DashBoardModel> dashboard =
       await getIt.get<GetDashBoard>().getDashBoard();
-      List<LeadsStatusModel> leadStatuses = await getIt.get<GetLeadsStatus>().getLeadsStatus();
+      List<StatusModel> leadStatuses = await getIt.get<GetStatus>().getStatus(
+        type: 'lead',
+      );
 
       emit(HomeInitState(
         leads: leads,
@@ -49,7 +59,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _getNextPage({
     required HomeGetNextPageEvent event,
     required Emitter<HomeState> emit,
-    required List<LeadsModel> list,
   }) async {
 
     try {
@@ -57,11 +66,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       HomeGetNextPageEvent.page++;
       List<LeadsModel> leads = await getIt.get<GetLeads>().getLeads(page: HomeGetNextPageEvent.page);
       List<DashBoardModel> dashboard = await getIt.get<GetDashBoard>().getDashBoard();
-      List<LeadsStatusModel> leadStatuses = await getIt.get<GetLeadsStatus>().getLeadsStatus();
+      List<StatusModel> leadStatuses = await getIt.get<GetStatus>().getStatus(
+        type: 'lead',
+      );
 
       if(leads.isNotEmpty) {
         emit(HomeInitState(
-          leads: list + leads,
+          leads: event.leads + leads,
           dashboard: dashboard,
           leadStatus: leadStatuses,
         ));
@@ -69,7 +80,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         HomeGetNextPageEvent.page--;
         HomeGetNextPageEvent.hasReachedMax = true;
         emit(HomeInitState(
-          leads: list,
+          leads: event.leads,
           dashboard: dashboard,
           leadStatus: leadStatuses,
         ));
@@ -120,7 +131,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         List<LeadsModel> leads = await getIt.get<GetLeads>().getLeads(page: 1);
         List<DashBoardModel> dashboard =
         await getIt.get<GetDashBoard>().getDashBoard();
-        List<LeadsStatusModel> leadStatuses = await getIt.get<GetLeadsStatus>().getLeadsStatus();
+        List<StatusModel> leadStatuses = await getIt.get<GetStatus>().getStatus(
+          type: 'lead',
+        );
 
         emit(HomeInitState(
           leads: leads,
@@ -156,31 +169,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         description: event.description,
       );
 
-      if (result == '') {
-        if(event.fromHome) {
-          List<LeadsModel> leads = await getIt.get<GetLeads>().getLeads(page: 1);
-          List<DashBoardModel> dashboard =
-          await getIt.get<GetDashBoard>().getDashBoard();
+      print(result);
+      List<LeadsModel> leads = await getIt.get<GetLeads>().getLeads(page: 1);
+      List<DashBoardModel> dashboard =
+      await getIt.get<GetDashBoard>().getDashBoard();
 
-          List<LeadsStatusModel> leadStatuses = await getIt.get<GetLeadsStatus>().getLeadsStatus();
+      List<StatusModel> leadStatuses = await getIt.get<GetStatus>().getStatus(
+        type: 'lead',
+      );
 
-          emit(HomeInitState(
-            leads: leads,
-            dashboard: dashboard,
-            leadStatus: leadStatuses,
-          ));
-        }else {
-          final LeadsModel lead = await getIt.get<GetLeads>().showLeads(id: event.id);
-          final List<LeadsStatusModel> leadStatuses = await getIt.get<GetLeadsStatus>().getLeadsStatus();
-
-          emit(LeadShowState(
-            lead: lead,
-            leadStatus: leadStatuses,
-          ));
-        }
-      } else {
-        emit(HomeErrorState(error: result));
-      }
+      emit(HomeInitState(
+        leads: leads,
+        dashboard: dashboard,
+        leadStatus: leadStatuses,
+      ));
     } catch (error) {
       print(error);
       emit(HomeErrorState(error: error.toString()));
@@ -196,7 +198,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
 
       final LeadsModel lead = await getIt.get<GetLeads>().showLeads(id: event.id);
-      final List<LeadsStatusModel> leadStatuses = await getIt.get<GetLeadsStatus>().getLeadsStatus();
+      final List<StatusModel> leadStatuses = await getIt.get<GetStatus>().getStatus(
+        type: 'lead',
+      );
 
       emit(LeadShowState(
         lead: lead,
@@ -204,38 +208,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       ));
 
     } catch(error) {
-      print(error);
-
-      emit(HomeErrorState(error: error.toString()));
-    }
-  }
-
-  Future<void> _addLeadStatus({
-    required LeadsAddStatusEvent event,
-    required Emitter<HomeState> emit,
-  }) async {
-    emit(HomeLoadingState());
-
-    try {
-      bool result = await getIt.get<GetLeadsStatus>().addLeadsStatus(name: event.name);
-
-      if(result) {
-        List<LeadsModel> leads = await getIt.get<GetLeads>().getLeads(page: 1);
-        List<DashBoardModel> dashboard =
-        await getIt.get<GetDashBoard>().getDashBoard();
-        List<LeadsStatusModel> leadStatuses = await getIt.get<GetLeadsStatus>().getLeadsStatus();
-
-        emit(HomeInitState(
-          leads: leads,
-          dashboard: dashboard,
-          leadStatus: leadStatuses,
-        ));
-      }else {
-        emit(HomeErrorState(error: 'something_went_wrong'));
-      }
-
-    }
-    catch(error) {
       print(error);
 
       emit(HomeErrorState(error: error.toString()));
@@ -250,19 +222,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     try {
 
-      bool result = await getIt.get<GetLeadsStatus>().updateLeadsStatus(id: event.id, name: event.name);
+      bool result = await getIt.get<GetStatus>().updateStatus(
+        id: event.id,
+        name: event.name,
+        type: 'lead',
+        color: event.color,
+      );
       if(result) {
         List<LeadsModel> leads = await getIt.get<GetLeads>().getLeads(page: 1);
         List<DashBoardModel> dashboard =
         await getIt.get<GetDashBoard>().getDashBoard();
-        List<LeadsStatusModel> leadStatuses = await getIt.get<GetLeadsStatus>().getLeadsStatus();
+        List<StatusModel> leadStatuses = await getIt.get<GetStatus>().getStatus(
+          type: 'lead',
+        );
 
         emit(HomeInitState(
           leads: leads,
           dashboard: dashboard,
           leadStatus: leadStatuses,
         ));
-      }else {
+      } else {
         emit(HomeErrorState(error: 'something_went_wrong'));
       }
 
@@ -275,27 +254,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _deleteLeadStatus({
-    required LeadsStatusDeleteEvent event,
+    required LeadStatusDeleteEvent event,
     required Emitter<HomeState> emit,
   }) async {
+
     emit(HomeLoadingState());
 
     try {
 
-      bool result = await getIt.get<GetLeadsStatus>().deleteLeadsStatus(id: event.id);
-
+      bool result = await getIt.get<GetStatus>().deleteStatus(
+        type: 'lead',
+        id: event.id,
+      );
       if(result) {
         List<LeadsModel> leads = await getIt.get<GetLeads>().getLeads(page: 1);
         List<DashBoardModel> dashboard =
         await getIt.get<GetDashBoard>().getDashBoard();
-        List<LeadsStatusModel> leadStatuses = await getIt.get<GetLeadsStatus>().getLeadsStatus();
+        List<StatusModel> leadStatuses = await getIt.get<GetStatus>().getStatus(
+          type: 'lead',
+        );
 
         emit(HomeInitState(
           leads: leads,
           dashboard: dashboard,
           leadStatus: leadStatuses,
         ));
-      }else {
+      } else {
         emit(HomeErrorState(error: 'something_went_wrong'));
       }
 
@@ -304,6 +288,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       emit(HomeErrorState(error: error.toString()));
     }
-
   }
+
 }

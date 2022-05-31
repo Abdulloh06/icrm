@@ -3,7 +3,9 @@
   15 y.o
  */
 
+import 'package:flutter/foundation.dart';
 
+@immutable
 class UserCategoriesModel {
   final int id;
   final int user_id;

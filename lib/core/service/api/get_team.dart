@@ -80,4 +80,47 @@ class GetTeam {
     }
 
   }
+
+  Future<bool> updateTeam({
+    required List<int> team,
+    required List<bool> isOften,
+  }) async {
+
+    try {
+
+      List<Map<String, dynamic>> data = [];
+
+      for(int i = 0; i < team.length; i++) {
+        data.add({
+          "user_id": team[i],
+          "is_often": isOften[i],
+        });
+      }
+
+      final response = await dio.put(
+        ApiRepository.baseUrl + "employees",
+        options: Options(
+          headers: {
+            HttpHeaders.acceptHeader: "application/json",
+            HttpHeaders.authorizationHeader: "Bearer ${UserToken.accessToken}",
+            HttpHeaders.contentTypeHeader: "application/json"
+          }
+        ),
+        data: {
+          "employees": data,
+        }
+      );
+
+      if(response.statusCode == HttpStatus.ok) {
+        return true;
+      }else {
+        return false;
+      }
+
+    } catch(e) {
+      print(e);
+      throw Exception('UNKNOWN');
+    }
+
+  }
 }

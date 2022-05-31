@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'package:equatable/equatable.dart';
 import '../../../../core/models/projects_model.dart';
 
@@ -108,14 +114,6 @@ class ProjectsNameEvent extends ProjectsEvent {
   List<Object?> get props => [contact_id, name];
 }
 
-class ProjectsShowEvent extends ProjectsEvent {
-  final int id;
-
-  ProjectsShowEvent({required this.id});
-
-  @override
-  List<Object?> get props => [id];
-}
 
 class ProjectsUserCategoryEvent extends ProjectsEvent {
   final int id;

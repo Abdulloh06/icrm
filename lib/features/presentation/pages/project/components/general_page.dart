@@ -3,8 +3,8 @@
   15 y.o
  */
 
-import 'package:icrm/core/models/project_statuses_model.dart';
 import 'package:icrm/core/models/projects_model.dart';
+import 'package:icrm/core/models/status_model.dart';
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
@@ -31,7 +31,7 @@ class GeneralPage extends StatefulWidget {
   }) : super(key: key);
   
   final ProjectsModel project;
-  final List<ProjectStatusesModel> projectStatus;
+  final List<StatusModel> projectStatus;
 
   @override
   State<GeneralPage> createState() => _GeneralPageState();
@@ -94,12 +94,20 @@ class _GeneralPageState extends State<GeneralPage> {
                                       ),
                                     );
                                   },
-                                  child: ClipOval(
-                                    child: CachedNetworkImage(
-                                      imageUrl: widget.project.members![index].social_avatar,
-                                      errorWidget: (context, error, stack) {
-                                        return Image.asset('assets/png/no_user.png');
-                                      },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    child: ClipOval(
+                                      child: CachedNetworkImage(
+                                        imageUrl: widget.project.members![index].social_avatar,
+                                        fit: BoxFit.fill,
+                                        errorWidget: (context, error, stack) {
+                                          return Image.asset(
+                                            'assets/png/no_user.png',
+                                            fit: BoxFit.fill,
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -127,6 +135,14 @@ class _GeneralPageState extends State<GeneralPage> {
                     itemBuilder: (context) {
                       return List.generate(widget.projectStatus.length,
                               (index) {
+                        String title, color;
+                        if(widget.projectStatus[index].userLabel != null) {
+                          title = widget.projectStatus[index].userLabel!.name;
+                          color = widget.projectStatus[index].userLabel!.color;
+                        }else {
+                          title = widget.projectStatus[index].name;
+                          color = widget.projectStatus[index].color;
+                        }
                             return PopupMenuItem(
                               onTap: () {
                                 List<int> users = [];
@@ -152,13 +168,13 @@ class _GeneralPageState extends State<GeneralPage> {
                                     .copyWith(left: 16, right: 9),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: Color(int.parse(widget.projectStatus[index].color
+                                  color: Color(int.parse(color
                                       .split('#')
                                       .join('0xff'))),
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  widget.projectStatus[index].name,
+                                  title,
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -172,9 +188,11 @@ class _GeneralPageState extends State<GeneralPage> {
                           .copyWith(left: 16, right: 9),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Color(int.parse(widget.project.projectStatus!.color
-                            .split('#')
-                            .join('0xff'))),
+                        color: Color(
+                          int.parse(
+                            widget.project.projectStatus!.color.split('#').join('0xff'),
+                          ),
+                        ),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -236,6 +254,7 @@ class _GeneralPageState extends State<GeneralPage> {
                                           builder: (context) {
                                             return SingleChildScrollView(
                                               child: MainInfoDialog(
+                                                project: widget.project,
                                                 projectId: widget.project.id,
                                                 contact_id: state.company.contact_id,
                                                 company_id: state.company.id,
@@ -266,26 +285,30 @@ class _GeneralPageState extends State<GeneralPage> {
                                       style: AppTextStyles.aappText
                                           .copyWith(color: UserToken.isDark ? Colors.white : Colors.black),
                                     ),
-                                    const SizedBox(width: 20),
+                                    const SizedBox(width: 15),
                                     CircleAvatar(
                                       backgroundColor: Colors.transparent,
                                       radius: 20,
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(15),
-                                            bottom: Radius.circular(15),
+                                        width: double.infinity,
+                                        child: ClipOval(
+                                          child: CachedNetworkImage(
+                                            imageUrl: state.company.logo,
+                                            fit: BoxFit.fill,
+                                            placeholder: (context, place) {
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                  color: AppColors.mainColor,
+                                                ),
+                                              );
+                                            },
+                                            errorWidget: (context, error, stack) {
+                                              return Image.asset(
+                                                'assets/png/default_logo.png',
+                                                fit: BoxFit.fill,
+                                              );
+                                            },
                                           ),
-                                        ),
-                                        child: CachedNetworkImage(
-                                          imageUrl: state.company.logo,
-                                          placeholder: (context, place) {
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                color: AppColors.mainColor,
-                                              ),
-                                            );
-                                          },
                                         ),
                                       ),
                                     ),

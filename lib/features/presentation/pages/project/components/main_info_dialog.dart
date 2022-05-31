@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../../core/models/projects_model.dart';
 import '../../../../../core/repository/user_token.dart';
 import '../../../../../core/util/colors.dart';
 import '../../../../../core/util/text_styles.dart';
@@ -29,6 +30,7 @@ class MainInfoDialog extends StatefulWidget {
     required this.contact,
     required this.url,
     required this.projectId,
+    required this.project,
   }) : super(key: key);
 
   final dynamic contact_id;
@@ -37,9 +39,10 @@ class MainInfoDialog extends StatefulWidget {
   final String contactName;
   final String companyName;
   final String url;
-  String logo;
+  final String logo;
   final int company_id;
   final int projectId;
+  final ProjectsModel project;
 
   @override
   State<MainInfoDialog> createState() => _MainInfoDialogState();
@@ -91,7 +94,7 @@ class _MainInfoDialogState extends State<MainInfoDialog> {
         textAlign: TextAlign.center,
         style: AppTextStyles.mainBold.copyWith(fontSize: 20),
       ),
-      insetPadding: const EdgeInsets.only(top: 60, bottom: 100),
+      insetPadding: const EdgeInsets.only(top: 60, bottom: 100, right: 10, left: 10),
       content: Column(
         children: [
           GestureDetector(
@@ -99,27 +102,35 @@ class _MainInfoDialogState extends State<MainInfoDialog> {
             child: CircleAvatar(
               radius: 55,
               backgroundColor: Colors.transparent,
-              child: ClipOval(
-                child: Builder(
-                  builder: (context) {
-                    if (logo != null) {
-                      return Image.file(File(logo!.path));
-                    } else {
-                      return CachedNetworkImage(
-                        imageUrl: widget.logo,
-                        placeholder: (context, stack) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.mainColor,
-                            ),
-                          );
-                        },
-                        errorWidget: (context, error, stack) {
-                          return Image.asset('assets/png/default_logo.png');
-                        },
-                      );
-                    }
-                  },
+              child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                child: ClipOval(
+                  child: Builder(
+                    builder: (context) {
+                      if (logo != null) {
+                        return Image.file(File(logo!.path));
+                      } else {
+                        return CachedNetworkImage(
+                          imageUrl: widget.logo,
+                          fit: BoxFit.fill,
+                          placeholder: (context, stack) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.mainColor,
+                              ),
+                            );
+                          },
+                          errorWidget: (context, error, stack) {
+                            return Image.asset(
+                              'assets/png/default_logo.png',
+                              fit: BoxFit.fill,
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
             ),
@@ -164,6 +175,7 @@ class _MainInfoDialogState extends State<MainInfoDialog> {
                 SizedBox(
                   height: 40,
                   child: CustomTextField(
+                    maxLines: 1,
                     isFilled: true,
                     color: UserToken.isDark
                         ? AppColors.textFieldColorDark
@@ -194,7 +206,6 @@ class _MainInfoDialogState extends State<MainInfoDialog> {
                   height: 10,
                 ),
                 SizedBox(
-                  height: 40,
                   child: CustomTextField(
                     isFilled: true,
                     color: UserToken.isDark
@@ -234,35 +245,27 @@ class _MainInfoDialogState extends State<MainInfoDialog> {
                   color: AppColors.mainColor,
                   title: 'done',
                   onTap: () {
-                    if (logo != null) {
-                      context.read<CompanyBloc>().add(
-                        CompanyUpdateEvent(
-                          id: widget.company_id,
-                          logo: logo!,
-                          description: 'description',
-                          name: companyNameController.text,
-                          contact_id: widget.contact_id == null
-                              ? widget.contact!.id
-                              : widget.contact_id,
-                          url: widget.url,
-                          hasLogo: true
-                        ),
-                      );
-                    }else {
-                      if(widget.contactName != companyNameController.text) {
-                        context.read<CompanyBloc>().add(CompanyUpdateEvent(
-                          id: widget.company_id,
-                          logo: File(''),
-                          description: 'description',
-                          name: companyNameController.text,
-                          contact_id: widget.contact_id == null
-                              ? widget.contact!.id
-                              : widget.contact_id,
-                          url: widget.url,
-                          hasLogo: false,
-                        ),);
+                    if(widget.projectName != projectNameController.text) {
+                      List<int> users = [];
+                      for(int i = 0; i < widget.project.members!.length; i++) {
+                        users.add(widget.project.members![i].id);
                       }
+                      context.read<ProjectsBloc>().add(ProjectsUpdateEvent(
+                        id: widget.projectId,
+                        name: projectNameController.text,
+                        project_status_id: widget.project.project_status_id,
+                        users: users,
+                        description: widget.project.description,
+                      ));
                     }
+                    context.read<CompanyBloc>().add(CompanyUpdateEvent(
+                      id: widget.company_id,
+                      logo: logo,
+                      description: 'description',
+                      name: companyNameController.text,
+                      contact_id: widget.contact != null ? widget.contact!.id : null,
+                      url: widget.url,
+                    ));
                     context.read<ContactsBloc>().add(
                       ContactsUpdateEvent(
                         id: widget.contact_id == null
@@ -273,10 +276,8 @@ class _MainInfoDialogState extends State<MainInfoDialog> {
                         position: widget.contact!.position,
                         name: contactName.text,
                         type: widget.contact!.contact_type,
-                        hasAvatar: false,
                       ),
                     );
-                    context.read<ProjectsBloc>().add(ProjectsShowEvent(id: widget.projectId));
                     Navigator.pop(context);
                   },
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),

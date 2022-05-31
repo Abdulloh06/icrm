@@ -30,6 +30,7 @@ class ArchiveLeads extends StatelessWidget {
                 visible: leads[index].contact != null ? leads[index].contact!.name.toLowerCase().contains(search.toLowerCase()) : true,
                 child: GestureDetector(
                   child: LeadCard(
+                    fromArchive: true,
                     lead: leads[index],
                   ),
                 ),

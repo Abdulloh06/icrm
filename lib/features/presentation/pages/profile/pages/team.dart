@@ -3,15 +3,15 @@
   15 y.o
  */
 
-import 'package:icrm/core/models/team_model.dart';
+
 import 'package:icrm/core/util/colors.dart';
-import 'package:icrm/core/util/text_styles.dart';
 import 'package:icrm/features/presentation/blocs/team_bloc/team_bloc.dart';
 import 'package:icrm/features/presentation/blocs/team_bloc/team_event.dart';
 import 'package:icrm/features/presentation/blocs/team_bloc/team_state.dart';
 import 'package:icrm/features/presentation/pages/profile/components/add_team_dialog.dart';
+import 'package:icrm/features/presentation/pages/profile/components/team_list.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:icrm/widgets/main_app_bar.dart';
-import 'package:icrm/widgets/main_person_contact.dart';
 import 'package:icrm/widgets/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,8 +25,6 @@ class MyTeam extends StatelessWidget {
   final _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    context.read<TeamBloc>().add(TeamInitEvent());
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -38,179 +36,122 @@ class MyTeam extends StatelessWidget {
         ),
         body: ScrollConfiguration(
           behavior: const ScrollBehavior().copyWith(overscroll: false),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MainTabBar(
-                  tabs: [
-                    Tab(text: Locales.string(context, 'all')),
-                    Tab(text: Locales.string(context, 'seldom')),
-                    Tab(text: Locales.string(context, 'often')),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                MainSearchBar(
-                  onComplete: () => FocusScope.of(context).unfocus(),
-                  controller: _searchController,
-                  onChanged: (value) {},
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AddTeamDialog();
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: MainTabBar(
+                      tabs: [
+                        Tab(text: Locales.string(context, "all")),
+                        Tab(text: Locales.string(context, 'seldom')),
+                        Tab(text: Locales.string(context, 'often')),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: StatefulBuilder(
+                      builder: (context, setState) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20).copyWith(top: 0) ,
+                              child: MainSearchBar(
+                                onComplete: () => FocusScope.of(context).unfocus(),
+                                controller: _searchController,
+                                onChanged: (value) {
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20).copyWith(top: 0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AddTeamDialog();
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 90,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.mainColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          LocaleText(
+                                            'add',
+                                            style: const TextStyle(
+                                                color: Colors.white, fontSize: 10),
+                                          ),
+                                          SvgPicture.asset(
+                                            'assets/icons_svg/add_small.svg',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: BlocBuilder<TeamBloc, TeamState>(
+                                builder: (context, state) {
+                                  if (state is TeamInitState) {
+                                    return TabBarView(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                                          child: TeamList(
+                                            id: 1,
+                                            team: state.team,
+                                            search: _searchController.text,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                                          child: TeamList(
+                                            id: 2,
+                                            team: state.team,
+                                            search: _searchController.text,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                                          child: TeamList(
+                                            id: 3,
+                                            team: state.team,
+                                            search: _searchController.text,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    context.read<TeamBloc>().add(TeamInitEvent());
+                                    return Loading();
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        );
                       },
-                    );
-                  },
-                  child: Container(
-                    width: 90,
-                    decoration: BoxDecoration(
-                      color: AppColors.mainColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Row(
-                          children: [
-                            LocaleText(
-                              'add',
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 10),
-                            ),
-                            const SizedBox(width: 5),
-                            SvgPicture.asset(
-                                'assets/icons_svg/add_small.svg'),
-                          ],
-                        ),
-                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 25),
-                Expanded(
-                  child: BlocBuilder<TeamBloc, TeamState>(
-                    builder: (context, state) {
-                      if (state is TeamInitState) {
-                        List<TeamModel> seldom = state.team
-                            .where((element) => element.is_often == 1)
-                            .toList();
-                        List<TeamModel> often = state.team
-                            .where((element) => element.is_often == 0)
-                            .toList();
-
-                        return TabBarView(
-                          children: [
-                            Visibility(
-                              replacement: Align(
-                                alignment: Alignment.topCenter,
-                                child: LocaleText('empty'),
-                              ),
-                              visible: state.team.isNotEmpty,
-                              child: ListView.builder(
-                                itemCount: state.team.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(20),
-                                    ),
-                                    margin:
-                                        const EdgeInsets.only(bottom: 10),
-                                    child: MainPersonContact(
-                                      name: state.team[index].first_name +
-                                          " " +
-                                          state.team[index].last_name,
-                                      response:
-                                          state.team[index].jobTitle,
-                                      photo: state.team[index].social_avatar,
-                                      phone_number: state.team[index].phoneNumber,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              replacement: Center(
-                                child: LocaleText(
-                                  'empty',
-                                  style: AppTextStyles.mainGrey,
-                                ),
-                              ),
-                              visible: seldom.isNotEmpty,
-                              child: ListView.builder(
-                                itemCount: seldom.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(20),
-                                    ),
-                                    margin:
-                                        const EdgeInsets.only(bottom: 10),
-                                    child: MainPersonContact(
-                                      name: seldom[index].first_name +
-                                          " " +
-                                          seldom[index].last_name,
-                                      phone_number: seldom[index].phoneNumber,
-                                      response: seldom[index].jobTitle,
-                                      photo: seldom[index].social_avatar,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              replacement: Center(
-                                child: LocaleText(
-                                  'empty',
-                                  style: AppTextStyles.mainGrey,
-                                ),
-                              ),
-                              visible: often.isNotEmpty,
-                              child: ListView.builder(
-                                itemCount: often.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(20),
-                                    ),
-                                    margin:
-                                        const EdgeInsets.only(bottom: 10),
-                                    child: MainPersonContact(
-                                      name: often[index].first_name +
-                                          " " +
-                                          often[index].last_name,
-                                      response: often[index].jobTitle,
-                                      photo: often[index].social_avatar,
-                                      phone_number: often[index].phoneNumber,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.mainColor,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

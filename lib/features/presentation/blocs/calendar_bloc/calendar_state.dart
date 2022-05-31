@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'package:equatable/equatable.dart';
 import '../../../../core/models/calendar_model.dart';
 

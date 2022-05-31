@@ -4,12 +4,17 @@
  */
 
 import 'dart:io';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_bloc.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_event.dart';
+import 'package:icrm/features/presentation/blocs/attachment_bloc/attachment_state.dart';
 import 'package:icrm/features/presentation/blocs/notes_bloc/notes_bloc.dart';
 import 'package:icrm/features/presentation/blocs/notes_bloc/notes_event.dart';
 import 'package:icrm/features/presentation/pages/profile/pages/notes/my_notes.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:icrm/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -21,18 +26,18 @@ import 'package:speech_to_text/speech_to_text.dart';
 class CreateNote extends StatefulWidget {
   CreateNote({
     Key? key,
-    this.fromNotes = true,
     this.isSubNote = false,
     this.title = '',
+    this.fromNotes = true,
     this.id = 0,
     this.description = '',
   }) : super(key: key);
 
-  final bool fromNotes;
   final bool isSubNote;
   final String title;
   final String description;
   final int id;
+  final bool fromNotes;
 
   @override
   State<CreateNote> createState() => _CreateNoteState();
@@ -43,16 +48,24 @@ class _CreateNoteState extends State<CreateNote> {
   final _imagePicker = ImagePicker();
   List<String> images = [];
   bool isListening = false;
+  int length = 0;
 
   final _speech = SpeechToText();
 
   void pickImage() async {
-    if (images.length < 5) {
+    if (images.length < 5 && length < 5) {
       try {
         final image = await _imagePicker.pickImage(source: ImageSource.gallery);
-        setState(() {
-          images.add(image!.path);
-        });
+        if(image != null) {
+          setState(() {
+            images.add(image.path);
+          });
+          context.read<AttachmentBloc>().add(AttachmentAddEvent(
+            content_id: widget.id,
+            content_type: "note",
+            file: File(image.path),
+          ));
+        }
 
       } catch (error) {
         print(error);
@@ -108,6 +121,10 @@ class _CreateNoteState extends State<CreateNote> {
   void initState() {
     super.initState();
     if(widget.isSubNote) {
+      context.read<AttachmentBloc>().add(AttachmentShowEvent(
+        content_type: "note",
+        content_id: widget.id,
+      ));
       _titleController.text = widget.title;
       _descriptionController.text = widget.description;
     }
@@ -132,6 +149,15 @@ class _CreateNoteState extends State<CreateNote> {
                       title: _titleController.text,
                     ),
                   );
+                  if(images.isNotEmpty) {
+                    for(int i = 0; i < images.length; i++) {
+                      context.read<AttachmentBloc>().add(AttachmentAddEvent(
+                        content_id: widget.id,
+                        content_type: "note",
+                        file: File(images[i]),
+                      ));
+                    }
+                  }
                 } else {
                   context.read<NotesBloc>().add(
                     NotesAddEvent(
@@ -142,8 +168,8 @@ class _CreateNoteState extends State<CreateNote> {
                 }
                 if(widget.fromNotes) {
                   Navigator.pop(context);
-                } else {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyNotes()));
+                }else {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => MyNotes()));
                 }
               }
             },
@@ -181,60 +207,88 @@ class _CreateNoteState extends State<CreateNote> {
                 onChanged: (value) => setState(() {}),
               ),
               const Spacer(),
-              Expanded(
-                child: Visibility(
-                  visible: images.isNotEmpty,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: images.length,
-                    itemBuilder: (context, index) {
-                      return Image.file(File(images[index]));
-                    },
-                  ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 3.5,
+                child: Builder(
+                  builder: (context) {
+                    if(widget.isSubNote) {
+                      return BlocBuilder<AttachmentBloc, AttachmentState>(
+                        builder: (context, state) {
+                          if(state is AttachmentShowState) {
+                            length = state.documents.length;
+                            return Visibility(
+                              visible: state.documents.isNotEmpty,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: state.documents.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Image.network(
+                                      state.documents[index].path,
+                                      errorBuilder: (context, error, stacktrace) {
+                                        return SizedBox();
+                                      },
+                                      loadingBuilder: (context, child, progress) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            color: AppColors.mainColor,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          }else {
+                            return Loading();
+                          }
+                        },
+                      );
+                    }else {
+                      return Visibility(
+                        visible: images.isNotEmpty,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: images.length,
+                          itemBuilder: (context, index) {
+                            return Image.file(File(images[index]));
+                          },
+                        ),
+                      );
+                    }
+                  },
                 ),
               ),
             ],
           ),
         ),
       ),
-      bottomSheet: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        child: BottomNavigationBar(
-          showUnselectedLabels: false,
-          showSelectedLabels: false,
-          type: BottomNavigationBarType.fixed,
-          onTap: (index) {
-            switch (index) {
-              case 0:
-                listen();
-                break;
-              case 1:
-                pickImage();
-                break;
-              case 2:
-                print(index);
-                break;
-              case 3:
-                print(index);
-                break;
-            }
-          },
-          items: [
-            item('assets/icons_svg/microphone.svg'),
-            item('assets/icons_svg/image.svg'),
-            item('assets/icons_svg/done.svg'),
-            item('assets/icons_svg/text.svg'),
-          ],
-        ),
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          AvatarGlow(
+            animate: isListening,
+            endRadius: 40,
+            glowColor: AppColors.mainColor,
+            child: GestureDetector(
+              onTap: () => listen(),
+              child: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: SvgPicture.asset('assets/icons_svg/microphone.svg'),
+                radius: 30.0,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => pickImage(),
+            child: SvgPicture.asset('assets/icons_svg/image.svg'),
+          ),
+        ],
       ),
     );
   }
-}
-
-BottomNavigationBarItem item(String icon) {
-  return BottomNavigationBarItem(
-    icon: SvgPicture.asset(icon),
-    label: '',
-  );
 }

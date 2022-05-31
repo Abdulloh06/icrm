@@ -10,7 +10,7 @@ class AppColors {
   static const mainDark = Color.fromRGBO(30, 31, 37, 1);
   static const cardColorDark = Color.fromRGBO(37, 37, 37, 1);
   static const purpleLight = Color.fromRGBO(229, 225, 252, 1);
-  static const red = Color.fromRGBO(176, 0, 32, 1);
+  static const red = Color(0xffFF6157);
   static const mainRed = Color.fromARGB(255, 255, 97, 87);
   static const redLight = Color.fromRGBO(255, 223, 221, 1);
   static const green = Color.fromRGBO(97, 200, 119, 1);

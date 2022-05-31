@@ -51,7 +51,6 @@ class _CreateProjectState extends State<CreateProject> {
           child: BlocConsumer<ProjectsBloc, ProjectsState>(
             listener: (context, state) {
               if(state is ProjectsErrorState) {
-                print('something_went_wrong');
                 print(state.error);
                 context.read<ProjectsBloc>().add(ProjectsInitEvent());
               }
@@ -80,11 +79,15 @@ class _CreateProjectState extends State<CreateProject> {
                   ),
                   footer: CustomFooter(
                     builder: (context, status) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.mainColor,
-                        ),
-                      );
+                      if(status == LoadStatus.loading) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.mainColor,
+                          ),
+                        );
+                      }else {
+                        return SizedBox.shrink();
+                      }
                     },
                   ),
                   controller: _controller,
@@ -142,7 +145,7 @@ class _CreateProjectState extends State<CreateProject> {
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectStructure(
                             project: state.projects[index],
-                            projectStatus: state.projectStatus,
+                            projectStatus: state.projectStatus.where((element) => element.userLabel != null).toList(),
                           )));
                         },
                         child: Container(
@@ -177,8 +180,18 @@ class _CreateProjectState extends State<CreateProject> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset('assets/png/empty.png'),
-                      LocaleText("unfortunately_nothing_yet"),
+                      Image.asset(
+                        'assets/png/empty.png',
+                        color: UserToken.isDark ? Colors.white : Colors.black,
+                      ),
+                      LocaleText(
+                        "unfortunately_nothing_yet",
+                        style: TextStyle(
+                          color: UserToken.isDark ? Colors.white : Colors.grey,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                        ),
+                      ),
                     ],
                   ),
                 );

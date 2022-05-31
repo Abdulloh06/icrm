@@ -3,16 +3,21 @@
   15 y.o
  */
 
-import 'package:icrm/core/models/contacts_model.dart';
+import 'dart:io';
+
 import 'package:icrm/core/models/leads_model.dart';
+import 'package:icrm/core/models/projects_model.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_bloc.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_event.dart';
-import 'package:icrm/widgets/main_button.dart';
+import 'package:icrm/features/presentation/pages/leads/components/menu_popup.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../../../core/repository/api_repository.dart';
 import '../../../../../core/repository/user_token.dart';
 import '../../../../../core/util/colors.dart';
 import '../../../../../core/util/text_styles.dart';
@@ -22,17 +27,21 @@ class LeadCard extends StatelessWidget{
   LeadCard({
     Key? key,
     required this.lead,
-    this.fromProject = false,
-    this.contact,
     this.isDragging = false,
     this.onMessageTap,
+    this.fromArchive = false,
+    this.fromProject = false,
+    this.project,
   }) : super(key: key);
 
   final LeadsModel lead;
-  final bool fromProject;
-  final ContactModel? contact;
   final bool isDragging;
   final VoidCallback? onMessageTap;
+  final bool fromArchive;
+  final bool fromProject;
+  final ProjectsModel? project;
+
+  final _dynamicLink = FirebaseDynamicLinks.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +63,9 @@ class LeadCard extends StatelessWidget{
         children: [
           Container(
             width: isDragging ? 6 : 10,
-            height: isDragging ? 100 : 175,
+            height: isDragging ? 115 : 175,
             decoration: BoxDecoration(
-              color: lead.leadStatus != null ? Color(int.parse(lead.leadStatus!.color.split('#').join('0xff'))) : AppColors.mainColor,
+              color: lead.leadStatus!.userLabel != null ? Color(int.parse(lead.leadStatus!.userLabel!.color.split('#').join('0xff'))) : AppColors.mainColor,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
@@ -65,7 +74,7 @@ class LeadCard extends StatelessWidget{
           ),
           Expanded(
             child: Container(
-              height: isDragging ? 110 : 175,
+              height: isDragging ? 115 : 175,
               decoration: BoxDecoration(
                 color: UserToken.isDark ? AppColors.cardColorDark : Colors.white,
                 borderRadius: BorderRadius.only(
@@ -104,11 +113,41 @@ class LeadCard extends StatelessWidget{
                                   Builder(
                                     builder: (context) {
                                       if(lead.member != null) {
-                                        return SvgPicture.asset('assets/icons_svg/dot.svg');
+                                        return MenuPopup(
+                                          icon: SvgPicture.asset(
+                                            "assets/icons_svg/dot.svg",
+                                            color: AppColors.greyDark,
+                                          ),
+                                          deleteTap: () {
+                                            if(!fromArchive) {
+                                              context.read<HomeBloc>().add(LeadsDeleteEvent(id: lead.id));
+                                            }
+                                          },
+                                          shareTap: () async {
+                                            if(!fromArchive) {
+                                              await _dynamicLink
+                                                  .buildShortLink(DynamicLinkParameters(
+                                                uriPrefix: ApiRepository.appUrl,
+                                                link: Uri.parse(ApiRepository.appUrl +
+                                                    "/leads/${lead.id}"),
+                                                androidParameters: const AndroidParameters(
+                                                  packageName: 'uz.eurosoft.icrmlead',
+                                                  minimumVersion: 1,
+                                                ),
+                                                iosParameters: const IOSParameters(
+                                                  bundleId: "uz.eurosoft.icrmlead",
+                                                  minimumVersion: '2',
+                                                ),
+                                              )).then((value) {
+                                                return Share.share(value.shortUrl.toString());
+                                              });
+                                            }
+                                          },
+                                        );
                                       }else {
                                         return Row(
                                           children: [
-                                            MainButton(
+                                            GestureDetector(
                                               onTap: () {
                                                 context.read<HomeBloc>().add(LeadsUpdateEvent(
                                                   id: lead.id,
@@ -121,15 +160,57 @@ class LeadCard extends StatelessWidget{
                                                   seller_id: UserToken.id,
                                                 ),);
                                               },
-                                              color: AppColors.mainColor,
-                                              title: 'receive',
-                                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                              borderRadius: 5,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.mainColor,
+                                                  borderRadius: BorderRadius.circular(5),
+                                                ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: isDragging ? 5 : 8,
+                                                  vertical: 5,
+                                                ),
+                                                child: Center(
+                                                  child: LocaleText(
+                                                    "receive",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: isDragging ? 8 : 12,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                             const SizedBox(width: 8),
-                                            SvgPicture.asset(
-                                              "assets/icons_svg/menu_icon.svg",
-                                              color: AppColors.greyDark,
+                                            MenuPopup(
+                                              icon: SvgPicture.asset(
+                                                "assets/icons_svg/menu_icon.svg",
+                                                color: AppColors.greyDark,
+                                              ),
+                                              deleteTap: () {
+                                                if(!fromArchive) {
+                                                  context.read<HomeBloc>().add(LeadsDeleteEvent(id: lead.id));
+                                                }
+                                              },
+                                              shareTap: () async {
+                                                if(!fromArchive) {
+                                                  await _dynamicLink
+                                                      .buildShortLink(DynamicLinkParameters(
+                                                    uriPrefix: ApiRepository.appUrl,
+                                                    link: Uri.parse(ApiRepository.appUrl +
+                                                        "/leads/${lead.id}"),
+                                                    androidParameters: const AndroidParameters(
+                                                      packageName: 'uz.eurosoft.icrmlead',
+                                                      minimumVersion: 1,
+                                                    ),
+                                                    iosParameters: const IOSParameters(
+                                                      bundleId: "uz.eurosoft.icrmlead",
+                                                      minimumVersion: '2',
+                                                    ),
+                                                  )).then((value) {
+                                                    return Share.share(value.shortUrl.toString());
+                                                  });
+                                                }
+                                              },
                                             ),
                                           ],
                                         );
@@ -141,12 +222,26 @@ class LeadCard extends StatelessWidget{
                               SizedBox(
                                 height: 8,
                               ),
-                              Text(
-                                lead.project!.name,
-                                style: AppTextStyles.apText.copyWith(
-                                  fontSize: isDragging ? 8 : 12,
-                                  color: UserToken.isDark ? Colors.white : Colors.black,
-                                ),
+                              Builder(
+                                builder: (context) {
+                                  if(fromProject) {
+                                    return Text(
+                                      project!.name,
+                                      style: AppTextStyles.apText.copyWith(
+                                        fontSize: isDragging ? 8 : 12,
+                                        color: UserToken.isDark ? Colors.white : Colors.black,
+                                      ),
+                                    );
+                                  }else {
+                                    return Text(
+                                      lead.project != null ? lead.project!.name : "",
+                                      style: AppTextStyles.apText.copyWith(
+                                        fontSize: isDragging ? 8 : 12,
+                                        color: UserToken.isDark ? Colors.white : Colors.black,
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                               SizedBox(
                                 height: 10,
@@ -187,7 +282,7 @@ class LeadCard extends StatelessWidget{
                                   Flexible(
                                     child: Builder(
                                       builder: (context) {
-                                        if(lead.estimatedAmount.toString() != 'null') {
+                                        if(lead.estimatedAmount != null) {
                                           return Text(
                                             lead.estimatedAmount.toString() + " " + lead.currency.toString(),
                                             maxLines: 1,
@@ -270,12 +365,34 @@ class LeadCard extends StatelessWidget{
                                 SizedBox(
                                   width: 8,
                                 ),
-                                Text(
-                                  start_date.toString() + " - " + deadline.toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: isDragging ? 8 : 14,
-                                  ),
+                                Builder(
+                                  builder: (context) {
+                                    if(start_date.isEmpty) {
+                                      return Text(
+                                        deadline,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: isDragging ? 8 : 13,
+                                        ),
+                                      );
+                                    }else if(deadline.isEmpty){
+                                      return Text(
+                                        start_date,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: isDragging ? 8 : 13,
+                                        ),
+                                      );
+                                    }else {
+                                      return Text(
+                                        '${start_date} - ${deadline}',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: isDragging ? 8 : 13,
+                                        ),
+                                      );
+                                    }
+                                  },
                                 ),
                               ],
                             ),
@@ -283,7 +400,15 @@ class LeadCard extends StatelessWidget{
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    await launch('tel: ${lead.contact!.phone_number}');
+                                    String phone = lead.contact != null ? lead.contact!.phone_number : "";
+
+                                    phone = phone.split('+').join('');
+                                    phone = "+" + phone;
+                                    if(Platform.isIOS) {
+                                      await launch('tel:// $phone');
+                                    }else {
+                                      await launch('tel: $phone');
+                                    }
                                   },
                                   child: Container(
                                     height: isDragging ? 20 : 32,

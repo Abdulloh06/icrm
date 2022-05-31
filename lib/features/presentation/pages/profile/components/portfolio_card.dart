@@ -61,14 +61,20 @@ class PortfolioCard extends StatelessWidget {
                         Positioned(
                           child: CircleAvatar(
                             radius: 16,
-                            child: Image.asset('assets/png/avatar.png'),
+                            child: ClipOval(
+                              child: Image.asset('assets/png/no_user.png'),
+                            ),
                           ),
                         ),
                         Positioned(
                           left: 33,
                           child: CircleAvatar(
                             radius: 16,
-                            child: Image.asset('assets/png/img.png'),
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/png/no_user.png',
+                              ),
+                            ),
                           ),
                         ),
                         Positioned(

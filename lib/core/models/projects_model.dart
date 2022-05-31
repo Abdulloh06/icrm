@@ -4,7 +4,7 @@
  */
 
 import 'package:icrm/core/models/leads_model.dart';
-import 'package:icrm/core/models/project_statuses_model.dart';
+import 'package:icrm/core/models/status_model.dart';
 import 'package:icrm/core/models/tasks_model.dart';
 import 'package:icrm/core/models/team_model.dart';
 import 'package:icrm/core/models/user_categories_model.dart';
@@ -30,7 +30,7 @@ class ProjectsModel {
   final List<TasksModel>? tasks;
   final List<TeamModel>? members;
   final UserCategoriesModel? userCategory;
-  final ProjectStatusesModel? projectStatus;
+  final StatusModel? projectStatus;
 
   ProjectsModel({
     required this.id,
@@ -61,15 +61,15 @@ class ProjectsModel {
       user_category = UserCategoriesModel.fromJson(json['userCategory']);
     }
 
-    ProjectStatusesModel? projectStatusesModel;
-    if(json['projectStatus'] != null) {
-      projectStatusesModel = ProjectStatusesModel.fromJson(json['projectStatus']);
+    StatusModel? projectStatusesModel;
+    if(json['label'] != null) {
+      projectStatusesModel = StatusModel.fromJson(json['label']);
     }
 
     return ProjectsModel(
       id: json['id'],
       user_id: json['user_id'] ?? 0,
-      project_status_id: json['project_status_id'],
+      project_status_id: json['label_id'],
       user_category_id: json['user_category_id'],
       company_id: json['company_id'] ?? 0,
       name: json['name'] ?? "",

@@ -3,7 +3,12 @@
   15 y.o
  */
 
+
+import 'package:flutter/foundation.dart';
+
+@immutable
 class CommentsModel {
+  final int id;
   final dynamic parent_id;
   final String content;
   final String comment_type;
@@ -12,7 +17,6 @@ class CommentsModel {
   final dynamic commentable_id;
   final String created_at;
   final String updated_at;
-  final int id;
 
   CommentsModel({
     required this.parent_id,
@@ -28,6 +32,7 @@ class CommentsModel {
 
   factory CommentsModel.fromJson(Map<String, dynamic> json) {
     return CommentsModel(
+      id: json['id'],
       parent_id: json['parent_id'],
       content: json['content'],
       comment_type: json['comment_type'],
@@ -36,7 +41,6 @@ class CommentsModel {
       commentable_type: json['commentable_type'],
       created_at: json['created_at'] ?? "",
       updated_at: json['updated_at'] ?? "",
-      id: json['id'],
     );
   }
 

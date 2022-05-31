@@ -19,7 +19,7 @@ class PrefsKeys {
   static const String accessTokenKey = 'access_token';
   static const String refreshTokenKey = 'refresh_token';
   static const String responsibilityKey = "response_key";
-  static const String searchHistoryKey = "history_key";
+  static const String expireDate = "expire_date";
 }
 
 class SharedPreferencesService {
@@ -39,17 +39,21 @@ class SharedPreferencesService {
     await _preferences.setBool(PrefsKeys.themeKey, value);
   }
 
-  Future<void> setTokens(
-      {required String accessToken, required String refreshToken}) async {
+  Future<void> setTokens({
+    required String accessToken,
+    required String refreshToken,
+    required int expiresIn,
+  }) async {
     await _preferences.setString(PrefsKeys.accessTokenKey, accessToken);
     await _preferences.setString(PrefsKeys.refreshTokenKey, refreshToken);
+    await _preferences.setInt(PrefsKeys.expireDate, expiresIn);
   }
 
   Future<void> setUserInfo({required Map<String, dynamic> data, required bool fromSignUp}) async {
     if(fromSignUp) {
       await _preferences.setString(PrefsKeys.phoneKey, data['user']['phone_number'] ?? "");
       await _preferences.setString(PrefsKeys.emailKey, data['user']['email'] ?? "");
-    }else {
+    } else {
       await _preferences.setInt(PrefsKeys.idKey, data['data']['id']);
       await _preferences.setString(PrefsKeys.nameKey, data['data']['first_name'] ?? "");
       await _preferences.setString(PrefsKeys.surnameKey, data['data']['last_name'] ?? "");
@@ -91,4 +95,6 @@ class SharedPreferencesService {
       _preferences.getString(PrefsKeys.refreshTokenKey) ?? "";
   dynamic get getUserId => _preferences.getInt(PrefsKeys.idKey);
   String get getResponsibility => _preferences.getString(PrefsKeys.responsibilityKey) ?? "";
+
+  int get getExpireDate => _preferences.getInt(PrefsKeys.expireDate) ?? 0;
 }

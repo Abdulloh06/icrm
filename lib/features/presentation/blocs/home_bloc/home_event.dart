@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:equatable/equatable.dart';
 import '../../../../core/models/leads_model.dart';
 
@@ -70,7 +75,6 @@ class LeadsUpdateEvent extends HomeEvent {
   final String? description;
   final int? seller_id;
   final String? currency;
-  final bool fromHome;
 
   LeadsUpdateEvent({
     required this.id,
@@ -83,34 +87,28 @@ class LeadsUpdateEvent extends HomeEvent {
     this.description,
     this.seller_id,
     this.currency,
-    this.fromHome = true,
   });
 
 
 }
 
-class LeadsAddStatusEvent extends HomeEvent {
-  final String name;
-
-  LeadsAddStatusEvent({required this.name});
-}
-
-class LeadsStatusDeleteEvent extends HomeEvent {
-  final int id;
-
-  LeadsStatusDeleteEvent({required this.id});
-}
-
 class LeadsStatusUpdateEvent extends HomeEvent {
   final int id;
   final String name;
+  final String color;
 
-  LeadsStatusUpdateEvent({required this.id, required this.name});
+  LeadsStatusUpdateEvent({
+    required this.id,
+    required this.name,
+    required this.color,
+  });
 }
 
-class LeadsStatusShowEvent extends HomeEvent {
+class LeadStatusDeleteEvent extends HomeEvent {
   final int id;
 
-  LeadsStatusShowEvent({required this.id});
-}
+  LeadStatusDeleteEvent({required this.id});
 
+  @override
+  List<Object> get props => [id];
+}

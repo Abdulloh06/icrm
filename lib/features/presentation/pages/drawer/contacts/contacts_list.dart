@@ -73,6 +73,7 @@ class BuildList extends StatelessWidget {
                     name: list[index].name,
                     photo: list[index].avatar,
                     response: list[index].position,
+                    email: list[index].email,
                     phone_number: list[index].phone_number,
                   ),
                 ),

@@ -3,8 +3,11 @@
   15 y.o
  */
 
-import 'package:icrm/core/models/contacts_model.dart';
 
+import 'package:icrm/core/models/contacts_model.dart';
+import 'package:flutter/foundation.dart';
+
+@immutable
 class CompanyModel {
   final int id;
   final String name;
@@ -35,7 +38,7 @@ class CompanyModel {
       id: json['id'],
       description: json['description'] ?? "",
       name: json['name'] ?? "",
-      contact_id: json['contact_id'],
+      contact_id: json['main_contact_id'],
       site_url: json['site_url'] ?? "",
       logo: json['logo'] ?? "",
       contact: contactModel,

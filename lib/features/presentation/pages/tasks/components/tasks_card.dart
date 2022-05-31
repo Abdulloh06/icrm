@@ -4,7 +4,6 @@
  */
 
 import 'package:icrm/core/models/tasks_model.dart';
-import 'package:icrm/core/models/tasks_status_model.dart';
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
@@ -17,29 +16,24 @@ import 'package:intl/intl.dart';
 class TasksCard extends StatelessWidget {
   const TasksCard({
     Key? key,
-    required this.status,
     required this.task,
     required this.onTap,
     this.isDragging = false,
   });
 
-  final TaskStatusModel status;
   final TasksModel task;
   final VoidCallback onTap;
   final bool isDragging;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: const BorderRadius.all(Radius.circular(10)),
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: UserToken.isDark ? AppColors.cardColorDark : Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
+          borderRadius: BorderRadius.circular(10),
           boxShadow: UserToken.isDark ? [] : [
             BoxShadow(
               spreadRadius: 0.5,
@@ -55,7 +49,7 @@ class TasksCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  height: isDragging ? 25 : 40,
+                  height: isDragging ? 25 : 35,
                   width: isDragging ? MediaQuery.of(context).size.width * 0.07 :MediaQuery.of(context).size.width * 0.1,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -64,12 +58,20 @@ class TasksCard extends StatelessWidget {
                       return CircleAvatar(
                         radius: isDragging ? 15 : 20,
                         backgroundColor: Colors.transparent,
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl: task.members![index].social_avatar,
-                            errorWidget: (context, error, stack) {
-                              return Image.asset('assets/png/no_user.png');
-                            },
+                        child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl: task.members![index].social_avatar,
+                              fit: BoxFit.fill,
+                              errorWidget: (context, error, stack) {
+                                return Image.asset(
+                                  'assets/png/no_user.png',
+                                  fit: BoxFit.fill,
+                                );
+                              },
+                            ),
                           ),
                         ),
                       );
@@ -112,7 +114,7 @@ class TasksCard extends StatelessWidget {
                   ),
               ],
             ),
-            SizedBox(height: isDragging ? 5 : 10),
+            SizedBox(height: isDragging ? 5 : 8),
             Text(
               task.name,
               overflow: TextOverflow.ellipsis,

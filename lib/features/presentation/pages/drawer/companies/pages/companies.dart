@@ -4,11 +4,14 @@
  */
 
 import 'package:icrm/features/presentation/pages/drawer/companies/components/company_card.dart';
-import 'package:icrm/features/presentation/pages/drawer/companies/pages/sub_company.dart';
+import 'package:icrm/features/presentation/pages/drawer/companies/pages/add_company.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:icrm/widgets/main_app_bar.dart';
 import 'package:icrm/widgets/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../../../../core/util/colors.dart';
 import '../../../../../../core/util/text_styles.dart';
 import '../../../../blocs/company_bloc/company_bloc.dart';
@@ -22,6 +25,7 @@ class Companies extends StatefulWidget {
 
 class _CompaniesState extends State<Companies> {
   final _searchController = TextEditingController();
+
   @override
   void initState() {
     context.read<CompanyBloc>().add(CompanyInitEvent());
@@ -42,6 +46,7 @@ class _CompaniesState extends State<Companies> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               MainSearchBar(
                 controller: _searchController,
@@ -51,6 +56,37 @@ class _CompaniesState extends State<Companies> {
                 onChanged: (value) {
                   setState(() {});
                 },
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddCompany()),
+                ),
+                child: Container(
+                  width: 90,
+                  decoration: BoxDecoration(
+                    color: AppColors.mainColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          LocaleText(
+                            'add',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 10),
+                          ),
+                          const SizedBox(width: 5),
+                          SvgPicture.asset('assets/icons_svg/add_small.svg'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               Expanded(
@@ -66,29 +102,27 @@ class _CompaniesState extends State<Companies> {
                               image: state.companies[index].logo,
                               name: state.companies[index].name,
                               direction: state.companies[index].description,
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SubCompany(),
-                                ),
-                              ),
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return AddCompany(
+                                    fromEdit: true,
+                                    company: state.companies[index],
+                                  );
+                                }));
+                              },
                             ),
                           );
                         },
                       );
                     } else if (state is CompanyInitState && state.companies.isEmpty) {
                       return Center(
-                        child: Text(
-                          'No Company',
+                        child: LocaleText(
+                          "empty",
                           style: AppTextStyles.mainGrey,
                         ),
                       );
                     } else {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.mainColor,
-                        ),
-                      );
+                      return Loading();
                     }
                   },
                 ),

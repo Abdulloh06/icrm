@@ -3,6 +3,9 @@
   15 y.o
  */
 
+import 'package:flutter/foundation.dart';
+
+@immutable
 class AttachmentModel {
   final int id;
   final String content_type;

@@ -1,5 +1,10 @@
-import 'dart:io';
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
+
+import 'dart:io';
 import 'package:equatable/equatable.dart';
 
 abstract class AttachmentEvent extends Equatable{

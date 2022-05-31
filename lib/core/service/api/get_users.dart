@@ -46,7 +46,7 @@ class GetUsers {
 
   }
 
-  Future<bool> sendInivitation({
+  Future<bool> sendInvitation({
     required String via,
     required String model_type,
     required int model_id,
@@ -65,7 +65,7 @@ class GetUsers {
         ),
         data: {
           "via": via,
-          "model_type": "task",
+          "model_type": model_type,
           "model_id": model_id,
         }
       );

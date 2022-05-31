@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'package:equatable/equatable.dart';
 
 abstract class AuthStates extends Equatable{
@@ -45,8 +51,6 @@ class AuthSignUpFromSocialSuccess extends AuthStates {
   @override
   List<Object?> get props => [email, password];
 }
-
-class AuthYandexAuthState extends AuthStates {}
 
 class AuthLoadingState extends AuthStates {}
 

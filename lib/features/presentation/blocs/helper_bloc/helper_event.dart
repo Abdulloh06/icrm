@@ -1,3 +1,4 @@
+import 'package:icrm/core/models/contacts_model.dart';
 import 'package:icrm/core/models/team_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -56,4 +57,15 @@ class HelperLeadContactEvent extends HelperEvent {
     required this.name,
     required this.id,
   });
+}
+
+class HelperCompanyContactEvent extends HelperEvent {
+  final ContactModel contact;
+
+  HelperCompanyContactEvent({
+    required this.contact,
+  });
+
+  @override
+  List<Object?> get props => [contact];
 }

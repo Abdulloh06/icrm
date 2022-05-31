@@ -3,6 +3,10 @@
   15 y.o
  */
 
+
+import 'package:flutter/foundation.dart';
+
+@immutable
 class ContactModel {
   final int id;
   final String name;

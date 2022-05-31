@@ -9,13 +9,17 @@ import 'package:icrm/core/util/text_styles.dart';
 import 'package:icrm/features/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:icrm/features/presentation/blocs/auth_bloc/auth_event.dart';
 import 'package:icrm/features/presentation/blocs/auth_bloc/auth_state.dart';
-import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/auth_text_field.dart';
-import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/main_button.dart';
-import 'package:icrm/features/presentation/pages/auth/pages/local_widgets/main_button_back.dart';
+import 'package:icrm/features/presentation/blocs/profile_bloc/profile_bloc.dart';
+import 'package:icrm/features/presentation/blocs/profile_bloc/profile_event.dart';
 import 'package:icrm/features/presentation/pages/widgets/change_user_profile.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+
+import '../../local_widgets/auth_text_field.dart';
+import '../../local_widgets/main_button.dart';
+import '../../local_widgets/main_button_back.dart';
 
 class SignUpPage3 extends StatefulWidget {
   SignUpPage3({Key? key, required this.via}) : super(key: key);
@@ -41,7 +45,11 @@ class _SignUpPage3State extends State<SignUpPage3> {
       body: BlocConsumer<AuthBloc, AuthStates>(
         listener: (context, state) {
           if(state is AuthSignUpSuccessConfirm) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeUserProfile()));
+            context.read<ProfileBloc>().add(ProfileInitEvent());
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChangeUserProfile()),
+            );
           }
           if(state is AuthErrorState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -57,11 +65,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
         },
         builder: (context, state) {
           if(state is AuthLoadingState) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.mainColor,
-              ),
-            );
+            return Loading();
           }else {
             return SafeArea(
               child: ScrollConfiguration(
@@ -77,7 +81,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                           children: [
                             const AuthButtonBack(),
                             Text(
-                              'icrm CRM',
+                              'I CRM',
                               style: AppTextStyles.primary,
                             ),
                           ],
@@ -102,6 +106,7 @@ class _SignUpPage3State extends State<SignUpPage3> {
                               AuthTextField(
                                 title: Locales.string(context, 'pin_code'),
                                 controller: _pinController,
+                                hint: "  •  •  •  •  •  •",
                                 margin: 10,
                                 onTap: () {
                                   setState(() {
@@ -111,7 +116,10 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                 isObscure: isObscure1,
                                 suffixIcon: 'assets/icons_svg/eye.svg',
                                 validator: (value) =>
-                                value!.isEmpty ? Locales.string(context, "must_fill_this_line") : value != _confirmPinController.text ? Locales.string(context, "pin_codes_do_not_match") : null,
+                                value!.isEmpty ? Locales.string(context, "must_fill_this_line")
+                                    : value != _confirmPinController.text
+                                    ? Locales.string(context, "pin_codes_do_not_match")
+                                    : value.length >= 6 ? null : Locales.string(context, "weak_password"),
                                 keyboardType: TextInputType.text,
                               ),
                               AuthTextField(
@@ -120,13 +128,17 @@ class _SignUpPage3State extends State<SignUpPage3> {
                                     isObscure2 = !isObscure2;
                                   });
                                 },
+                                hint: " •  •  •  •  •  •",
                                 title: Locales.string(context, 'confirm'),
                                 controller: _confirmPinController,
                                 suffixIcon: 'assets/icons_svg/eye.svg',
                                 isObscure: isObscure2,
                                 margin: 10,
                                 validator: (value) =>
-                                value!.isEmpty ? Locales.string(context, "must_fill_this_line") : value != _pinController.text ? Locales.string(context, "pin_codes_do_not_match") : null,
+                                value!.isEmpty ? Locales.string(context, "must_fill_this_line")
+                                    : value != _pinController.text
+                                    ? Locales.string(context, "pin_codes_do_not_match")
+                                    : value.length >= 6 ? null : Locales.string(context, "weak_password"),
                                 keyboardType: TextInputType.text,
                               ),
                             ],
@@ -138,7 +150,12 @@ class _SignUpPage3State extends State<SignUpPage3> {
                         GestureDetector(
                           onTap: () {
                             if(_formKey.currentState!.validate()) {
-                              context.read<AuthBloc>().add(AuthSignUpConfirmation(via: widget.via, password: _pinController.text, confirmPassword: _confirmPinController.text));
+                              context.read<AuthBloc>().add(
+                                AuthSignUpConfirmation(
+                                  via: widget.via,
+                                  password: _pinController.text,
+                                ),
+                              );
                             }
                           },
                           child: AuthMainButton(title: 'next', textColor: Colors.white),

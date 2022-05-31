@@ -66,14 +66,13 @@ class GetCompany {
       } else {
         throw Exception('UNKNOWN');
       }
-    } catch (e) {
-      print(e);
-
+    } on DioError catch (e) {
+      print(e.error);
       throw Exception('UNKNOWN');
     }
   }
 
-  Future<CompanyModel> addCompany({
+  Future addCompany({
     required String name,
     required File? logo,
     required int? contactId,
@@ -97,6 +96,7 @@ class GetCompany {
         String fileName = logo.path.split('/').last;
         formData.files.add(MapEntry('logo', await MultipartFile.fromFile(logo.path, filename: fileName)));
       }
+      print(formData.fields);
 
       final response = await dio.post(
         ApiRepository.getCompany,
@@ -122,9 +122,14 @@ class GetCompany {
       } else {
         throw Exception('UNKNOWN');
       }
-    } catch (e) {
-      print(e);
-      throw Exception('UNKNOWN');
+    } on DioError catch (e) {
+      final Map<String, dynamic> error = await e.response!.data;
+
+      if(error['errors']['name'] != null) {
+        return "name_already_in_use";
+      }else {
+        throw Exception('UNKNOWN');
+      }
     }
   }
 
@@ -135,11 +140,9 @@ class GetCompany {
     required String? site_url,
     required File? logo,
     required int? contact_id,
-    required bool hasLogo,
   }) async {
 
     try {
-
 
       FormData formData = await FormData.fromMap({
         "name": name,
@@ -187,106 +190,5 @@ class GetCompany {
 
   }
 
-  Future<CompanyModel> showLeads({required int id}) async {
-    try {
-      final response = await dio.get(
-        ApiRepository.getCompany + "/" '${id}' + "?expand=contacts",
-        options: Options(
-          headers: {
-            "Accept": "application/json",
-            "Authorization": 'Bearer ${UserToken.accessToken}',
-          },
-        ),
-      ).timeout(const Duration(minutes: 1), onTimeout: () {
-        throw (Exception('TIME OUT'));
-      });
-
-
-      if (response.statusCode == HttpStatus.ok) {
-        return  CompanyModel.fromJson(response.data);
-      } else if (response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
-      } else {
-        throw Exception('UNKNOWN');
-      }
-    } catch (e) {
-      print(e);
-
-      throw Exception('UNKNOWN');
-    }
-  }
-
-  Future<CompanyModel> updateLeads({
-    required int id,
-    required int projectId,
-    required int contactId,
-    required String estimatedAmount,
-    required String startDate,
-    required String endDate,
-    required int leadStatusId
-  }) async {
-    try {
-      final response = await dio.put(
-        ApiRepository.getLeads + "/" '${id}' + "?_method=PUT" ,
-        options: Options(
-          headers: {
-            "Accept": "application/json",
-            "Authorization": 'Bearer ${UserToken.accessToken}',
-
-          },
-        ),
-        data: {
-          "project_id": projectId,
-          "contact_id": contactId,
-          "estimated_amount": estimatedAmount,
-          "start_date": startDate,
-          "end_date": endDate,
-          "lead_status_id": leadStatusId
-        },
-      ).timeout(const Duration(minutes: 1), onTimeout: () {
-        throw (Exception('TIME OUT'));
-      });
-
-      final Map<String, dynamic> data = await response.data;
-
-      if (response.statusCode == HttpStatus.ok) {
-        return CompanyModel.fromJson(data['data']);
-      } else if (response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
-      } else {
-        throw Exception('UNKNOWN');
-      }
-    } catch (e) {
-      print(e);
-
-      throw Exception('UNKNOWN');
-    }
-  }
-
-  Future<bool> deleteLeads({required int id}) async {
-    try {
-      final response = await dio.delete(
-        ApiRepository.getCompany + "/$id",
-        options: Options(
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": 'Bearer ${UserToken.accessToken}',
-          },
-        ),
-      ).timeout(const Duration(minutes: 1), onTimeout: () {
-        throw (Exception('TIME OUT'));
-      });
-
-      if (response.statusCode == HttpStatus.noContent) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      print(e);
-      throw Exception('UNKNOWN');
-    }
-  }
 
 }

@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:icrm/core/models/contacts_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -15,15 +20,6 @@ class ContactsInitState extends ContactsState {
   List<Object?> get props => [contacts];
 }
 
-class ContactsShowState extends ContactsState {
-  final ContactModel contact;
-
-  ContactsShowState({required this.contact});
-
-  @override
-  List<Object?> get props => [contact];
-}
-
 class ContactsAddFromProjectState extends ContactsState {
   final int id;
   final String name;
@@ -36,6 +32,8 @@ class ContactsAddFromProjectState extends ContactsState {
   @override
   List<Object?> get props => [id];
 }
+
+class ContactsAddState extends ContactsState {}
 
 class ContactsLoadingState extends ContactsState {}
 

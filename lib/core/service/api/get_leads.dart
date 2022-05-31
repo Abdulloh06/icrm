@@ -8,18 +8,31 @@ import 'package:icrm/core/models/leads_model.dart';
 import 'package:icrm/core/repository/api_repository.dart';
 import 'package:dio/dio.dart';
 import '../../repository/user_token.dart';
+import '../../util/get_it.dart';
+import 'auth/login_service.dart';
 
 class GetLeads {
   final dio = Dio();
 
-  Future<List<LeadsModel>> getLeads({required int page, bool trash = false}) async {
+  Future<List<LeadsModel>> getLeads({
+    required int page,
+    bool trash = false,
+    bool withPagination = true,
+  }) async {
+    String url;
+    if(withPagination) {
+      url = ApiRepository.getLeads + "?paginate=true&expand=project.projectStatus,project.userCategory,project.members,label.userLabel,seller,tasks,messages,contact&trash=$trash&page=$page";
+    }else {
+      url = ApiRepository.getLeads + "?expand=project.projectStatus,project.userCategory,project.members,label.userLabel,seller,tasks,messages,contact&trash=$trash";
+    }
+
     try {
       final response = await dio.get(
-        ApiRepository.getLeads + "?paginate=true&expand=project.projectStatus,project.userCategory,project.members,leadStatus,seller,tasks.taskStatus,messages,contact&trash=$trash&page=$page",
+        url,
         options: Options(
           headers: {
-            "Accept": "application/json",
-            "Authorization": 'Bearer ${UserToken.accessToken}',
+            HttpHeaders.acceptHeader: "application/json",
+            HttpHeaders.authorizationHeader: 'Bearer ${UserToken.accessToken}',
           },
         ),
       ).timeout(const Duration(minutes: 1), onTimeout: () {
@@ -30,16 +43,24 @@ class GetLeads {
 
       if (response.statusCode == HttpStatus.ok) {
         return LeadsModel.fetchData(data);
-      } else if (response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
       } else {
         throw Exception('UNKNOWN');
       }
-    } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
+    } on DioError catch (e) {
+      if(e.response!.statusCode == HttpStatus.unauthorized) {
+        String result = await getIt.get<LoginService>().login(
+          username: '',
+          password: '',
+          toRefresh: true,
+        );
+        print(result + "-Refresh Token");
 
-      throw Exception('UNKNOWN LEADS');
+        return await getLeads(page: page);
+      }else if(e.response!.statusCode == HttpStatus.internalServerError) {
+        throw Exception("SERVER ERROR");
+      }else {
+        throw Exception('UNKNOWN');
+      }
     }
   }
 
@@ -61,7 +82,7 @@ class GetLeads {
       FormData formData = await FormData.fromMap({
         "project_id": projectId,
         "start_date": startDate,
-        "lead_status_id": leadStatus,
+        "label_id": leadStatus,
         "contact_id": contactId,
       });
 
@@ -104,17 +125,11 @@ class GetLeads {
       } else if(response.statusCode == HttpStatus.internalServerError) {
         throw Exception('SERVER ERROR');
       } else {
-        if (data['error']['project_id'] != null) {
-          throw Exception('project_id');
-        } else if (data['errors']['contact_id']) {
-          throw Exception('contact_id');
-        } else {
-          throw Exception('something_went_wrong');
-        }
+        throw Exception('UNKNOWN');
       }
-    } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
+    } on DioError catch (e) {
+      final Map<String, dynamic> data = await e.response!.data;
+      print(data);
       throw Exception('UNKNOWN ADD LEADS $e');
     }
   }
@@ -167,7 +182,7 @@ class GetLeads {
 
       Map<String, dynamic> formData = {
         "project_id": projectId,
-        "lead_status_id": leadStatusId,
+        "label_id": leadStatusId,
         "contact_id": contactId,
       };
 

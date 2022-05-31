@@ -9,14 +9,11 @@ import 'package:icrm/widgets/main_search_bar.dart';
 import 'package:icrm/widgets/main_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'package:telephony/telephony.dart';
 
 class Messages extends StatelessWidget {
   Messages({Key? key}) : super(key: key);
 
   final _searchController = TextEditingController();
-
-  final _telephony = Telephony.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +53,10 @@ class Messages extends StatelessWidget {
                         itemCount: 3,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: () async {
-                              List<SmsMessage> messages = await _telephony.getInboxSms();
-                              List<SmsConversation> conversations = await _telephony.getConversations();
-                              print(messages);
-                              print(conversations[0].snippet);
-                            },
+                            onTap: () {},
                             child: ChatsCard(
                               name: 'Джейн Купер',
-                              image: 'assets/png/img.png',
+                              image: 'assets/png/ellipse.png',
                               lastMessages: 'Lorem ipsum dolor sit amet, onsectetur adipiscing elit. ',
                             ),
                           );
@@ -74,23 +66,10 @@ class Messages extends StatelessWidget {
                         itemCount: 3,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: () async {
-                              await _telephony.sendSms(
-                                to: '998996037105',
-                                message: 'I AM WRITING FROM CRM',
-                                statusListener: (status) {
-                                  if(status == SendStatus.SENT) {
-                                    print('SENT');
-                                  }
-                                  if(status == SendStatus.DELIVERED) {
-                                    print('DELIVERED');
-                                  }
-                                }
-                              );
-                            },
+                            onTap: () {},
                             child: ChatsCard(
                               name: 'Джейн Купер',
-                              image: 'assets/png/img.png',
+                              image: 'assets/png/ellipse.png',
                               lastMessages: 'Lorem ipsum dolor sit amet, onsectetur adipiscing elit. ',
                             ),
                           );

@@ -52,12 +52,13 @@ class GetContacts {
   }) async {
     try {
 
-
       FormData formData = await FormData.fromMap({
         "name": name,
-        "phone_number": phone_number,
         "contact_type": type,
       });
+      if(phone_number.isNotEmpty) {
+        formData.fields.add(MapEntry("phone_number", phone_number));
+      }
       if(email != '') {
         formData.fields.add(MapEntry('email', email));
       }
@@ -73,9 +74,9 @@ class GetContacts {
         ApiRepository.getContacts,
         options: Options(
           headers: {
-            "Accept": "application/json",
-            "Authorization": 'Bearer ${UserToken.accessToken}',
-            "Content-Type": "application/json",
+            HttpHeaders.acceptHeader: "application/json",
+            HttpHeaders.authorizationHeader: 'Bearer ${UserToken.accessToken}',
+            HttpHeaders.contentTypeHeader: "application/json",
           },
         ),
         data: formData,
@@ -83,27 +84,31 @@ class GetContacts {
         throw (Exception('TIME OUT'));
       });
 
-      final Map<String, dynamic> data = await response.data;
-
       if (response.statusCode == HttpStatus.ok ||
           response.statusCode == HttpStatus.created) {
         return '';
       } else {
-        if(data['']) {
-          return 'email_already_in_use';
-        }else if(data['']) {
-          return 'phone_already_in_use';
-        }else {
-          return "something_went_wrong";
-        }
+        return 'something_went_wrong';
       }
-    } catch (e) {
-      print(e);
-      throw Exception('UNKNOWN');
+    } on DioError catch (e) {
+      final Map<String, dynamic> data = await e.response!.data;
+
+      if(data['errors']['email'] != null) {
+        return 'email_already_in_use';
+      }else if(data['errors']['phone_number'] != null
+          && data['errors']['phone_number'].toString()
+              .contains('The phone number must be at least 12 characters')
+      ) {
+        return 'invalid_phone_number';
+      }else if(data['errors']['phone_number'] != null) {
+        return "phone_already_in_use";
+      }else {
+        return "something_went_wrong";
+      }
     }
   }
 
-  Future<ContactModel> updateContact({
+  Future<bool> updateContact({
     required int id,
     required String name,
     required String position,
@@ -111,11 +116,9 @@ class GetContacts {
     required String email,
     required int type,
     File? avatar,
-    required bool hasAvatar,
   }) async {
 
     try {
-
 
       FormData formData = await FormData.fromMap({
         "name": name,
@@ -123,17 +126,16 @@ class GetContacts {
         "contact_type": type,
       });
 
-      if(position == '') {
+      if(position.isNotEmpty) {
         formData.fields.add(MapEntry('position', position));
       }
-      if(email == '') {
+      if(email.isNotEmpty) {
         formData.fields.add(MapEntry('email', email));
       }
-      if(hasAvatar) {
-        String fileName = avatar!.path.split('/').last;
+      if(avatar != null) {
+        String fileName = avatar.path.split('/').last;
         formData.files.add(MapEntry('avatar', await MultipartFile.fromFile(avatar.path, filename: fileName)));
       }
-
 
       final response = await dio.post(
         ApiRepository.getContacts + "/$id?_method=PUT",
@@ -141,16 +143,13 @@ class GetContacts {
           headers: {
             "Accept": "application/json",
             "Authorization": "Bearer ${UserToken.accessToken}",
-            "Content-Type": "application/json",
           },
         ),
         data: formData,
       );
 
-      final Map<String, dynamic> data = await response.data;
-
       if(response.statusCode == HttpStatus.ok) {
-        return ContactModel.fromJson(data['data']);
+        return true;
       }else if(response.statusCode == HttpStatus.internalServerError) {
         throw Exception('SERVER ERROR');
       }else {
@@ -159,7 +158,6 @@ class GetContacts {
 
     } catch(error) {
       print(error);
-
       throw Exception('ERROR');
     }
   }
@@ -190,37 +188,7 @@ class GetContacts {
     }
   }
 
-  Future<ContactModel> showContact({required int id}) async {
-    try {
-      final response = await dio.get(
-        ApiRepository.getContacts + "/$id",
-        options: Options(
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": 'Bearer ${UserToken.accessToken}',
-          },
-        ),
-      ).timeout(const Duration(minutes: 1), onTimeout: () {
-        throw (Exception('TIME OUT'));
-      });
-
-      final Map<String, dynamic> data = await response.data;
-
-      if (response.statusCode == HttpStatus.ok) {
-        return ContactModel.fromJson(data['data']);
-      } else if(response.statusCode == HttpStatus.internalServerError){
-        throw Exception('SERVER ERROR');
-      }else {
-        throw Exception('UNKNOWN');
-      }
-    } catch (e) {
-      print(e);
-      throw Exception('UNKNOWN');
-    }
-  }
-
-  Future<int> addContactFromProject({
+  Future addContactFromProject({
     required String name,
     required String position,
     required String phone_number,
@@ -233,10 +201,12 @@ class GetContacts {
 
       FormData formData = await FormData.fromMap({
         "name": name,
-        "phone_number": phone_number,
         "contact_type": type,
         "source": source,
       });
+      if(phone_number.isNotEmpty) {
+        formData.fields.add(MapEntry("phone_number", phone_number));
+    }
       if(email != '') {
         formData.fields.add(MapEntry('email', email));
       }
@@ -263,18 +233,22 @@ class GetContacts {
       if (response.statusCode == HttpStatus.ok ||
           response.statusCode == HttpStatus.created) {
         return data['data']['id'];
-      } else {
-        if(data['errors']['email'] != null) {
-          throw Exception('email_already_in_use');
-        }else if(data['errors']['phone'] != null) {
-          throw Exception('phone_already_in_use');
-        }else {
-          throw Exception("something_went_wrong");
-        }
+      }else {
+        return "something_went_wrong";
       }
-    } catch (e) {
-      print(e);
-      throw Exception('UNKNOWN');
+    } on DioError catch (e) {
+      final Map<String, dynamic> data = await e.response!.data;
+      print(data);
+
+      if(data['errors']['email'] != null) {
+        return 'email_already_in_use';
+      }else if(data['errors']['phone_number'] != null && data['errors']['phone_number'].toString().contains('The phone number must be at least 12 characters')) {
+        return 'invalid_phone_number';
+      }else if(data['errors']['phone_number'] != null) {
+        return "phone_already_in_use";
+      }else {
+        return "something_went_wrong";
+      }
     }
   }
 }

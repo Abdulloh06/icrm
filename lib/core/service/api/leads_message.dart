@@ -59,8 +59,8 @@ class LeadsMessage {
         throw Exception('UNKNOWN');
       }
 
-    } catch(error) {
-      print(error);
+    } on DioError catch(error) {
+      print(error.response!.data);
 
       throw Exception('UNKNOWN');
     }

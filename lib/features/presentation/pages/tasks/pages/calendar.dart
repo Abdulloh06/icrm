@@ -6,7 +6,7 @@
 import 'package:icrm/core/models/tasks_model.dart';
 import 'package:icrm/core/util/text_input_format.dart';
 import 'package:icrm/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
-import 'package:icrm/features/presentation/pages/tasks/components/main_info.dart';
+import 'package:icrm/features/presentation/pages/tasks/pages/selected_task/components/main_info.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,9 +48,11 @@ class _TasksCalendarState extends State<TasksCalendar> {
 
     try {
       _startDateController.text = DateFormat("dd.MM.yyyy").format(DateTime.parse(widget.task.startDate));
-      _endDateController.text = DateFormat("dd.MM.yyyy").format(DateTime.parse(widget.task.deadline));
-    }catch(e) {
-      print(e);
+      if(widget.task.deadline.isNotEmpty) {
+        _endDateController.text = DateFormat("dd.MM.yyyy").format(DateTime.parse(widget.task.deadline));
+      }
+    }catch(_) {
+      print(_);
 
       _startDateController.text = widget.task.startDate;
       _endDateController.text = widget.task.deadline;

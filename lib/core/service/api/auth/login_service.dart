@@ -16,16 +16,26 @@ class LoginService {
   Future<String> login({
     required String username,
     required String password,
+    bool toRefresh = false,
   }) async {
+
+    Map<String, dynamic> formData;
+    if(toRefresh) {
+      formData = {
+        "refresh_token": UserToken.refreshToken,
+      };
+    } else {
+      formData = {
+        "username": username,
+        "password": password,
+        "reg_id": UserToken.fmToken,
+      };
+    }
     try {
       print(UserToken.fmToken);
       final response = await dio.post(
         ApiRepository.login,
-        data: {
-          "username": username,
-          "password": password,
-          "firebase_reg_id": UserToken.fmToken,
-        },
+        data: formData,
       );
 
       final Map<String, dynamic> data = await response.data;
@@ -36,6 +46,7 @@ class LoginService {
           prefs.setTokens(
             accessToken: data['access_token'],
             refreshToken: data['refresh_token'],
+            expiresIn: data['expires_in'],
           );
 
           UserToken.authStatus = prefs.getAuth;
@@ -44,26 +55,27 @@ class LoginService {
         });
 
         return '';
-      } else if(response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
-      } else {
-        if(data['errors'] != null) {
-          return 'user_not_found';
-        }else {
-          return 'something_went_wrong';
-        }
-      }
-    } catch (e) {
-      print(e);
-      if(e.toString().contains('400')) {
-        throw Exception('user_not_found');
       }else {
+        throw Exception('UNKNOWN');
+      }
+
+    } on DioError catch(e) {
+      final Map<String, dynamic> data = e.response!.data;
+
+      if(data['error'] == 'invalid_grant') {
+        return 'user_not_found';
+      } else if(data['error_description'].toString().toLowerCase().contains('refresh token')) {
+        return "refresh_token";
+      } else {
         throw Exception('UNKNOWN');
       }
     }
   }
 
-  Future<bool> changePassword({required String password}) async {
+  Future<bool> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
 
     try {
 
@@ -77,8 +89,9 @@ class LoginService {
           }
         ),
         data: {
-          "password": password,
-          "password_confirmation": password,
+          "password": oldPassword,
+          "new_confirmation": newPassword,
+          "new_password_confirmation": newPassword,
         },
       );
 
@@ -88,11 +101,12 @@ class LoginService {
         throw Exception('UNKNOWN');
       }
 
-    } catch(error) {
-      print(error);
-
+    } on DioError catch(e) {
+      final Map<String, dynamic> data = await e.response!.data;
+      print(data['errors']);
       throw Exception('UNKNOWN');
     }
 
   }
+
 }

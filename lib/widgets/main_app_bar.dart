@@ -106,62 +106,16 @@ class MainAppBar extends StatelessWidget {
                 ? AppColors.mainColor
                 : Colors.white,
         actions: [
-          StatefulBuilder(
-            builder: (context, setState) {
-              return IconButton(
-                onPressed: () async {
-                  showDialog(
-                    barrierDismissible: true,
-                    context: context,
-                    builder: (context) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Material(
-                          elevation: 0,
-                          color: Colors.transparent,
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                children: [
-                                  CustomTextField(
-                                    hint: 'search',
-                                    controller: _searchController,
-                                    validator: (value) => null,
-                                    iconMargin: 10,
-                                    suffixIcon: 'assets/icons_svg/search.svg',
-                                    onChanged: (value) {
-                                      setState(() {});
-                                    },
-                                    iconColor: UserToken.isDark ? Colors.white : Colors.black,
-                                    isFilled: true,
-                                    color: UserToken.isDark ? AppColors.cardColorDark : Colors.white,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.5,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: SearchPage(search: _searchController.text),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-                icon: SvgPicture.asset(
-                  'assets/icons_svg/search.svg',
-                  color: UserToken.isDark ? Colors.white : Colors.black,
-                ),
-              );
-            }
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SearchPage();
+              }));
+            },
+            icon: SvgPicture.asset(
+              'assets/icons_svg/search.svg',
+              color: UserToken.isDark ? Colors.white : Colors.black,
+            ),
           ),
           IconButton(
             onPressed: () => scaffoldKey.currentState!.openEndDrawer(),

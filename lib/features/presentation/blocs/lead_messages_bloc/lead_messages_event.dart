@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'package:equatable/equatable.dart';
 
 abstract class LeadMessagesEvent extends Equatable {}

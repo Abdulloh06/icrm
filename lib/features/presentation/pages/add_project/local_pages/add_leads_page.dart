@@ -3,20 +3,25 @@
   15 y.o
  */
 
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:icrm/core/models/status_model.dart';
 import 'package:icrm/core/models/team_model.dart';
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
+import 'package:icrm/core/util/text_input_format.dart';
+import 'package:icrm/features/presentation/blocs/cubits/bottom_bar_cubit.dart';
 import 'package:icrm/features/presentation/blocs/helper_bloc/helper_bloc.dart';
 import 'package:icrm/features/presentation/blocs/helper_bloc/helper_event.dart';
 import 'package:icrm/features/presentation/blocs/helper_bloc/helper_state.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_bloc.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_state.dart';
-import 'package:icrm/features/presentation/blocs/projects_bloc/projects_event.dart';
+import 'package:icrm/features/presentation/blocs/search_bloc/search_event.dart';
+import 'package:icrm/features/presentation/blocs/search_bloc/search_state.dart';
 import 'package:icrm/features/presentation/pages/add_project/components/add_members.dart';
 import 'package:icrm/features/presentation/pages/add_project/local_pages/contact_person.dart';
-import 'package:icrm/features/presentation/pages/add_succes_pages/add_lead_page.dart';
 import 'package:icrm/features/presentation/pages/widgets/double_buttons.dart';
 import 'package:icrm/widgets/custom_text_field.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +33,8 @@ import 'package:speech_to_text/speech_to_text.dart';
 import '../../../../../core/models/leads_model.dart';
 import '../../../../../core/util/text_styles.dart';
 import '../../../blocs/home_bloc/home_event.dart';
-import '../../../blocs/projects_bloc/projects_bloc.dart';
-import '../../../blocs/projects_bloc/projects_state.dart';
+import '../../../blocs/search_bloc/search_bloc.dart';
+import '../../main/main_page.dart';
 import '../components/reminder_calendar.dart';
 
 class Leads extends StatefulWidget {
@@ -37,25 +42,28 @@ class Leads extends StatefulWidget {
     Key? key,
     this.fromEdit = false,
     this.lead,
+    this.name,
   }) : super(key: key);
 
   final bool fromEdit;
   final LeadsModel? lead;
+  final String? name;
 
   @override
   State<Leads> createState() => _LeadsState();
 }
 
 class _LeadsState extends State<Leads> {
-  static String start_date = '';
-  static String deadline = '';
-  static String status = '';
+  String start_date = '';
+  String deadline = '';
+  String status = '';
   int? status_id;
-  static int? project_id;
-  static int? contact_id;
-  static List<TeamModel> members = [];
+  int? project_id;
+  int? contact_id;
+  List<TeamModel> members = [];
 
   final _formKey = GlobalKey<FormState>();
+
   final _descriptionController = TextEditingController();
   final _amountController = TextEditingController();
   final _currencyController = TextEditingController();
@@ -68,17 +76,18 @@ class _LeadsState extends State<Leads> {
   final _speech = SpeechToText();
 
   void showProjects(BuildContext context) {
-    context.read<ProjectsBloc>().add(ProjectsInitEvent());
+    context.read<SearchBloc>().add(SearchProjectEvent());
     showDialog(
-        context: context,
-        builder: (context) {
-          return ScrollConfiguration(
+      context: context,
+      builder: (context) {
+        return ScrollConfiguration(
             behavior: const ScrollBehavior().copyWith(overscroll: false),
             child: AlertDialog(
               backgroundColor:
                   UserToken.isDark ? AppColors.mainDark : Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+                borderRadius: BorderRadius.circular(20),
+              ),
               insetPadding: const EdgeInsets.symmetric(vertical: 60),
               content: SizedBox(
                 width: MediaQuery.of(context).size.width - 80,
@@ -94,18 +103,16 @@ class _LeadsState extends State<Leads> {
                       onChanged: (value) {},
                       validator: (value) => null,
                       onEditingComplete: () {
-                        context.read<ProjectsBloc>().add(ProjectsInitEvent());
+                        FocusScope.of(context).unfocus();
                       },
                       isFilled: true,
                       color: UserToken.isDark ? AppColors.textFieldColorDark : Colors.white,
                     ),
                     const SizedBox(height: 20),
                     Expanded(
-                      child: BlocConsumer<ProjectsBloc, ProjectsState>(
-                        listener: (context, state) {},
+                      child: BlocBuilder<SearchBloc, SearchState>(
                         builder: (context, state) {
-                          if (state is ProjectsInitState &&
-                              state.projects.isNotEmpty) {
+                          if (state is SearchProjectsState && state.projects.isNotEmpty) {
                             return ListView.builder(
                               itemCount: state.projects.length,
                               itemBuilder: (context, index) {
@@ -119,6 +126,10 @@ class _LeadsState extends State<Leads> {
                                       _projectController.text =
                                           state.projects[index].name;
                                       project_id = state.projects[index].id;
+                                      _currencyController.text = state.projects[index].currency;
+                                      if(state.projects[index].price != null) {
+                                        _amountController.text = state.projects[index].price.toString();
+                                      }
                                       Navigator.pop(context);
                                     },
                                     child: Container(
@@ -156,22 +167,18 @@ class _LeadsState extends State<Leads> {
                                 );
                               },
                             );
-                          } else if (state is ProjectsInitState &&
+                          } else if (state is SearchProjectsState &&
                               state.projects.isEmpty) {
                             return Center(
                               child: LocaleText('empty',
                                   style: AppTextStyles.mainGrey),
                             );
-                          } else if (state is ProjectsErrorState) {
+                          } else if (state is SearchErrorState) {
                             return Center(
                               child: Text(state.error),
                             );
                           } else {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: AppColors.mainColor,
-                              ),
-                            );
+                            return Loading();
                           }
                         },
                       ),
@@ -181,7 +188,8 @@ class _LeadsState extends State<Leads> {
               ),
             ),
           );
-        });
+      },
+    );
   }
 
   void listen() async {
@@ -201,6 +209,11 @@ class _LeadsState extends State<Leads> {
             _descriptionController.text = value.recognizedWords;
           }),
         );
+      }else {
+        setState(() {
+          isListening != false;
+        });
+        _speech.stop();
       }
     } else {
       setState(() {
@@ -216,14 +229,22 @@ class _LeadsState extends State<Leads> {
     members.clear();
 
     if (widget.fromEdit) {
-      _projectController.text = widget.lead!.project!.name;
+      if(widget.name != null) {
+        _projectController.text = widget.name!;
+      }else {
+        _projectController.text = widget.lead!.project!.name;
+      }
       _personInfoController.text = widget.lead!.contact != null ? widget.lead!.contact!.name : "";
-      _currencyController.text = widget.lead!.currency.toString();
-      _amountController.text = widget.lead!.estimatedAmount.toString();
       _descriptionController.text = widget.lead!.description;
       status = widget.lead!.leadStatus!.name;
       if(widget.lead!.member != null) {
         members.add(widget.lead!.member!);
+      }
+      if(widget.lead!.estimatedAmount != null) {
+        _amountController.text = widget.lead!.estimatedAmount.toString();
+      }
+      if(widget.lead!.currency != null) {
+        _currencyController.text = widget.lead!.currency;
       }
 
       project_id = widget.lead!.projectId;
@@ -232,7 +253,7 @@ class _LeadsState extends State<Leads> {
       try {
         start_date = DateFormat("dd.MM.yyyy").format(DateTime.parse(widget.lead!.startDate)).toString();
         deadline = DateFormat("dd.MM.yyyy").format(DateTime.parse(widget.lead!.endDate)).toString();
-         _dateController.text = start_date + " - " + deadline;
+        _dateController.text = start_date + " - " + deadline;
       } catch(error) {
         print(error);
         _dateController.text = widget.lead!.startDate + " - " + widget.lead!.endDate;
@@ -246,10 +267,8 @@ class _LeadsState extends State<Leads> {
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
         if (state is LeadAddSuccessState) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AddLeadsPage(id: state.lead.id, phone_number: '')),
-          );
+          context.read<BottomBarCubit>().changePage(0);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainPage()), (route) => false);
         }
         if (state is HomeErrorState) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -267,16 +286,16 @@ class _LeadsState extends State<Leads> {
       },
       child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
         if(state is HomeInitState) {
-          if(state.leadStatus.isNotEmpty) {
-            status_id = state.leadStatus.elementAt(state.leadStatus.indexWhere((element) => element.sequence == 0)).id;
+          if(state.leadStatus.isNotEmpty && status_id == null) {
+            List<StatusModel> visibleStatuses = state.leadStatus.where((element) => element.userLabel != null).toList();
+            if(visibleStatuses.isNotEmpty) {
+              status = visibleStatuses.first.userLabel!.name;
+              status_id = visibleStatuses.first.id;
+            }
           }
         }
         if (state is HomeLoadingState) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: AppColors.mainColor,
-            ),
-          );
+          return Loading();
         } else {
           return ScrollConfiguration(
             behavior: const ScrollBehavior().copyWith(overscroll: false),
@@ -343,7 +362,13 @@ class _LeadsState extends State<Leads> {
                                       : null,
                                   controller: _personInfoController,
                                   onChanged: (value) {},
-                                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPerson(fromProject: false,))),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ContactPerson(
+                                      fromProject: false,
+                                      contact_id: contact_id,
+                                    )),
+                                  ),
                                   hint: 'the_contact_person',
                                   readOnly: true,
                                   isFilled: true,
@@ -387,16 +412,32 @@ class _LeadsState extends State<Leads> {
                                           scrollDirection: Axis.horizontal,
                                           itemCount: members.length,
                                           itemBuilder: (context, index) {
-                                            return CachedNetworkImage(
-                                              imageUrl:
-                                                  members[index].social_avatar,
-                                              errorWidget:
-                                                  (context, error, bt) {
-                                                return CircleAvatar(
-                                                  backgroundImage: AssetImage(
-                                                      'assets/png/no_user.png'),
-                                                );
-                                              },
+                                            return CircleAvatar(
+                                              radius: 25,
+                                              child: SizedBox(
+                                                height: double.infinity,
+                                                width: double.infinity,
+                                                child: ClipOval(
+                                                  child: GestureDetector(
+                                                    onLongPress: () {
+                                                      members.removeAt(index);
+                                                      setState(() {});
+                                                    },
+                                                    child: CachedNetworkImage(
+                                                      imageUrl:
+                                                          members[index].social_avatar,
+                                                      fit: BoxFit.fill,
+                                                      errorWidget: (context, error, bt) {
+                                                        return CircleAvatar(
+                                                          backgroundImage: AssetImage(
+                                                            'assets/png/no_user.png',
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             );
                                           },
                                         ),
@@ -418,28 +459,28 @@ class _LeadsState extends State<Leads> {
                                   color: Colors.transparent,
                                   itemBuilder: (BuildContext context) {
                                     if (state is HomeInitState) {
-                                      print(status);
+                                      List<StatusModel> visibleStatuses = state.leadStatus.where((element) => element.userLabel != null).toList();
                                       return List.generate(
-                                        state.leadStatus.length,
-                                            (index) {
+                                        visibleStatuses.length, (index) {
+                                          String title = visibleStatuses[index].userLabel!.name;
+                                          String color = visibleStatuses[index].userLabel!.color;
+
                                           return PopupMenuItem(
                                             padding:
                                             const EdgeInsets.only(
                                                 right: 10),
                                             onTap: () {
-                                              status = state.leadStatus[index].name;
-                                              status_id = state.leadStatus[index].id;
+                                              status = title;
+                                              status_id = visibleStatuses[index].id;
                                               setState(() {});
                                             },
                                             child: ClipRRect(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  10),
+                                              borderRadius: BorderRadius.circular(10),
                                               child: Container(
                                                 alignment:
                                                 Alignment.center,
                                                 color: Color(
-                                                  int.parse(state.leadStatus[index].color.split('#').join('0xff')),
+                                                  int.parse(color.split('#').join('0xff')),
                                                 ),
                                                 padding:
                                                 const EdgeInsets
@@ -447,7 +488,7 @@ class _LeadsState extends State<Leads> {
                                                     horizontal: 20,
                                                     vertical: 8),
                                                 child: Text(
-                                                  state.leadStatus[index].name,
+                                                  title,
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                   ),
@@ -458,35 +499,38 @@ class _LeadsState extends State<Leads> {
                                         },
                                       );
                                     } else if(state is LeadShowState) {
+                                      List<StatusModel> visibleStatuses = state.leadStatus.where((element) => element.userLabel != null).toList();
                                       return List.generate(
-                                        state.leadStatus.length,
+                                        visibleStatuses.length,
                                             (index) {
+                                          String title = visibleStatuses[index].name;
+                                          String color = visibleStatuses[index].color;
+
                                           return PopupMenuItem(
                                             padding:
                                             const EdgeInsets.only(
                                                 right: 10),
                                             onTap: () {
-                                              status = state.leadStatus[index].name;
-                                              status_id = state.leadStatus[index].id;
+                                              status = visibleStatuses[index].name;
+                                              status_id = visibleStatuses[index].id;
                                               setState(() {});
                                             },
                                             child: ClipRRect(
                                               borderRadius:
-                                              BorderRadius.circular(
-                                                  10),
+                                              BorderRadius.circular(10),
                                               child: Container(
                                                 alignment:
                                                 Alignment.center,
                                                 color: Color(
-                                                  int.parse(state.leadStatus[index].color.split('#').join('0xff')),
+                                                  int.parse(color.split('#').join('0xff')),
                                                 ),
                                                 padding:
-                                                const EdgeInsets
-                                                    .symmetric(
-                                                    horizontal: 20,
-                                                    vertical: 8),
+                                                const EdgeInsets.symmetric(
+                                                  horizontal: 20,
+                                                  vertical: 8,
+                                                ),
                                                 child: Text(
-                                                  state.leadStatus[index].name,
+                                                  title,
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                   ),
@@ -496,7 +540,6 @@ class _LeadsState extends State<Leads> {
                                           );
                                         },
                                       );
-
                                     }else {
                                       return [
                                         PopupMenuItem(
@@ -526,19 +569,19 @@ class _LeadsState extends State<Leads> {
                                           .spaceBetween,
                                       children: [
                                         Text(
-                                          status == ''
-                                              ? Locales.string(context,
-                                              'lead_status')
-                                              : status,
+                                          status == '' ? Locales.string(context,
+                                            'lead_status',
+                                          ) : status,
                                           style: TextStyle(
                                             fontSize: 16,
                                             color: status == ''
                                                 ? Colors.grey
-                                                : Colors.black,
+                                                : UserToken.isDark ? Colors.white : Colors.black,
                                           ),
                                         ),
                                         SvgPicture.asset(
-                                            'assets/icons_svg/plus.svg'),
+                                          'assets/icons_svg/plus.svg',
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -568,23 +611,47 @@ class _LeadsState extends State<Leads> {
                                       : AppColors.textFieldColor,
                                 ),
                                 const SizedBox(height: 10),
-                                CustomTextField(
-                                  validator: (value) => null,
-                                  controller: _descriptionController,
-                                  onChanged: (value) {},
-                                  onIconTap: () {
-                                    listen();
-                                  },
-                                  hint: 'description',
+                                TextFormField(
                                   maxLines: 6,
-                                  suffixIcon: 'assets/icons_svg/microphone.svg',
-                                  iconMargin: 20,
-                                  isFilled: true,
-                                  color: UserToken.isDark
-                                      ? AppColors.textFieldColorDark
-                                      : AppColors.textFieldColor,
+                                  cursorColor: AppColors.mainColor,
+                                  controller: _descriptionController,
+                                  decoration: InputDecoration(
+                                    suffixIcon: Padding(
+                                      padding: const EdgeInsets.only(bottom: 70),
+                                      child: AvatarGlow(
+                                        glowColor: AppColors.mainColor,
+                                        endRadius: 40,
+                                        animate: isListening,
+                                        child: GestureDetector(
+                                          onTap: () => listen(),
+                                          child: CircleAvatar(
+                                            child: SvgPicture.asset(
+                                              "assets/icons_svg/microphone.svg",
+                                            ),
+                                            backgroundColor: Colors.transparent,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    isDense: true,
+                                    hintText: Locales.string(context, "description"),
+                                    hintStyle: const TextStyle(
+                                        fontSize: 16, color: Colors.grey),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(width: 1, color: AppColors.greyLight),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(width: 1.5, color: AppColors.mainColor),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    fillColor: UserToken.isDark
+                                        ? AppColors.textFieldColorDark
+                                        : AppColors.textFieldColor,
+                                    filled: true,
+                                  ),
                                 ),
-                                const SizedBox(height: 18),
+                                const SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -595,6 +662,9 @@ class _LeadsState extends State<Leads> {
                                         validator: (value) => null,
                                         controller: _amountController,
                                         onChanged: (value) {},
+                                        inputFormatters: [
+                                          NumericTextFormatter(),
+                                        ],
                                         keyboardType: TextInputType.number,
                                         hint: 'summa',
                                         isFilled: true,
@@ -643,13 +713,22 @@ class _LeadsState extends State<Leads> {
                         },
                         onSave: () {
                           if (_formKey.currentState!.validate()) {
+                            String start;
+                            String end;
+                            try {
+                              start = start_date != '' ? DateFormat('dd.MM.yyyy').add_Hm().parse(start_date).toString() : start_date;
+                              end = deadline != '' ? DateFormat('dd.MM.yyyy').add_Hm().parse(deadline).toString() : deadline;
+                            } catch(_) {
+                              start = start_date != '' ? DateFormat('dd.MM.yyyy').parse(start_date).toString() : start_date;
+                              end = deadline != '' ? DateFormat('dd.MM.yyyy').parse(deadline).toString() : deadline;
+                            }
                             if (widget.fromEdit) {
                               context.read<HomeBloc>().add(LeadsUpdateEvent(
                                 id: widget.lead!.id,
                                 project_id: project_id!,
                                 contact_id: contact_id,
-                                start_date: start_date != '' ? DateFormat('dd.MM.yyyy').parse(start_date).toString() : start_date,
-                                end_date: deadline != '' ? DateFormat('dd.MM.yyyy').parse(deadline).toString() : deadline,
+                                start_date: start,
+                                end_date: end,
                                 estimated_amount: _amountController.text,
                                 lead_status: status_id!,
                                 description: _descriptionController.text,
@@ -665,8 +744,8 @@ class _LeadsState extends State<Leads> {
                                   seller_id: members.isNotEmpty ? members.first.id : null,
                                   description: _descriptionController.text,
                                   estimated_amount: _amountController.text,
-                                  startDate: start_date != '' ? DateFormat('dd.MM.yyyy').parse(start_date).toString() : start_date,
-                                  endDate: deadline != '' ? DateFormat('dd.MM.yyyy').parse(deadline).toString() : deadline,
+                                  startDate: start,
+                                  endDate: end,
                                   leadStatus: status_id!,
                                   currency: _currencyController.text,
                                 ),

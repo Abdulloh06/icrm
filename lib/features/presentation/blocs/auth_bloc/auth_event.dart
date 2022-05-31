@@ -1,14 +1,15 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:equatable/equatable.dart';
 
-abstract class AuthEvents extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+abstract class AuthEvents extends Equatable {}
 
 class AuthInitEvent extends AuthEvents {
   @override
   List<Object?> get props => [];
-
 }
 
 class AuthSignInEvent extends AuthEvents {
@@ -48,28 +49,68 @@ class AuthSignUpConfirmation extends AuthEvents {
 
   final String via;
   final String password;
-  final String confirmPassword;
 
-  AuthSignUpConfirmation({required this.via, required this.password, required this.confirmPassword});
+  AuthSignUpConfirmation({
+    required this.via,
+    required this.password,
+  });
 
   @override
-  List<Object?> get props => [via, password, confirmPassword];
+  List<Object?> get props => [via, password];
 
 }
 
-class AuthSignInWithPhoneEvent extends AuthEvents {}
+class AuthSignInWithPhoneEvent extends AuthEvents {
+  @override
+  List<Object?> get props => [];
+}
 
-class AuthSignInWithEmailEvent extends AuthEvents {}
+class AuthSignInWithEmailEvent extends AuthEvents {
+  @override
+  List<Object?> get props => [];
+}
 
-class AuthGoogleSignInEvent extends AuthEvents {}
+class AuthGoogleSignInEvent extends AuthEvents {
+  @override
+  List<Object?> get props => [];
+}
 
-class AuthFacebookSignInEvent extends AuthEvents {}
+class AuthFacebookSignInEvent extends AuthEvents {
+  @override
+  List<Object?> get props => [];
+}
 
-class AuthYandexSignInEvent extends AuthEvents {}
+class AuthYandexSignInEvent extends AuthEvents {
+  final String token;
 
-class AuthGoogleSignUpEvent extends AuthEvents {}
+  AuthYandexSignInEvent({
+    required this.token,
+  });
+  @override
+  List<Object?> get props => [token];
+}
 
-class AuthFacebookSignUpEvent extends AuthEvents{}
+class AuthGoogleSignUpEvent extends AuthEvents {
+  @override
+  List<Object?> get props => [];
+}
 
-class AuthYandexSignUpEvent extends AuthEvents {}
+class AuthFacebookSignUpEvent extends AuthEvents{
+  @override
+  List<Object?> get props => [];
+}
 
+class AuthYandexSignUpEvent extends AuthEvents {
+  final String token;
+
+  AuthYandexSignUpEvent({
+    required this.token,
+  });
+  @override
+  List<Object?> get props => [token];
+}
+
+class AppleSignUpEvent extends AuthEvents {
+  @override
+  List<Object?> get props => [];
+}

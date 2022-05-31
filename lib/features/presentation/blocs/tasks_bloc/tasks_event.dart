@@ -113,39 +113,6 @@ class TasksDeleteEvent extends TasksEvent {
   List<Object> get props => [id];
 }
 
-class TasksAddCommentEvent extends TasksEvent {
-  final String comment;
-  final String comment_type;
-  final int id;
-
-  TasksAddCommentEvent({
-    required this.id,
-    required this.comment,
-    required this.comment_type,
-  });
-
-
-}
-
-class TasksDeleteCommentEvent extends TasksEvent {
-  final int id;
-
-  TasksDeleteCommentEvent({required this.id});
-}
-
-class TasksStatusAddEvent extends TasksEvent {
-
-  final String name;
-
-  TasksStatusAddEvent({
-    required this.name,
-  });
-
-  @override
-  List<Object> get props => [name];
-
-}
-
 class TasksStatusDeleteEvent extends TasksEvent {
   final int id;
 
@@ -158,11 +125,16 @@ class TasksStatusDeleteEvent extends TasksEvent {
 class TasksStatusUpdateEvent extends TasksEvent {
   final String name;
   final int id;
+  final String color;
 
-  TasksStatusUpdateEvent({required this.name,required this.id});
+  TasksStatusUpdateEvent({
+    required this.name,
+    required this.id,
+    required this.color,
+  });
 
   @override
-  List<Object?> get props => [name, id];
+  List<Object?> get props => [name, id, color];
 }
 
 class TasksAssignUsersEvent extends TasksEvent {
@@ -183,10 +155,4 @@ class TasksDeleteUserEvent extends TasksEvent {
 
   @override
   List<Object?> get props => [task_id, user];
-}
-
-class TasksShowEvent extends TasksEvent {
-  final int id;
-
-  TasksShowEvent({required this.id});
 }

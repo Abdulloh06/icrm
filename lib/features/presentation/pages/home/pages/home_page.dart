@@ -6,6 +6,7 @@
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/cubits/swipe_animate_cubit.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_bloc.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_event.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_state.dart';
@@ -17,23 +18,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({
+class HomePage extends StatelessWidget {
+  HomePage({
     Key? key,
     required this.scaffoldKey,
   }) : super(key: key);
 
   final GlobalKey<ScaffoldState> scaffoldKey;
   static int? lead_status;
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final _controller = RefreshController();
+
+  static bool isVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         preferredSize: Size(double.infinity, 52),
         child: MainAppBar(
           isMainColor: UserToken.isDark ? true : false,
-          scaffoldKey: widget.scaffoldKey,
+          scaffoldKey: scaffoldKey,
           elevation: 0,
           title: Text(
             'CRM',
@@ -59,9 +57,11 @@ class _HomePageState extends State<HomePage> {
               enablePullUp: false,
               onRefresh: () {
                 context.read<HomeBloc>().add(HomeInitEvent());
+                HomePage.lead_status = null;
                 _controller.refreshCompleted();
               },
               header: CustomHeader(
+                refreshStyle: RefreshStyle.Behind,
                 builder: (context, status) {
                   return Center(
                     child: RefreshProgressIndicator(
@@ -72,17 +72,45 @@ class _HomePageState extends State<HomePage> {
               ),
               footer: CustomFooter(
                 builder: (context, status) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.mainColor,
-                    ),
-                  );
+                  if(status == LoadStatus.loading) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.mainColor,
+                      ),
+                    );
+                  }else {
+                    return SizedBox.shrink();
+                  }
                 },
               ),
               controller: _controller,
               child: Column(
                 children: [
-                  DashBoard(state: state),
+                  Stack(
+                    children: [
+                      DashBoard(state: state),
+                      Visibility(
+                        visible: state.dashboard.length > 4,
+                        child: BlocBuilder<SwipeAnimationCubit, bool>(
+                            builder: (context, state) {
+                              return Visibility(
+                                visible: state,
+                                child: SizedBox(
+                                  height: 200,
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Lottie.asset(
+                                      'assets/json_animations/swipe.json',
+                                      height: 180,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 20),
                   Expanded(
                     child: Column(
@@ -97,7 +125,8 @@ class _HomePageState extends State<HomePage> {
                                 style: AppTextStyles.apppText.copyWith(
                                     color: UserToken.isDark
                                         ? Colors.white
-                                        : Colors.black),
+                                        : Colors.black,
+                                ),
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -117,8 +146,8 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 20),
-                        LeadsList(state: state),
+                        const SizedBox(height: 15),
+                        Expanded(child: LeadsList(state: state)),
                       ],
                     ),
                   ),

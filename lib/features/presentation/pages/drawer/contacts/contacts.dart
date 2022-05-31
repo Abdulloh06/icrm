@@ -9,6 +9,7 @@ import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_bloc.dar
 import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_event.dart';
 import 'package:icrm/features/presentation/blocs/contacts_bloc/contacts_state.dart';
 import 'package:icrm/features/presentation/pages/profile/pages/add_person.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:icrm/widgets/main_app_bar.dart';
 import 'package:icrm/widgets/main_search_bar.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +32,6 @@ class _ContactsState extends State<Contacts> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<ContactsBloc>().add(ContactsInitEvent());
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -83,6 +82,7 @@ class _ContactsState extends State<Contacts> {
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           LocaleText(
                             'add',
@@ -98,10 +98,9 @@ class _ContactsState extends State<Contacts> {
                 ),
               ),
               const SizedBox(height: 6),
-              Expanded(
-                child: BlocListener<ContactsBloc, ContactsState>(
-                  listener: (context, state) {
-                  },
+              ScrollConfiguration(
+                behavior: const ScrollBehavior().copyWith(overscroll: false),
+                child: Expanded(
                   child: BlocBuilder<ContactsBloc, ContactsState>(
                     builder: (context, state) {
                       if (state is ContactsInitState && state.contacts.isNotEmpty) {
@@ -134,11 +133,8 @@ class _ContactsState extends State<Contacts> {
                         );
                       }
                       else {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.mainColor,
-                          ),
-                        );
+                        context.read<ContactsBloc>().add(ContactsInitEvent());
+                        return Loading();
                       }
                     },
                   ),

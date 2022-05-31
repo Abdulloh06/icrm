@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 part of 'tasks_bloc.dart';
 
 abstract class TasksState extends Equatable {
@@ -7,7 +13,7 @@ abstract class TasksState extends Equatable {
 
 class TasksInitState extends TasksState {
   final List<TasksModel> tasks;
-  final List<TaskStatusModel> tasksStatuses;
+  final List<StatusModel> tasksStatuses;
 
   TasksInitState({required this.tasks, required this.tasksStatuses});
 
@@ -23,7 +29,7 @@ class TasksAddState extends TasksState {
 
 class TasksShowState extends TasksState {
   final TasksModel task;
-  final List<TaskStatusModel> taskStatuses;
+  final List<StatusModel> taskStatuses;
 
   TasksShowState({
     required this.task,

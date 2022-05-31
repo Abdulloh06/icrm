@@ -71,16 +71,13 @@ class CustomTextField extends StatelessWidget {
           onEditingComplete: onEditingComplete,
           decoration: InputDecoration(
             isDense: true,
-            suffixIcon: Visibility(
-              visible: suffixIcon != '',
-              child: GestureDetector(
-                onTap: onIconTap,
-                child: Container(
-                  margin: EdgeInsets.all(iconMargin).copyWith(bottom: maxLines == 1 ? iconMargin : 70),
-                  child: iconColor == null ? SvgPicture.asset(suffixIcon) : SvgPicture.asset(suffixIcon, color: iconColor,),
-                ),
+            suffixIcon: suffixIcon != '' ? GestureDetector(
+              onTap: onIconTap,
+              child: Container(
+                margin: EdgeInsets.all(iconMargin).copyWith(bottom: maxLines == 1 ? iconMargin : 70),
+                child: iconColor == null ? SvgPicture.asset(suffixIcon) : SvgPicture.asset(suffixIcon, color: iconColor,),
               ),
-            ),
+            ) : null,
             hintText: Locales.string(context, hint),
             hintStyle: const TextStyle(
                 fontSize: 16, color: Colors.grey),

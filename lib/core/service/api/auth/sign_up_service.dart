@@ -13,38 +13,57 @@ class SignUpService {
 
   final dio = Dio();
 
-  Future<String> signUpStepOne({required String email, required String phone}) async {
+  Future<String> signUpStepOne({
+    required String email,
+    required String phone,
+  }) async {
+    print(phone);
+    Map<String, dynamic> formData = {};
+
+    if(email.isEmpty) {
+      formData.addAll({
+        "phone_number": phone,
+      });
+    }else {
+      formData.addAll({
+        "email": email,
+      });
+    }
     try {
       final response = await dio.post(
         ApiRepository.registerStepOne,
-        data: email == '' ? {"phone_number": phone} : {"email": email},
+        options: Options(
+          headers: {
+            HttpHeaders.acceptHeader: "application/json",
+            HttpHeaders.contentTypeHeader: "application/json",
+          }
+        ),
+        data: formData,
       ).timeout(const Duration(seconds: 60), onTimeout: () {
         throw Exception("TIME OUT");
       });
 
-      final Map<String, dynamic> data = await response.data;
-
       if(response.statusCode == HttpStatus.ok) {
         return '';
-      } else if (data['errors'] != null) {
-        return 'user';
-      } else if(response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
       } else {
-        return response.statusMessage.toString();
+        return 'something_went_wrong';
       }
 
-    } catch (error) {
-      print(error);
-      if(error.toString().contains('302')) {
-        return 'user_already_exist';
-      }else {
-        return 'something_went_wrong';
+    } on DioError catch (e) {
+      final data = e.response!.data;
+      print(data);
+      if(data['errors'] != null) {
+        return 'user_already_exists';
+      } else {
+        throw Exception('UNKNOWN');
       }
     }
   }
 
-  Future<bool> registerStepTwo({required String via, required int code}) async {
+  Future<String> registerStepTwo({
+    required String via,
+    required int code,
+  }) async {
     try {
 
       final response = await dio.post(
@@ -62,28 +81,30 @@ class SignUpService {
       );
 
       if(response.statusCode == HttpStatus.ok) {
-        final data = response.data;
-
-        if(data['data']['confirmed'] == true) {
-          return true;
-        }else {
-          return false;
-        }
-      } else if(response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
+        return "";
       } else {
         print(response.statusMessage);
-        throw Exception(response.statusMessage);
+        throw Exception("UNKNOWN");
       }
 
-    } catch (error) {
-      print(error);
-      return false;
+    } on DioError catch (e) {
+      final Map<String, dynamic> data = await e.response!.data;
+
+      if(data['message'].toString().toLowerCase() == "wrong code!") {
+        return "wrong_code";
+      }else if(data['message'].toString().toLowerCase() == "sms was expired!"){
+        return "code_expired";
+      } else {
+        throw Exception('UNKNOWN');
+      }
     }
 
   }
 
-  Future<bool> registerConfirmation({required String via, required String password, required String confirmPassword}) async{
+  Future<bool> registerConfirmation({
+    required String via,
+    required String password,
+  }) async{
 
     try {
       final response = await dio.post(
@@ -91,7 +112,8 @@ class SignUpService {
         data: {
           "via": via,
           "password": password,
-          "password_confirmation": confirmPassword
+          "password_confirmation": password,
+          "reg_id": UserToken.fmToken,
         },
       );
 
@@ -104,6 +126,7 @@ class SignUpService {
           prefs.setTokens(
             accessToken: data['access_token'],
             refreshToken: data['refresh_token'],
+            expiresIn: data['expires_in'],
           );
 
           UserToken.phoneNumber = prefs.getPhoneNumber;

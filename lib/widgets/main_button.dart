@@ -26,16 +26,22 @@ class MainButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: padding,
-        decoration: BoxDecoration(
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(color),
+        shape: MaterialStateProperty.all(RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
-          color: color,
-        ),
-        child: Center(
-          child: LocaleText(title, style: TextStyle(color: Colors.white, fontSize: fontSize),),
+        )),
+        padding: MaterialStateProperty.all(padding),
+      ),
+      onPressed: onTap,
+      child: Center(
+        child: LocaleText(
+          title,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: fontSize,
+          ),
         ),
       ),
     );

@@ -15,39 +15,40 @@ class SocialBoard extends StatelessWidget {
     required this.facebookOnTap,
     required this.googleOnTap,
     required this.yandexOnTap,
+    required this.appleOnTap,
   }) : super(key: key);
 
   final VoidCallback facebookOnTap;
   final VoidCallback googleOnTap;
   final VoidCallback yandexOnTap;
+  final VoidCallback appleOnTap;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         LocaleText(
           'login_with',
           style: AppTextStyles.mainGrey,
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(height: 20),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             GestureDetector(
               onTap: facebookOnTap,
               child: SvgPicture.asset('assets/icons_svg/facebook.svg'),
             ),
-            const SizedBox(width: 50,),
             GestureDetector(
               onTap: googleOnTap,
               child: SvgPicture.asset('assets/icons_svg/google.svg'),
             ),
-            const SizedBox(width: 50,),
             GestureDetector(
               onTap: yandexOnTap,
               child: SvgPicture.asset('assets/icons_svg/yandex.svg'),
             ),
-
           ],
         ),
       ],

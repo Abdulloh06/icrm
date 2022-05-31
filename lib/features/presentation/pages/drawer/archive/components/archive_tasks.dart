@@ -24,13 +24,18 @@ class ArchiveTasks extends StatelessWidget {
     return Builder(
       builder: (context) {
         if(tasks.isNotEmpty) {
-          return ListView.builder(
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 1.05,
+            ),
             itemCount: tasks.length,
             itemBuilder: (context, index) {
               return Visibility(
                 visible: tasks[index].name.toLowerCase().contains(search.toLowerCase()),
                 child: TasksCard(
-                  status: tasks[index].taskStatus!,
                   task: tasks[index],
                   onTap: () {},
                 ),

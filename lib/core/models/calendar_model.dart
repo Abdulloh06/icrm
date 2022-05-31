@@ -1,11 +1,13 @@
 /*
   Developer Muhammadjonov Abdulloh
-  15 y.o :)
+  15 y.o
  */
 
 import 'package:icrm/core/models/leads_model.dart';
 import 'package:icrm/core/models/tasks_model.dart';
+import 'package:flutter/foundation.dart';
 
+@immutable
 class CalendarModel {
 
   final List<TasksModel> tasks;

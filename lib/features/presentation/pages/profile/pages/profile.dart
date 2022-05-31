@@ -19,7 +19,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Profile extends StatefulWidget {
-  Profile({Key? key, required this.scaffoldKey}) : super(key: key);
+  const Profile({Key? key, required this.scaffoldKey}) : super(key: key);
 
   final GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -28,44 +28,15 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final _nameController = TextEditingController();
-  final _surnameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _userNameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _jobController = TextEditingController();
 
   void changeUserInfo(BuildContext context) async {
     await showDialog(
       context: context,
       builder: (context) {
-        return ChangeUserInfoDialog(
-          nameController: _nameController,
-          surnameController: _surnameController,
-          emailController: _emailController,
-          jobController: _jobController,
-          phoneController: _phoneController,
-          userNameController: _userNameController,
-        );
+        return ChangeUserInfoDialog();
       },
     );
-
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        print('smt');
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController.text = UserToken.name;
-    _surnameController.text = UserToken.surname;
-    _emailController.text = UserToken.email;
-    _userNameController.text = UserToken.username;
-    _phoneController.text = UserToken.phoneNumber;
-    _jobController.text = UserToken.responsibility;
+    setState(() {});
   }
 
   @override
@@ -99,7 +70,7 @@ class _ProfileState extends State<Profile> {
                               Column(
                                 children: [
                                   Text(
-                                    '0',
+                                    UserToken.completedTask.toString(),
                                     style: AppTextStyles.primary,
                                   ),
                                   const SizedBox(
@@ -119,7 +90,7 @@ class _ProfileState extends State<Profile> {
                                         child: Container(
                                           margin: const EdgeInsets.symmetric(horizontal: 20),
                                           decoration: BoxDecoration(
-                                            shape: BoxShape.rectangle,
+                                            shape: BoxShape.circle,
                                           ),
                                           child: CachedNetworkImage(
                                             placeholder: (context, data) {
@@ -142,19 +113,27 @@ class _ProfileState extends State<Profile> {
                                 child: CircleAvatar(
                                   backgroundColor: Colors.transparent,
                                   radius: 55,
-                                  child: ClipOval(
-                                    child: CachedNetworkImage(
-                                      placeholder: (context, data) {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            color: AppColors.mainColor,
-                                          ),
-                                        );
-                                      },
-                                      imageUrl: UserToken.userPhoto,
-                                      errorWidget: (context, error, stackTrace) {
-                                        return Image.asset('assets/png/no_user.png');
-                                      },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    child: ClipOval(
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, data) {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              color: AppColors.mainColor,
+                                            ),
+                                          );
+                                        },
+                                        fit: BoxFit.fill,
+                                        imageUrl: UserToken.userPhoto,
+                                        errorWidget: (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/png/no_user.png',
+                                            fit: BoxFit.fill,
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -162,7 +141,7 @@ class _ProfileState extends State<Profile> {
                               Column(
                                 children: [
                                   Text(
-                                    '0',
+                                    UserToken.inProgressTask.toString(),
                                     style: AppTextStyles.primary,
                                   ),
                                   const SizedBox(
@@ -188,15 +167,28 @@ class _ProfileState extends State<Profile> {
                                 AppTextStyles.mainGrey.copyWith(fontSize: 14),
                           ),
                           const SizedBox(height: 20),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width * 0.26),
-                            child: MainButton(
-                              onTap: () async => changeUserInfo(context),
-                              title: 'edit',
-                              color: AppColors.mainColor,
-                              borderRadius: 8,
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(AppColors.mainColor),
+                              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              )),
+                              padding: MaterialStateProperty.all(
+                                EdgeInsets.symmetric(
+                                  horizontal: context.currentLocale!.languageCode == 'ru' ? 30 : 60,
+                                  vertical: 15,
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              changeUserInfo(context);
+                            },
+                            child: const LocaleText(
+                              "edit",
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 10),

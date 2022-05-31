@@ -17,7 +17,9 @@ class MainSearchBar extends StatelessWidget {
     required this.onComplete,
     this.borderWidth = 1,
     required this.onChanged,
-    this.icon = const SizedBox.shrink(),
+    this.validator,
+    this.icon,
+    this.helperText,
   })
       : super(key: key);
   final TextEditingController controller;
@@ -25,15 +27,21 @@ class MainSearchBar extends StatelessWidget {
   final VoidCallback onComplete;
   final ValueChanged onChanged;
   final double borderWidth;
-  final Widget icon;
+  final FormFieldValidator<String>? validator;
+  final Widget? icon;
+  final String? helperText;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: validator,
       cursorColor: AppColors.mainColor,
       controller: controller,
       decoration: InputDecoration(
-        suffixIcon: icon,
+        suffixIcon: icon ?? null,
+        helperText: helperText,
+        isDense: true,
+        helperMaxLines: 2,
         hintStyle: TextStyle(color: Colors.grey, height: 0.6),
         hintText: Locales.string(context, 'search'),
         fillColor: UserToken.isDark ? AppColors.cardColorDark : Colors.white,

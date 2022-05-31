@@ -4,6 +4,9 @@
   15 y.o
  */
 
+import 'package:flutter/foundation.dart';
+
+@immutable
 class ProfileModel {
   final int id;
   final String first_name;

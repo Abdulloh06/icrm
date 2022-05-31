@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/features/presentation/pages/drawer/create_note/create_note.dart';
 import 'package:icrm/features/presentation/pages/profile/pages/notes/notes.dart';
@@ -33,9 +38,10 @@ class MyNotes extends StatelessWidget {
                           controller: _searchController,
                           onComplete: () {
                             FocusScope.of(context).unfocus();
+                          },
+                          onChanged: (value) {
                             setState(() {});
                           },
-                          onChanged: (value) {},
                         ),
                         const SizedBox(height: 20,),
                         Expanded(

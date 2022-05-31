@@ -5,7 +5,7 @@
 
 import 'package:icrm/core/models/tasks_model.dart';
 import 'package:icrm/features/presentation/pages/tasks/components/tasks_card.dart';
-import 'package:icrm/features/presentation/pages/tasks/pages/selected_tasks.dart';
+import 'package:icrm/features/presentation/pages/tasks/pages/selected_task/selected_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 
@@ -13,12 +13,10 @@ class GridViewTasks extends StatelessWidget {
   const GridViewTasks({
     Key? key,
     required this.tasks,
-    this.isSearch = false,
     this.onTap,
   }) : super(key: key);
 
   final List<TasksModel> tasks;
-  final bool isSearch;
   final VoidCallback? onTap;
 
   @override
@@ -38,7 +36,6 @@ class GridViewTasks extends StatelessWidget {
             child: LongPressDraggable<TasksCard>(
               data: TasksCard(
                 onTap: () {},
-                status: tasks[index].taskStatus!,
                 task: tasks[index],
               ),
               feedback: Material(
@@ -48,7 +45,6 @@ class GridViewTasks extends StatelessWidget {
                   width: _size.width * 0.45,
                   child: TasksCard(
                     onTap: () {},
-                    status: tasks[index].taskStatus!,
                     task: tasks[index],
                   ),
                 ),
@@ -58,7 +54,6 @@ class GridViewTasks extends StatelessWidget {
                   task: tasks[index],
                   taskStatuses: [],
                 ))),
-                status: tasks[index].taskStatus!,
                 task: tasks[index],
               ),
             ),
@@ -67,11 +62,8 @@ class GridViewTasks extends StatelessWidget {
         },
       );
     }else {
-      return Visibility(
-        visible: !isSearch,
-        child: Center(
-          child: LocaleText('empty'),
-        ),
+      return Center(
+        child: LocaleText('empty'),
       );
     }
 

@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 part of 'company_bloc.dart';
 
 abstract class CompanyState extends Equatable {

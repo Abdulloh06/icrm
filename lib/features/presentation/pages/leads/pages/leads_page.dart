@@ -3,12 +3,8 @@
   15 y.o
  */
 
-import 'dart:io';
-import 'package:icrm/features/presentation/pages/leads/components/lead_messages_page.dart';
-import 'package:icrm/features/presentation/pages/leads/components/lead_tasks.dart';
-import 'package:icrm/main.dart';
-import 'package:telephony/telephony.dart';
-import 'leads_page_includes.dart';
+import 'package:icrm/core/models/projects_model.dart';
+import '../components/leads_page_includes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -18,55 +14,44 @@ class LeadsPage extends StatefulWidget {
     Key? key,
     required this.lead,
     required this.leadStatuses,
-    required this.phone_number,
     this.toMessage = false,
+    this.project,
+    this.fromProject = false,
   }) : super(key: key);
 
   final LeadsModel lead;
-  final List<LeadsStatusModel> leadStatuses;
-  final String phone_number;
+  final List<StatusModel> leadStatuses;
   final bool toMessage;
+  final bool fromProject;
+  final ProjectsModel? project;
 
   @override
   State<LeadsPage> createState() => _LeadsPageState();
 }
 
 class _LeadsPageState extends State<LeadsPage> with TickerProviderStateMixin{
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _telephony = Telephony.instance;
   late final TabController _tabController;
 
   late LeadsModel lead;
-  List<LeadsStatusModel> leadStatus = [];
+  late ProjectsModel? project;
+  List<StatusModel> leadStatus = [];
+  late final double maxHeight;
+  int tries = 1;
 
   @override
   void initState() {
     super.initState();
-
     _tabController = TabController(length: 3, vsync: this);
-
     lead = widget.lead;
     leadStatus = widget.leadStatuses;
-
-    if (Platform.isAndroid && widget.lead.contact != null) {
-      _telephony.listenIncomingSms(
-        onNewMessage: (message) {
-          if(message.address!.split('+').join() == widget.lead.contact!.phone_number.split('+').join()) {
-            if(message.body != null && message.body!.isNotEmpty) {
-              print(message.body);
-              return context.read<LeadMessageBloc>().add(LeadMessagesSendEvent(
-                lead_id: widget.lead.id,
-                message: message.body!,
-                user_id: null,
-                client_id: widget.lead.contactId,
-              ),
-              );
-            }
-          }
-        },
-        onBackgroundMessage: backgroundMessageHandler,
-        listenInBackground: true,
-      );
+    if(widget.fromProject) {
+      project = widget.project!;
+    }else {
+      if(lead.project != null) {
+        project = widget.lead.project!;
+      }
     }
     context.read<LeadMessageBloc>().add(LeadMessageInitEvent(id: widget.lead.id));
     context.read<AttachmentBloc>().add(AttachmentShowEvent(content_type: 'lead', content_id: widget.lead.id));
@@ -74,7 +59,6 @@ class _LeadsPageState extends State<LeadsPage> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-
     if(widget.toMessage) {
       _tabController.animateTo(2);
     }
@@ -89,73 +73,86 @@ class _LeadsPageState extends State<LeadsPage> with TickerProviderStateMixin{
       },
       child: DefaultTabController(
         length: 3,
-        child: ScrollConfiguration(
-          behavior: const ScrollBehavior().copyWith(overscroll: false),
-          child: SingleChildScrollView(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Scaffold(
-                key: _scaffoldKey,
-                endDrawer: const MainDrawer(),
-                appBar: PreferredSize(
-                  preferredSize: Size(double.infinity, 52),
-                  child: MainAppBar(
-                    project: true,
-                    title: lead.project!.name,
-                    scaffoldKey: _scaffoldKey,
-                  ),
-                ),
-                body: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MainLeadInfo(lead: lead, leadStatus: leadStatus),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(20).copyWith(bottom: 0),
-                            child: SizedBox(
-                              height: 52,
-                              child: MainTabBar(
-                                controller: _tabController,
-                                tabs: [
-                                  Tab(
-                                    text: Locales.string(context, 'task_list'),
-                                  ),
-                                  Tab(
-                                    text: Locales.string(context, 'files'),
-                                  ),
-                                  Tab(
-                                    text: Locales.string(context, 'lead_chat'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                LeadTasks(
-                                  id: lead.id,
-                                  tasks: lead.tasks ?? [],
-                                ),
-                                ProjectDocumentPage(
-                                  project_id: lead.projectId,
-                                ),
-                                LeadMessagesPage(lead: lead),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                bottomNavigationBar: MainBottomBar(isMain: false),
-              ),
+        child: Scaffold(
+          key: _scaffoldKey,
+          endDrawer: const MainDrawer(),
+          appBar: PreferredSize(
+            preferredSize: Size(double.infinity, 52),
+            child: MainAppBar(
+              project: true,
+              title: project != null ? project!.name : "",
+              scaffoldKey: _scaffoldKey,
             ),
           ),
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              tries++;
+              if(tries <= 2) {
+                maxHeight = constraints.maxHeight;
+              }
+              return ScrollConfiguration(
+                behavior: const ScrollBehavior().copyWith(overscroll: false),
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    height: maxHeight,
+                    child: CustomScrollView(
+                      scrollBehavior: const ScrollBehavior().copyWith(overscroll: false),
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: MainLeadInfo(
+                            fromProject: widget.fromProject,
+                            project: project,
+                            lead: lead,
+                            leadStatus: leadStatus,
+                          ),
+                        ),
+                        SliverFillRemaining(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20).copyWith(top: 10),
+                                child: MainTabBar(
+                                  controller: _tabController,
+                                  tabs: [
+                                    Tab(
+                                      text: Locales.string(context, 'task_list'),
+                                    ),
+                                    Tab(
+                                      text: Locales.string(context, 'files'),
+                                    ),
+                                    Tab(
+                                      text: Locales.string(context, 'lead_chat'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: TabBarView(
+                                  controller: _tabController,
+                                  children: [
+                                    LeadTasks(
+                                      id: lead.id,
+                                      tasks: lead.tasks ?? [],
+                                    ),
+                                    ProjectDocumentPage(
+                                      content_type: 'lead',
+                                      project_id: lead.id,
+                                    ),
+                                    LeadMessagesPage(lead: lead),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
+          ),
+          bottomNavigationBar: MainBottomBar(isMain: false),
         ),
       ),
     );

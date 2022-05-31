@@ -26,8 +26,7 @@ import 'package:icrm/features/presentation/blocs/project_statuses_bloc/project_s
 import 'package:icrm/features/presentation/blocs/project_statuses_bloc/project_statuses_state.dart';
 import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
 import 'package:icrm/features/presentation/blocs/projects_bloc/projects_state.dart';
-import 'package:icrm/features/presentation/blocs/show_bloc/show_bloc.dart';
-import 'package:icrm/features/presentation/blocs/show_bloc/show_state.dart';
+import 'package:icrm/features/presentation/blocs/search_bloc/search_state.dart';
 import 'package:icrm/features/presentation/blocs/tasks_bloc/tasks_bloc.dart';
 import 'package:icrm/features/presentation/blocs/team_bloc/team_bloc.dart';
 import 'package:icrm/features/presentation/blocs/team_bloc/team_state.dart';
@@ -40,10 +39,12 @@ import '../../features/presentation/blocs/attachment_bloc/attachment_bloc.dart';
 import '../../features/presentation/blocs/attachment_bloc/attachment_state.dart';
 import '../../features/presentation/blocs/calendar_bloc/calendar_state.dart';
 import '../../features/presentation/blocs/company_bloc/company_bloc.dart';
+import '../../features/presentation/blocs/cubits/swipe_animate_cubit.dart';
 import '../../features/presentation/blocs/helper_bloc/helper_bloc.dart';
 import '../../features/presentation/blocs/lead_messages_bloc/lead_messages_state.dart';
 import '../../features/presentation/blocs/portfolio_bloc/portfolio_bloc.dart';
 import '../../features/presentation/blocs/profile_bloc/profile_bloc.dart';
+import '../../features/presentation/blocs/search_bloc/search_bloc.dart';
 
 class AppRouter {
   List blocs() {
@@ -84,8 +85,9 @@ class AppRouter {
       BlocProvider(create: (_) => CalendarBloc(CalendarLoadingState()),),
       BlocProvider(create: (_) => UsersBloc(UsersLoadingState())),
       BlocProvider(create: (_) => LeadMessageBloc(LeadMessagesLoadingState())),
-      BlocProvider(create: (_) => ShowBloc(ShowLoadingState())),
       BlocProvider(create: (_) => ArchiveBloc(ArchiveLoadingState())),
+      BlocProvider(create: (_) => SearchBloc(SearchLoadingState())),
+      BlocProvider(create: (_) => SwipeAnimationCubit(UserToken.animate)),
     ];
   }
 }

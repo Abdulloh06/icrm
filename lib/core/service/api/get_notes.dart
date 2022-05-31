@@ -47,7 +47,10 @@ class GetNotes {
 
   }
 
-  Future<bool> addNotes({required String title, required String content}) async {
+  Future<bool> addNotes({
+    required String title,
+    required String content,
+  }) async {
 
     try {
 
@@ -82,7 +85,9 @@ class GetNotes {
 
   }
 
-  Future<bool> deleteNotes({required int id}) async {
+  Future<bool> deleteNotes({
+    required int id,
+  }) async {
 
     try {
 
@@ -113,7 +118,11 @@ class GetNotes {
 
   }
 
-  Future<bool> updateNotes({required int id, required String title, required String content}) async {
+  Future<bool> updateNotes({
+    required int id,
+    required String title,
+    required String content,
+  }) async {
 
     try {
 

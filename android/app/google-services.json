@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "736010589870",
-    "project_id": "avlo-crm",
-    "storage_bucket": "avlo-crm.appspot.com"
+    "project_number": "441254173032",
+    "project_id": "i-crm-27e7b",
+    "storage_bucket": "i-crm-27e7b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:736010589870:android:85f78cbce110a824c1ff3f",
+        "mobilesdk_app_id": "1:441254173032:android:079a0223e4b8f0e0639edd",
         "android_client_info": {
-          "package_name": "uz.eurosoft.avlolead"
+          "package_name": "uz.madorgroup.icrm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "736010589870-hb9jrjoojqem6i986j6j1p6u4oon3e95.apps.googleusercontent.com",
+          "client_id": "441254173032-lpaa5vu8fdb1qqle637bmu40ug74obah.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "uz.eurosoft.avlolead",
-            "certificate_hash": "a929821a4bdc722da5996d9151af324ad44a278c"
+            "package_name": "uz.madorgroup.icrm",
+            "certificate_hash": "df857ccb51338a11c55bb051179c257bdbac6a73"
           }
         },
         {
-          "client_id": "736010589870-cok9rbfjg7tpqrgf8nc33m6lp36q8j1i.apps.googleusercontent.com",
+          "client_id": "441254173032-s9uqqvnn124k9hge7dvqd8mn4nevdp7e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDqDrOEtWbbLTUgQnScnMxDjLd0hpWiKkI"
+          "current_key": "AIzaSyAvI_7Z_1havBXWC1XxCdC6oZF_t0ImH0A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "736010589870-cok9rbfjg7tpqrgf8nc33m6lp36q8j1i.apps.googleusercontent.com",
+              "client_id": "441254173032-s9uqqvnn124k9hge7dvqd8mn4nevdp7e.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
@@ -15,7 +20,7 @@ class ContactsAddEvent extends ContactsEvent {
   final String email;
   final String phone_number;
   final int type;
-  final File avatar;
+  final File? avatar;
 
   ContactsAddEvent({
     required this.email,
@@ -23,7 +28,7 @@ class ContactsAddEvent extends ContactsEvent {
     required this.position,
     required this.name,
     required this.type,
-    required this.avatar,
+    this.avatar,
   });
 
   @override
@@ -68,8 +73,6 @@ class ContactsUpdateEvent extends ContactsEvent {
   final String phone_number;
   final File? avatar;
   final int type;
-  final bool hasAvatar;
-  final bool fromContact;
 
   ContactsUpdateEvent({
     required this.id,
@@ -79,19 +82,8 @@ class ContactsUpdateEvent extends ContactsEvent {
     required this.name,
     this.avatar,
     required this.type,
-    this.hasAvatar = true,
-    this.fromContact = false,
   });
 
   @override
   List<Object?> get props => [email, position, phone_number, name];
-}
-
-class ContactsShowEvent extends ContactsEvent {
-  final int id;
-
-  ContactsShowEvent({required this.id});
-
-  @override
-  List<Object?> get props => [id];
 }

@@ -14,37 +14,6 @@ class GetAttachment {
 
   final dio = Dio();
 
-  Future<AttachmentModel> getAttachment({required int id}) async {
-
-    try {
-
-      final response = await dio.get(
-        ApiRepository.getAttachment + "/$id",
-        options: Options(
-            headers: {
-              "Accept": "application/json",
-              "Authorization": "Bearer ${UserToken.accessToken}"
-            }
-        ),
-      );
-
-      final Map<String, dynamic> data = await response.data;
-
-      if(response.statusCode == HttpStatus.ok) {
-        return AttachmentModel.fromJson(data);
-      }else if(response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
-      }else {
-        throw Exception(response.statusMessage);
-      }
-
-    } catch (error) {
-      print(error);
-      throw Exception('UNKNOWN');
-    }
-
-  }
-
   Future<bool> addAttachment({
     required String content_type,
     required int content_id,
@@ -122,7 +91,10 @@ class GetAttachment {
 
   }
 
-  Future<List<AttachmentModel>> showContentAttachment({required String content_type, required int id}) async {
+  Future<List<AttachmentModel>> showContentAttachment({
+    required String content_type,
+    required int id,
+  }) async {
 
     try {
 

@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 
 import 'package:equatable/equatable.dart';
 
@@ -17,4 +22,10 @@ class UserCategoriesAddEvent extends UserCategoriesEvent {
   List<Object?> get props => [name];
 }
 
-class UserCategoriesDeleteEvent extends UserCategoriesEvent {}
+class UserCategoriesDeleteEvent extends UserCategoriesEvent {
+  final int id;
+
+  UserCategoriesDeleteEvent({required this.id});
+  @override
+  List<Object?> get props => [id];
+}

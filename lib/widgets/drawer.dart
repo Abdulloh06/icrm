@@ -4,22 +4,21 @@
  */
 
 import 'package:icrm/core/repository/user_token.dart';
-import 'package:icrm/core/service/api/auth/get_user.dart';
 import 'package:icrm/core/util/colors.dart';
-import 'package:icrm/core/util/get_it.dart';
 import 'package:icrm/core/util/text_styles.dart';
 import 'package:icrm/features/presentation/pages/auth/pages/main_page.dart';
 import 'package:icrm/features/presentation/pages/drawer/archive/archive.dart';
 import 'package:icrm/features/presentation/pages/drawer/companies/pages/companies.dart';
 import 'package:icrm/features/presentation/pages/drawer/contacts/contacts.dart';
 import 'package:icrm/features/presentation/pages/drawer/create_note/create_note.dart';
-import 'package:icrm/features/presentation/pages/drawer/messages/pages/messages.dart';
 import 'package:icrm/features/presentation/pages/drawer/notifications/notifications.dart';
-import 'package:icrm/features/presentation/pages/drawer/settings/settings.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../core/service/shared_preferences_service.dart';
+import '../features/presentation/pages/drawer/settings/pages/settings.dart';
 import 'main_button.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -64,12 +63,20 @@ class MainDrawer extends StatelessWidget {
                         Row(
                           children: [
                             CircleAvatar(
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl: UserToken.userPhoto,
-                                  errorWidget: (context, error, stack) {
-                                    return Image.asset('assets/png/no_user.png');
-                                  },
+                              child: Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: UserToken.userPhoto,
+                                    fit: BoxFit.fill,
+                                    errorWidget: (context, error, stack) {
+                                      return Image.asset(
+                                        'assets/png/no_user.png',
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                               backgroundColor: Colors.transparent,
@@ -126,11 +133,6 @@ class MainDrawer extends StatelessWidget {
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Contacts())),
                       ),
                       DrawerMainButton(
-                        icon: 'assets/icons_svg/messages.svg',
-                        text: 'messages',
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Messages())),
-                      ),
-                      DrawerMainButton(
                         icon: 'assets/icons_svg/companies.svg',
                         text: 'companies',
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Companies())),
@@ -173,7 +175,11 @@ class MainDrawer extends StatelessWidget {
                                       ),
                                       MainButton(
                                         onTap: () async {
-                                          getIt.get<GetUser>().quitProfile().then((value) => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AuthMainPage()), (route) => false));
+                                          final _prefs = await SharedPreferences.getInstance();
+                                          await _prefs.clear();
+                                          await _prefs.setBool(PrefsKeys.themeKey, UserToken.isDark);
+                                          UserToken.clearAllData();
+                                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AuthMainPage()), (route) => false);
                                         },
                                         color: AppColors.mainColor,
                                         title: 'yes',
@@ -217,7 +223,10 @@ class DrawerMainButton extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20),
       child: InkWell(
         borderRadius: BorderRadius.circular(15),
-        onTap: onTap,
+        onTap: () {
+          Navigator.pop(context);
+          onTap();
+        },
         child: Center(
           child: Row(
             children: [

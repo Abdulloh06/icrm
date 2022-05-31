@@ -4,7 +4,7 @@
  */
 
 import 'package:icrm/core/models/contacts_model.dart';
-import 'package:icrm/core/models/leads_status_model.dart';
+import 'package:icrm/core/models/status_model.dart';
 import 'package:icrm/core/models/message_model.dart';
 import 'package:icrm/core/models/projects_model.dart';
 import 'package:icrm/core/models/tasks_model.dart';
@@ -31,7 +31,7 @@ class LeadsModel {
   final String description;
   final ProjectsModel? project;
   final ContactModel? contact;
-  final LeadsStatusModel? leadStatus;
+  final StatusModel? leadStatus;
   final List<TasksModel>? tasks;
   final TeamModel? member;
   final List<MessageModel>? messages;
@@ -70,9 +70,9 @@ class LeadsModel {
     if(json['contact'] != null) {
       contact = ContactModel.fromJson(json['contact']);
     }
-    LeadsStatusModel? leadsStatus;
-    if(json['leadStatus'] != null) {
-      leadsStatus = LeadsStatusModel.fromJson(json['leadStatus']);
+    StatusModel? leadsStatus;
+    if(json['label'] != null) {
+      leadsStatus = StatusModel.fromJson(json['label']);
     }
 
     TeamModel? teamModel;
@@ -87,7 +87,7 @@ class LeadsModel {
       estimatedAmount: json['estimated_amount'],
       startDate: json['start_date'] ?? "",
       endDate: json['end_date'] ?? "",
-      leadStatusId: json['lead_status_id'],
+      leadStatusId: json['label_id'],
       seller_id: json['seller_id'],
       clientId: json['client_id'] ?? 0,
       channelId: json['channel_id'],

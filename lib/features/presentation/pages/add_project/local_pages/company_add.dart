@@ -12,21 +12,26 @@ import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dar
 import 'package:icrm/features/presentation/pages/drawer/companies/components/company_card.dart';
 import 'package:icrm/features/presentation/pages/widgets/one_button.dart';
 import 'package:icrm/widgets/custom_text_field.dart';
+import 'package:icrm/widgets/loading.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../../core/models/company_model.dart';
 import '../../../blocs/projects_bloc/projects_event.dart';
 
 class ContactCompany extends StatefulWidget {
   ContactCompany({
     Key? key,
     required this.contact_id,
+    required this.company_id,
   }) : super(key: key) {
     print(contact_id);
   }
 
   final int? contact_id;
+  final int? company_id;
 
   @override
   State<ContactCompany> createState() => _ContactCompanyState();
@@ -39,6 +44,7 @@ class _ContactCompanyState extends State<ContactCompany> {
   final _nameController = TextEditingController();
   final _urlController = TextEditingController();
   final _imageController = TextEditingController();
+  String imageUrl = '';
   XFile? logo;
   bool hasImage = false;
 
@@ -90,11 +96,12 @@ class _ContactCompanyState extends State<ContactCompany> {
             if(state is CompanyAddState) {
               context.read<ProjectsBloc>().add(ProjectsCompanyEvent(
                 company_id: state.company.id,
-                name: state.company.name,
+                name: _nameController.text,
               ));
               Navigator.pop(context);
             }
             if(state is CompanyErrorState) {
+              context.read<CompanyBloc>().add(CompanyInitEvent());
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -108,12 +115,20 @@ class _ContactCompanyState extends State<ContactCompany> {
             }
           },
           builder: (context, state) {
+            if(state is CompanyInitState) {
+              if(widget.company_id != null) {
+                CompanyModel company = state.companies.elementAt(state.companies.indexWhere(
+                      (element) => element.id == widget.company_id!,
+                ));
+
+                _nameController.text = company.name;
+                _imageController.text = company.logo.split('//').last;
+                _urlController.text = company.site_url;
+                imageUrl = company.logo;
+              }
+            }
             if(state is CompanyLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.mainColor,
-                ),
-              );
+              return Loading();
             }else {
               return Container(
                 margin: EdgeInsets.only(left: 20, right: 20),
@@ -193,7 +208,7 @@ class _ContactCompanyState extends State<ContactCompany> {
                             ? AppColors.textFieldColorDark
                             : AppColors.textFieldColor,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       CustomTextField(
@@ -207,24 +222,67 @@ class _ContactCompanyState extends State<ContactCompany> {
                             : AppColors.textFieldColor,
                       ),
                       const SizedBox(height: 20),
-                      if (hasImage) SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Image.file(
-                          File(logo!.path),
-                        ),
-                      ) else SizedBox.shrink(),
+                      Builder(
+                        builder: (context) {
+                          if(widget.company_id == null) {
+                            if(hasImage) {
+                              return SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.2,
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                child: Image.file(
+                                  File(logo!.path),
+                                ),
+                              );
+                            }else {
+                              return SizedBox.shrink();
+                            }
+                          }else {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: CachedNetworkImage(
+                                imageUrl: imageUrl,
+                                placeholder: (context, process) {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.mainColor,
+                                    ),
+                                  );
+                                },
+                                errorWidget: (context, error, stack) {
+                                  return Image.asset(
+                                    "assets/png/default_logo.png",
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                        },
+                      ),
                       const SizedBox(height: 20),
                       OneButtonWidget(
                         press: () {
                           if (_formKey.currentState!.validate()) {
-                            context.read<CompanyBloc>().add(CompanyAddEvent(
-                              contactId: widget.contact_id,
-                              image: File(logo!.path),
-                              url: _urlController.text,
-                              name: _nameController.text,
-                              description: 'description',
-                            ));
+                            if(widget.contact_id != null) {
+                              context.read<CompanyBloc>().add(CompanyAddEvent(
+                                contactId: widget.contact_id,
+                                image: logo != null ? File(logo!.path) : null,
+                                url: _urlController.text,
+                                name: _nameController.text,
+                                description: 'description',
+                              ));
+                            }else {
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  margin: const EdgeInsets.all(20),
+                                  backgroundColor: AppColors.mainColor,
+                                  content: LocaleText("first_fill_contact_info", style: AppTextStyles.mainGrey.copyWith(color: Colors.white)),
+                                ),
+                              );
+                            }
                           }
                         },
                       ),

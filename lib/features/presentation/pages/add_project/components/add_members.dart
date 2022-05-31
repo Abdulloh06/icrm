@@ -12,6 +12,7 @@ import 'package:icrm/features/presentation/blocs/team_bloc/team_bloc.dart';
 import 'package:icrm/features/presentation/blocs/team_bloc/team_event.dart';
 import 'package:icrm/features/presentation/blocs/team_bloc/team_state.dart';
 import 'package:icrm/widgets/custom_text_field.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:icrm/widgets/main_person_contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,10 +61,10 @@ class AddMembers extends StatelessWidget {
                 builder: (context, state) {
                   if (state is TeamInitState && state.team.isNotEmpty) {
                     return ListView.builder(
-                      itemCount: state.team.length,
+                      itemCount: members != null && members!.isNotEmpty ? members!.length : state.team.length,
                       itemBuilder: (context, index) {
                         return Visibility(
-                          visible: members != null && members!.isNotEmpty ? state.team[index].id == members![index].id : true,
+                          visible: members != null && members!.isNotEmpty ? state.team.any((element) => element.id == members![index].id) : true,
                           child: InkWell(
                             radius: 20,
                             onTap: () {
@@ -113,6 +114,8 @@ class AddMembers extends StatelessWidget {
                                   name: state.team[index].first_name,
                                   photo: state.team[index].social_avatar,
                                   response: state.team[index].jobTitle,
+                                  phone_number: state.team[index].phoneNumber,
+                                  email: state.team[index].email,
                                 ),
                               ),
                             ),
@@ -124,11 +127,7 @@ class AddMembers extends StatelessWidget {
                       child: LocaleText('empty'),
                     );
                   } else {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.mainColor,
-                      ),
-                    );
+                    return Loading();
                   }
                 },
               ),

@@ -1,5 +1,11 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 
 import 'package:equatable/equatable.dart';
+
 
 abstract class TeamEvent extends Equatable {
   @override
@@ -19,33 +25,30 @@ class TeamAddEvent extends TeamEvent {
   List<Object?> get props => [];
 }
 
-class TeamDeleteEvent extends TeamEvent {
-  final String id;
-
-  TeamDeleteEvent({required this.id});
-
-  @override
-  List<Object?> get props => [id];
-}
-
 class TeamUpdateEvent extends TeamEvent {
-  final String name;
-  final String position;
-  final String email;
-  final String phone_number;
+  final List<int> team;
+  final List<bool> isOften;
 
-  TeamUpdateEvent({required this.email, required this.phone_number, required this.position, required this.name});
-
-  @override
-  List<Object?> get props => [email, position, phone_number, name];
-}
-
-class TeamShowEvent extends TeamEvent {
-  final int id;
-
-  TeamShowEvent({required this.id});
+  TeamUpdateEvent({
+    required this.team,
+    required this.isOften,
+  });
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [team, isOften];
 }
 
+class TeamInviteEvent extends TeamEvent {
+  final String via;
+  final String model_type;
+  final int model_id;
+
+  TeamInviteEvent({
+    required this.via,
+    required this.model_type,
+    required this.model_id,
+  });
+
+  @override
+  List<Object?> get props => [via, model_id, model_type];
+}

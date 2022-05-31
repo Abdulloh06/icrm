@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'package:icrm/core/models/user_categories_model.dart';
 import 'package:icrm/core/service/api/get_user_categories.dart';
 import 'package:icrm/core/util/get_it.dart';
@@ -9,6 +15,8 @@ class UserCategoriesBloc extends Bloc<UserCategoriesEvent, UserCategoriesState>{
 
   UserCategoriesBloc(UserCategoriesState initialState) : super(initialState) {
     on<UserCategoriesInitEvent>((event, emit) async {
+      emit(UserCategoriesLoadingState());
+
       try {
         final List<UserCategoriesModel> list = await getIt.get<GetUserCategories>().getUserCategories();
 
@@ -21,6 +29,7 @@ class UserCategoriesBloc extends Bloc<UserCategoriesEvent, UserCategoriesState>{
     });
 
     on<UserCategoriesAddEvent>((event, emit) async {
+      emit(UserCategoriesLoadingState());
 
       try {
 
@@ -39,6 +48,25 @@ class UserCategoriesBloc extends Bloc<UserCategoriesEvent, UserCategoriesState>{
         emit(UserCategoriesErrorState(error: error.toString()));
       }
 
+    });
+
+    on<UserCategoriesDeleteEvent>((event, emit) async {
+
+      try {
+        final result = await getIt.get<GetUserCategories>().deleteCategory(id: event.id);
+
+        if(result) {
+          final List<UserCategoriesModel> list = await getIt.get<GetUserCategories>().getUserCategories();
+
+          emit(UserCategoriesInitState(list: list));
+        }else {
+          emit(UserCategoriesErrorState(error: 'something_went_wrong'));
+        }
+
+      } catch(e) {
+        print(e);
+        emit(UserCategoriesErrorState(error: 'something_went_wrong'));
+      }
     });
   }
 

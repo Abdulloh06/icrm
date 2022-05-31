@@ -1,3 +1,8 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
 import 'package:equatable/equatable.dart';
 import '../../../../core/models/team_model.dart';
 

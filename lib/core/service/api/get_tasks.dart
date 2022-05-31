@@ -8,24 +8,34 @@ import 'dart:io';
 
 import 'package:icrm/core/models/comments_model.dart';
 import 'package:icrm/core/models/tasks_model.dart';
-import 'package:icrm/core/models/user_model.dart';
 import 'package:dio/dio.dart';
-
 import '../../repository/api_repository.dart';
 import '../../repository/user_token.dart';
+import '../../util/get_it.dart';
+import 'auth/login_service.dart';
 
 class GetTasks {
   final dio = Dio();
 
-  Future<List<TasksModel>> getTasks({required int page, bool trash = false}) async {
+  Future<List<TasksModel>> getTasks({
+    required int page,
+    bool trash = false,
+    bool withPagination = true,
+  }) async {
+    String url;
+    if(withPagination) {
+      url = ApiRepository.getTasks + "?paginate=true&expand=comments,label.userLabel,children,assigns&trash=$trash&page=$page";
+    } else {
+      url = ApiRepository.getTasks + "?expand=label.userLabel,assigns&trash=$trash";
+    }
+
     try {
-      final response = await dio
-          .get(
-        ApiRepository.getTasks + "?paginate=true&expand=comments,taskStatus,children,assigns&trash=$trash&page=$page",
+      final response = await dio.get(
+        url,
         options: Options(
           headers: {
-            "Accept": "application/json",
-            "Authorization": 'Bearer ${UserToken.accessToken}',
+            HttpHeaders.acceptHeader: "application/json",
+            HttpHeaders.authorizationHeader: 'Bearer ${UserToken.accessToken}',
           },
         ),
       ).timeout(const Duration(minutes: 1), onTimeout: () {
@@ -34,17 +44,26 @@ class GetTasks {
 
       final Map<String, dynamic> data = await response.data;
 
-
       if (response.statusCode == HttpStatus.ok) {
         return TasksModel.fetchData(data);
-      } else if (response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
       } else {
         throw Exception('UNKNOWN');
       }
-    } catch (e) {
-      print(e);
-      throw Exception('UNKNOWN');
+    } on DioError catch (e) {
+      if(e.response!.statusCode == HttpStatus.unauthorized) {
+        String result = await getIt.get<LoginService>().login(
+          username: '',
+          password: '',
+          toRefresh: true,
+        );
+        print(result + "-Refresh Token");
+
+        return await getTasks(page: page);
+      }else if(e.response!.statusCode == HttpStatus.internalServerError) {
+        throw Exception('SERVER ERROR');
+      }else {
+        throw Exception("UNKNOWN");
+      }
     }
   }
 
@@ -67,7 +86,7 @@ class GetTasks {
       Map<String, dynamic> formData = {
         "name": name,
         "priority": priority,
-        "task_status_id": status,
+        "label_id": status,
         "taskable_type": taskType,
         "taskable_id": taskId,
         "start_date": start_date,
@@ -123,43 +142,12 @@ class GetTasks {
           throw Exception('something_went_wrong');
         }
       }
-    } catch (e, stackTrace) {
-      print(e);
-      print(stackTrace);
+    } on DioError catch (e) {
+      print(e.response!.data);
       throw Exception('UNKNOWN');
     }
   }
 
-  Future<TasksModel> showTask({required int id}) async {
-
-    try {
-
-      final response = await dio.get(
-        ApiRepository.getTasks + "/$id?expand=children,assigns,taskStatus,comments",
-        options: Options(
-          headers: {
-            "Accept": "application/json",
-            "Authorization": "Bearer ${UserToken.accessToken}",
-          }
-        ),
-      );
-
-      final Map<String, dynamic> data = await response.data;
-
-      if(response.statusCode == HttpStatus.ok) {
-        return TasksModel.fromJson(data['data']);
-      }else if(response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
-      }else {
-        throw Exception('UNKNOWN');
-      }
-
-    }catch (error) {
-      print(error);
-
-      throw Exception('UNKNOWN');
-    }
-  }
 
   Future<bool> deleteTask({required int id}) async {
     try {
@@ -203,6 +191,30 @@ class GetTasks {
 
     try {
 
+      Map<String, dynamic> data = {
+        "label_id": status,
+        "priority": priority,
+        "name": name,
+        "taskable_type": taskType.split("\\").last.toLowerCase(),
+        "taskable_id": taskId,
+      };
+
+      if(description.isNotEmpty) {
+        data.addAll({
+          "description": description,
+        });
+      }
+      if(start_date.isNotEmpty) {
+        data.addAll({
+          "start_date": start_date,
+        });
+      }
+      if(deadline.isNotEmpty) {
+        data.addAll({
+          "deadline": deadline,
+        });
+      }
+
       final response = await dio.put(
         ApiRepository.getTasks + "/$id",
         options: Options(
@@ -212,16 +224,7 @@ class GetTasks {
            "Content-Type": "application/json",
           }
         ),
-        data: {
-          "task_status_id": status,
-          "priority": priority,
-          "start_date": start_date,
-          "deadline": deadline,
-          "name": name,
-          "description": description,
-          "taskable_type": taskType.split("\\").last.toLowerCase(),
-          "taskable_id": taskId,
-        }
+        data: data,
       );
 
 
@@ -304,37 +307,6 @@ class GetTasks {
 
       if(response.statusCode == HttpStatus.ok) {
         return true;
-      }else if(response.statusCode == HttpStatus.internalServerError) {
-        throw Exception('SERVER ERROR');
-      }else {
-        throw Exception('UNKNOWN');
-      }
-
-    } catch(error) {
-      print(error);
-
-      throw Exception('UNKNOWN');
-    }
-  }
-
-  Future<List<UserModel>> users({required int id}) async {
-
-    try {
-
-      final response = await dio.get(
-        ApiRepository.task_users + "/$id",
-        options: Options(
-          headers: {
-            "Accept": "application/json",
-            "Authorization": "Bearer ${UserToken.accessToken}",
-          }
-        ),
-      );
-
-      final Map<String, dynamic> data = await response.data;
-
-      if(response.statusCode == HttpStatus.ok) {
-        return UserModel.fetchData(data);
       }else if(response.statusCode == HttpStatus.internalServerError) {
         throw Exception('SERVER ERROR');
       }else {

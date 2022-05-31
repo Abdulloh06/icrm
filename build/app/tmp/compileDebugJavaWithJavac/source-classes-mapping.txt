@@ -1,0 +1,4 @@
+io/flutter/plugins/GeneratedPluginRegistrant.java
+ io.flutter.plugins.GeneratedPluginRegistrant
+uz/madorgroup/icrm/BuildConfig.java
+ uz.madorgroup.icrm.BuildConfig

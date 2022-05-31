@@ -3,20 +3,16 @@
   15 y.o
  */
 
+import 'dart:developer';
+import 'package:icrm/core/service/firebase_service.dart';
 import 'package:icrm/core/util/main_includes.dart';
-import 'package:icrm/core/util/text_styles.dart';
-import 'package:icrm/features/presentation/pages/add_succes_pages/add_lead_page.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:icrm/widgets/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:telephony/telephony.dart';
-
-void backgroundMessageHandler(SmsMessage message) async {
-
-}
+import 'package:flutter_locales/flutter_locales.dart';
+import 'core/util/colors.dart';
 
 void main() async {
-
+  final _notification = NotificationService();
   ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
     appBar: AppBar(
       automaticallyImplyLeading: true,
@@ -29,6 +25,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Locales.init(['ru', 'en']);
+  await _notification.initialize();
+
   setUpGetIt();
   SharedPreferencesService.instance.then((pref) {
     UserToken.isDark = pref.getTheme;
@@ -44,18 +42,23 @@ void main() async {
     UserToken.accessToken = pref.getAccessToken;
     UserToken.refreshToken = pref.getRefreshToken;
     UserToken.responsibility = pref.getResponsibility;
+    UserToken.tokenExpireDate = pref.getExpireDate;
   });
 
-  runApp(AvloApp());
+  runApp(MyApp());
 }
 
 
-class AvloApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
 
   final _router = AppRouter();
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     return MultiBlocProvider(
       providers: [..._router.blocs()],
       child: LocaleBuilder(
@@ -68,7 +71,7 @@ class AvloApp extends StatelessWidget {
                 locale: locale,
                 supportedLocales: Locales.supportedLocales,
                 title: 'Avlo Lead',
-                theme: state ? dark : light,
+                theme: state ? AppThemes.dark : AppThemes.light,
                 home: AvloLead(),
               );
             },
@@ -87,21 +90,11 @@ class AvloLead extends StatefulWidget {
 }
 
 class _AvloLeadState extends State<AvloLead> {
-  final _dynamicLinks = FirebaseDynamicLinks.instance;
-  final _firebaseMessaging = FirebaseMessaging.instance;
+  final _firebaseService = FirebaseService();
 
-  Future<void> initDynamicLinks() async {
-    _dynamicLinks.onLink.listen((event) {
-      String link = event.link.toString();
-      print(link);
-      if(UserToken.authStatus) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AddLeadsPage(id: int.parse(link.split('/').last), phone_number: '')));
-      }
-    });
-  }
-  Future<void> setLanguage() async {
+  int exitTime = 0;
+  void _setLanguage() async {
     final _prefs = await SharedPreferences.getInstance();
-
     String languageCode = await _prefs.getString(PrefsKeys.languageCode) ?? 'ru';
 
     context.changeLocale(languageCode);
@@ -110,20 +103,41 @@ class _AvloLeadState extends State<AvloLead> {
   @override
   void initState() {
     super.initState();
-    initDynamicLinks();
-    setLanguage();
-    _firebaseMessaging.getToken().then((value) {
-      UserToken.fmToken = value.toString();
-      FirebaseMessaging.onMessage.listen((message) {
-
-      });
-    });
-    print(UserToken.id);
+    _setLanguage();
+    _firebaseService.initMessaging();
+    log(UserToken.accessToken);
+    if(UserToken.authStatus) {
+      _firebaseService.initDynamicLinks(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return UserToken.authStatus ? MainPage() : AuthMainPage();
+    Loading().build(context);
+    return WillPopScope(
+      onWillPop: () async {
+        Future.delayed(Duration(seconds: 5), () {
+          exitTime = 0;
+        });
+        if(exitTime == 0) {
+          exitTime++;
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              margin: const EdgeInsets.all(20),
+              backgroundColor: AppColors.mainColor,
+              content: LocaleText("are_you_sure_to_exit", style: AppTextStyles.mainGrey.copyWith(color: Colors.white)),
+            ),
+          );
+          return false;
+        }else {
+          return true;
+        }
+      },
+      child: UserToken.authStatus ? MainPage() : AuthMainPage(),
+    );
   }
 }
 

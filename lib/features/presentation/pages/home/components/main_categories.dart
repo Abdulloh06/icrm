@@ -6,7 +6,6 @@
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MainCategory extends StatelessWidget {
@@ -39,14 +38,22 @@ class MainCategory extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(length.toString(), style: AppTextStyles.mainBold.copyWith(fontSize: 32, color: UserToken.isDark ? Colors.black : Colors.white),),
+                Text(
+                  length.toString(),
+                  style: AppTextStyles.mainBold.copyWith(
+                    fontSize: 32,
+                    color: UserToken.isDark ? Colors.black : Colors.white,
+                  ),
+                ),
                 SvgPicture.asset(icon),
               ],
             ),
             const Spacer(),
-            LocaleText(
+            Text(
               title,
-              style: AppTextStyles.mainBold.copyWith(color: UserToken.isDark ? Colors.black : Colors.white),
+              style: AppTextStyles.mainBold.copyWith(
+                color: UserToken.isDark ? Colors.black : Colors.white,
+              ),
             ),
           ],
         ),

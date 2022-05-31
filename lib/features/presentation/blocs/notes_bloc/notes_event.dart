@@ -1,5 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
 
-import 'package:icrm/core/models/notes_model.dart';
+
 import 'package:equatable/equatable.dart';
 
 class NotesEvent extends Equatable {

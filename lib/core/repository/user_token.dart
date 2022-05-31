@@ -18,5 +18,28 @@ class UserToken {
   static String refreshToken = '';
   static String responsibility = '';
   static String fmToken = '';
+  static int inProgressTask = 0;
+  static int completedTask = 0;
+  static int pendingTask = 0;
+  static int canceledTask = 0;
+  static bool animate = true;
+  static int tokenExpireDate = 0;
 
+  static void clearAllData() {
+    name = '';
+    surname = '';
+    phoneNumber = '';
+    authStatus = false;
+    username = '';
+    accessToken = '';
+    refreshToken = '';
+    responsibility = '';
+    email = '';
+    id = null;
+    inProgressTask = 0;
+    completedTask = 0;
+    pendingTask = 0;
+    canceledTask = 0;
+    tokenExpireDate = 0;
+  }
 }

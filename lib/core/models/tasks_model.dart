@@ -4,7 +4,7 @@
  */
 
 import 'package:icrm/core/models/comments_model.dart';
-import 'package:icrm/core/models/tasks_status_model.dart';
+import 'package:icrm/core/models/status_model.dart';
 import 'package:icrm/core/models/team_model.dart';
 import 'package:flutter/foundation.dart';
 
@@ -20,7 +20,7 @@ class TasksModel {
   final String taskType;
   final int priority;
   final int taskId;
-  final TaskStatusModel? taskStatus;
+  final StatusModel? taskStatus;
   final String createdAt;
   final String updatedAt;
   final List<CommentsModel> comments;
@@ -48,15 +48,15 @@ class TasksModel {
 
   factory TasksModel.fromJson(Map<String, dynamic> json) {
 
-    TaskStatusModel? status;
-    if(json['taskStatus'] != null) {
-      status = TaskStatusModel.fromJson(json['taskStatus']);
+    StatusModel? status;
+    if(json['label'] != null) {
+      status = StatusModel.fromJson(json['label']);
     }
 
     return TasksModel(
       id: json['id'],
       parentId: json['parent_id'],
-      taskStatusId: json['task_status_id'],
+      taskStatusId: json['label_id'],
       startDate: json['start_date'] ?? "",
       deadline: json['deadline'] ?? "",
       priority: json['priority'],

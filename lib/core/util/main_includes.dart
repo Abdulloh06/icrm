@@ -16,4 +16,6 @@ export 'package:icrm/features/presentation/pages/main/main_page.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
-export 'package:flutter_locales/flutter_locales.dart';
+export 'package:icrm/core/util/text_styles.dart';
+export 'package:icrm/core/service/locale_notification_service.dart';
+export 'package:flutter/services.dart';

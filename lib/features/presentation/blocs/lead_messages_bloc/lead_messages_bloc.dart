@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'package:icrm/core/models/message_model.dart';
 import 'package:icrm/core/service/api/leads_message.dart';
 import 'package:icrm/core/util/get_it.dart';
@@ -7,64 +13,75 @@ import 'lead_messages_state.dart';
 
 class LeadMessageBloc extends Bloc<LeadMessagesEvent, LeadMessagesState> {
   LeadMessageBloc(LeadMessagesState initialState) : super(initialState) {
-    on<LeadMessageInitEvent>((event, emit) async {
-      try {
-        List<MessageModel> messages =
-            await getIt.get<LeadsMessage>().getMessages(lead_id: event.id);
+    on<LeadMessageInitEvent>((event, emit) => _init(event: event, emit: emit));
+    on<LeadMessagesSendEvent>((event, emit) => _sendMessage(event: event, emit: emit));
+    on<LeadMessagesDeleteEvent>((event, emit) => _deleteMessage(event: event, emit: emit));
+  }
+
+  Future<void> _init({
+    required LeadMessageInitEvent event,
+    required Emitter<LeadMessagesState> emit,
+  }) async {
+    try {
+      List<MessageModel> messages =
+      await getIt.get<LeadsMessage>().getMessages(lead_id: event.id);
+
+      emit(LeadMessagesInitState(messages: messages));
+    } catch (error) {
+      print(error);
+
+      emit(LeadMessagesErrorState(error: error.toString()));
+    }
+  }
+
+  Future<void> _sendMessage({
+    required LeadMessagesSendEvent event,
+    required Emitter<LeadMessagesState> emit,
+  }) async {
+    try {
+      bool result = await getIt.get<LeadsMessage>().sendMessage(
+        message: event.message,
+        user_id: event.user_id,
+        lead_id: event.lead_id,
+        client_id: event.client_id,
+      );
+
+      if(result) {
+        List<MessageModel> messages = await getIt.get<LeadsMessage>().getMessages(lead_id: event.lead_id);
 
         emit(LeadMessagesInitState(messages: messages));
-      } catch (error) {
-        print(error);
-
-        emit(LeadMessagesErrorState(error: error.toString()));
+      }else {
+        emit(LeadMessagesErrorState(error: 'something_went_wrong'));
       }
-    });
+    } catch (error) {
+      print(error);
 
-    on<LeadMessagesSendEvent>((event, emit) async {
-      try {
-        bool result = await getIt.get<LeadsMessage>().sendMessage(
-          message: event.message,
-          user_id: event.user_id,
-          lead_id: event.lead_id,
-          client_id: event.client_id,
-        );
-
-        if(result) {
-          List<MessageModel> messages = await getIt.get<LeadsMessage>().getMessages(lead_id: event.lead_id);
-
-          emit(LeadMessagesInitState(messages: messages));
-        }else {
-          emit(LeadMessagesErrorState(error: 'something_went_wrong'));
-        }
-      } catch (error) {
-        print(error);
-
-        emit(LeadMessagesErrorState(error: error.toString()));
-      }
-    });
-
-    on<LeadMessagesDeleteEvent>((event, emit) async {
-
-      try {
-
-        bool result = await getIt.get<LeadsMessage>().deleteMessage(id: event.id);
-
-        if(result){
-          List<MessageModel> messages = await getIt.get<LeadsMessage>().getMessages(lead_id: event.id);
-
-          emit(LeadMessagesInitState(messages: messages));
-
-        }else {
-          emit(LeadMessagesErrorState(error: 'something_went_wrong'));
-        }
-
-      } catch(error) {
-        print(error);
-
-        emit(LeadMessagesErrorState(error: error.toString()));
-      }
-
-    });
-
+      emit(LeadMessagesErrorState(error: error.toString()));
+    }
   }
+
+  Future<void> _deleteMessage({
+    required LeadMessagesDeleteEvent event,
+    required Emitter<LeadMessagesState> emit,
+  }) async {
+    try {
+
+      bool result = await getIt.get<LeadsMessage>().deleteMessage(id: event.id);
+
+      if(result){
+        List<MessageModel> messages = await getIt.get<LeadsMessage>().getMessages(lead_id: event.id);
+
+        emit(LeadMessagesInitState(messages: messages));
+
+      }else {
+        emit(LeadMessagesErrorState(error: 'something_went_wrong'));
+      }
+
+    } catch(error) {
+      print(error);
+
+      emit(LeadMessagesErrorState(error: error.toString()));
+    }
+  }
+
 }

@@ -3,6 +3,8 @@
   15 y.o
  */
 
+import 'dart:io';
+
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
@@ -17,13 +19,15 @@ class MainPersonContact extends StatelessWidget {
     required this.name,
     required this.photo,
     required this.response,
-    this.phone_number = '',
+    required this.phone_number,
+    required this.email,
   }) : super(key: key);
 
   final String name;
   final String response;
   final String photo;
   final String phone_number;
+  final String email;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +44,19 @@ class MainPersonContact extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
+                  radius: 20,
                   backgroundColor: Colors.transparent,
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl: photo,
-                      errorWidget: (context, error, stack) {
-                        return Image.asset('assets/png/no_user.png');
-                      },
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: photo,
+                        fit: BoxFit.fill,
+                        errorWidget: (context, error, stack) {
+                          return Image.asset('assets/png/no_user.png');
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -60,7 +70,11 @@ class MainPersonContact extends StatelessWidget {
                         style: AppTextStyles.mainBold,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text(response, style: AppTextStyles.mainGrey.copyWith(fontSize: 12), overflow: TextOverflow.ellipsis,),
+                      Text(
+                        response,
+                        style: AppTextStyles.mainGrey.copyWith(fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ],
                   ),
                 ),
@@ -72,7 +86,18 @@ class MainPersonContact extends StatelessWidget {
               InkWell(
                 borderRadius: BorderRadius.circular(20),
                 onTap: () async {
-                  await launch('tel: $phone_number');
+                  try {
+                    String phone = phone_number;
+                    phone = phone.split('+').join('');
+                    phone = "+" + phone;
+                    if(Platform.isIOS) {
+                      await launch('tel:// $phone');
+                    }else {
+                      await launch('tel: $phone');
+                    }
+                  }catch(e) {
+                    print(e);
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -82,7 +107,13 @@ class MainPersonContact extends StatelessWidget {
               InkWell(
                 splashColor: Colors.grey,
                 borderRadius: BorderRadius.circular(20),
-                onTap: () {},
+                onTap: () async{
+                  final Uri _emailLaunchUri = Uri(
+                    scheme: 'mailto',
+                    path: email,
+                  );
+                  await launch(_emailLaunchUri.toString());
+                },
                 child: Ink(
                   padding: const EdgeInsets.all(5),
                   child: SvgPicture.asset('assets/icons_svg/chat.svg', height: 16,),

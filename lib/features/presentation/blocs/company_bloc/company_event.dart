@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 part of 'company_bloc.dart';
 
 abstract class CompanyEvent extends Equatable {
@@ -29,10 +35,9 @@ class CompanyUpdateEvent extends CompanyEvent {
   final int id;
   final String name;
   final String description;
-  final File logo;
+  final File? logo;
   final String url;
-  final int contact_id;
-  final bool hasLogo;
+  final int? contact_id;
 
   CompanyUpdateEvent({
     required this.id,
@@ -41,7 +46,6 @@ class CompanyUpdateEvent extends CompanyEvent {
     required this.name,
     required this.contact_id,
     required this.url,
-    required this.hasLogo,
   });
 }
 
@@ -56,3 +60,4 @@ class CompanyShowEvent extends CompanyEvent {
 
   CompanyShowEvent({required this.id});
 }
+
