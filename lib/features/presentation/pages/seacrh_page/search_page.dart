@@ -1,3 +1,9 @@
+/*
+  Developer Muhammadjonov Abdulloh
+  15 y.o
+ */
+
+
 import 'package:icrm/features/presentation/blocs/search_bloc/search_bloc.dart';
 import 'package:icrm/features/presentation/blocs/search_bloc/search_event.dart';
 import 'package:icrm/features/presentation/blocs/search_bloc/search_state.dart';

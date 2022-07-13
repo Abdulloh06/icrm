@@ -3,7 +3,6 @@
   15 y.o
  */
 
-import 'dart:developer';
 import 'package:icrm/core/service/firebase_service.dart';
 import 'package:icrm/core/util/main_includes.dart';
 import 'package:icrm/widgets/loading.dart';
@@ -42,7 +41,6 @@ void main() async {
     UserToken.accessToken = pref.getAccessToken;
     UserToken.refreshToken = pref.getRefreshToken;
     UserToken.responsibility = pref.getResponsibility;
-    UserToken.tokenExpireDate = pref.getExpireDate;
   });
 
   runApp(MyApp());
@@ -95,7 +93,7 @@ class _AvloLeadState extends State<AvloLead> {
   int exitTime = 0;
   void _setLanguage() async {
     final _prefs = await SharedPreferences.getInstance();
-    String languageCode = await _prefs.getString(PrefsKeys.languageCode) ?? 'ru';
+    String languageCode = await _prefs.getString(PrefsKeys.languageCode) ?? 'en';
 
     context.changeLocale(languageCode);
   }
@@ -105,7 +103,6 @@ class _AvloLeadState extends State<AvloLead> {
     super.initState();
     _setLanguage();
     _firebaseService.initMessaging();
-    log(UserToken.accessToken);
     if(UserToken.authStatus) {
       _firebaseService.initDynamicLinks(context);
     }
@@ -124,6 +121,7 @@ class _AvloLeadState extends State<AvloLead> {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              duration: Duration(seconds: 2),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               margin: const EdgeInsets.all(20),

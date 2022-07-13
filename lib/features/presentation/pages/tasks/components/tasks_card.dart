@@ -61,14 +61,34 @@ class TasksCard extends StatelessWidget {
                         child: Container(
                           width: double.infinity,
                           height: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 2,
+                              color: Colors.grey,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
                           child: ClipOval(
                             child: CachedNetworkImage(
                               imageUrl: task.members![index].social_avatar,
                               fit: BoxFit.fill,
                               errorWidget: (context, error, stack) {
-                                return Image.asset(
-                                  'assets/png/no_user.png',
-                                  fit: BoxFit.fill,
+                                String name = task.members![index].first_name[0];
+                                String surname = "";
+                                if(task.members![index].last_name.isNotEmpty) {
+                                  surname = task.members![index].last_name[0];
+                                }
+                                return Center(
+                                  child: Text(
+                                    name + surname,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: UserToken.isDark
+                                          ? Colors.white
+                                          : Colors.grey.shade600,
+                                    ),
+                                  ),
                                 );
                               },
                             ),

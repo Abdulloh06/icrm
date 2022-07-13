@@ -66,14 +66,34 @@ class MainDrawer extends StatelessWidget {
                               child: Container(
                                 width: double.infinity,
                                 height: double.infinity,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    width: 2,
+                                    color: AppColors.greyText,
+                                  ),
+                                ),
                                 child: ClipOval(
                                   child: CachedNetworkImage(
                                     imageUrl: UserToken.userPhoto,
                                     fit: BoxFit.fill,
                                     errorWidget: (context, error, stack) {
-                                      return Image.asset(
-                                        'assets/png/no_user.png',
-                                        fit: BoxFit.fill,
+                                      String name = UserToken.name[0];
+                                      String surname = "";
+                                      if(UserToken.surname.isNotEmpty) {
+                                        surname = UserToken.surname[0];
+                                      }
+                                      return Center(
+                                        child: Text(
+                                          name + surname,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            color: UserToken.isDark
+                                                ? Colors.white
+                                                : Colors.grey.shade600,
+                                          ),
+                                        ),
                                       );
                                     },
                                   ),

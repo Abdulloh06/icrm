@@ -60,7 +60,6 @@ class SocialAuth {
           prefs.setTokens(
             accessToken: data['access_token'],
             refreshToken: data['refresh_token'] != null ? data['refresh_token'] : "",
-            expiresIn: data['expires_in'],
           );
 
           UserToken.authStatus = true;

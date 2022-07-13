@@ -23,7 +23,6 @@ class UserToken {
   static int pendingTask = 0;
   static int canceledTask = 0;
   static bool animate = true;
-  static int tokenExpireDate = 0;
 
   static void clearAllData() {
     name = '';
@@ -40,6 +39,5 @@ class UserToken {
     completedTask = 0;
     pendingTask = 0;
     canceledTask = 0;
-    tokenExpireDate = 0;
   }
 }

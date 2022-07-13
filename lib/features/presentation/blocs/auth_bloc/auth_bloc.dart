@@ -57,6 +57,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         emit(AuthErrorState(error: 'something_went_wrong'));
       }
     } catch (error) {
+      print(error);
       emit(AuthErrorState(error: 'something_went_wrong'));
     }
   }

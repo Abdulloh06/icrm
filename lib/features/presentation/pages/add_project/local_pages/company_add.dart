@@ -8,7 +8,8 @@ import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
 import 'package:icrm/features/presentation/blocs/company_bloc/company_bloc.dart';
-import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_bloc.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_event.dart';
 import 'package:icrm/features/presentation/pages/drawer/companies/components/company_card.dart';
 import 'package:icrm/features/presentation/pages/widgets/one_button.dart';
 import 'package:icrm/widgets/custom_text_field.dart';
@@ -19,7 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../core/models/company_model.dart';
-import '../../../blocs/projects_bloc/projects_event.dart';
 
 class ContactCompany extends StatefulWidget {
   ContactCompany({
@@ -94,9 +94,10 @@ class _ContactCompanyState extends State<ContactCompany> {
         child: BlocConsumer<CompanyBloc, CompanyState>(
           listener: (context, state) {
             if(state is CompanyAddState) {
-              context.read<ProjectsBloc>().add(ProjectsCompanyEvent(
-                company_id: state.company.id,
-                name: _nameController.text,
+              context.read<HelperBloc>().add(HelperProjectMainEvent(
+                name: state.company.name,
+                id: state.company.id,
+                type: 2,
               ));
               Navigator.pop(context);
             }
@@ -172,10 +173,13 @@ class _ContactCompanyState extends State<ContactCompany> {
                                           padding: const EdgeInsets.only(bottom: 10),
                                           child: CompanyCard(
                                             onTap: () {
-                                              context.read<ProjectsBloc>().add(ProjectsCompanyEvent(
-                                                company_id: state.companies[index].id,
-                                                name: state.companies[index].name,
-                                              ));
+                                              context.read<HelperBloc>().add(
+                                                HelperProjectMainEvent(
+                                                  name: state.companies[index].name,
+                                                  id: state.companies[index].id,
+                                                  type: 2,
+                                                ),
+                                              );
                                               Navigator.pop(context);
                                             },
                                             direction: state.companies[index].description,

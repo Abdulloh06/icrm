@@ -49,12 +49,35 @@ class MainPersonContact extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     height: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 2,
+                        color: Colors.grey,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
                     child: ClipOval(
                       child: CachedNetworkImage(
                         imageUrl: photo,
                         fit: BoxFit.fill,
                         errorWidget: (context, error, stack) {
-                          return Image.asset('assets/png/no_user.png');
+                          String firstName = name.split(' ').first[0];
+                          String surname = "";
+                          if(name.split(' ').last.isNotEmpty) {
+                            surname = name.split(' ').last[0];
+                          }
+                          return Center(
+                            child: Text(
+                              firstName + surname,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: UserToken.isDark
+                                    ? Colors.white
+                                    : Colors.grey.shade600,
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ),

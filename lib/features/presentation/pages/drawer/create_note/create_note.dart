@@ -5,6 +5,7 @@
 
 import 'dart:io';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
@@ -60,11 +61,13 @@ class _CreateNoteState extends State<CreateNote> {
           setState(() {
             images.add(image.path);
           });
-          context.read<AttachmentBloc>().add(AttachmentAddEvent(
-            content_id: widget.id,
-            content_type: "note",
-            file: File(image.path),
-          ));
+          if(widget.isSubNote) {
+            context.read<AttachmentBloc>().add(AttachmentAddEvent(
+              content_id: widget.id,
+              content_type: "note",
+              file: File(image.path),
+            ));
+          }
         }
 
       } catch (error) {
@@ -149,20 +152,12 @@ class _CreateNoteState extends State<CreateNote> {
                       title: _titleController.text,
                     ),
                   );
-                  if(images.isNotEmpty) {
-                    for(int i = 0; i < images.length; i++) {
-                      context.read<AttachmentBloc>().add(AttachmentAddEvent(
-                        content_id: widget.id,
-                        content_type: "note",
-                        file: File(images[i]),
-                      ));
-                    }
-                  }
                 } else {
                   context.read<NotesBloc>().add(
                     NotesAddEvent(
                       title: _titleController.text,
                       content: _descriptionController.text,
+                      images: images,
                     ),
                   );
                 }
@@ -225,12 +220,12 @@ class _CreateNoteState extends State<CreateNote> {
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: const EdgeInsets.only(right: 10),
-                                    child: Image.network(
-                                      state.documents[index].path,
-                                      errorBuilder: (context, error, stacktrace) {
+                                    child: CachedNetworkImage(
+                                      imageUrl: state.documents[index].path,
+                                      errorWidget: (context, error, stacktrace) {
                                         return SizedBox();
                                       },
-                                      loadingBuilder: (context, child, progress) {
+                                      placeholder: (context, progress) {
                                         return Center(
                                           child: CircularProgressIndicator(
                                             color: AppColors.mainColor,

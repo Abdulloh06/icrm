@@ -1,6 +1,7 @@
 import 'package:icrm/core/models/status_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:icrm/core/util/main_includes.dart';
 import '../../../../../core/models/tasks_model.dart';
 import '../../tasks/components/tasks_card.dart';
 import '../../tasks/pages/selected_task/selected_tasks.dart';
@@ -51,7 +52,10 @@ class SearchTasks extends StatelessWidget {
           );
         } else {
           return Center(
-            child: LocaleText("empty"),
+            child: LocaleText(
+              "empty",
+              style: AppTextStyles.mainGrey,
+            ),
           );
         }
       },

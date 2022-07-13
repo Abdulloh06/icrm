@@ -6,6 +6,8 @@
 
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/models/message_model.dart';
+
 abstract class LeadMessagesEvent extends Equatable {}
 
 class LeadMessageInitEvent extends LeadMessagesEvent {
@@ -44,4 +46,23 @@ class LeadMessagesDeleteEvent extends LeadMessagesEvent {
 
   @override
   List<Object?> get props => [id];
+}
+
+class GetMessageFromNotification extends LeadMessagesEvent {
+  final int id;
+  final String message;
+  final int clientId;
+  final int leadId;
+  final List<MessageModel> messages;
+
+  GetMessageFromNotification({
+    required this.id,
+    required this.message,
+    required this.clientId,
+    required this.leadId,
+    required this.messages,
+  });
+
+  @override
+  List<Object?> get props => [id, leadId, clientId, messages, message];
 }

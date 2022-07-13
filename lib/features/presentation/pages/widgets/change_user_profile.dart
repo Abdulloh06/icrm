@@ -187,7 +187,9 @@ class _ChangeUserProfileState extends State<ChangeUserProfile> {
                                   controller: _usernameController,
                                   hint: 'username',
                                   onChanged: (value) {},
-                                  validator: (value) => null,
+                                  validator: (value) => value!.isEmpty
+                                      ? null : value.length >= 4
+                                      ? null : Locales.string(context, "min_four_symbols"),
                                   isFilled: true,
                                   color: UserToken.isDark ? AppColors.textFieldColorDark : AppColors.textFieldColor,
                                 ),

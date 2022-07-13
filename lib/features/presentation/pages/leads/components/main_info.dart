@@ -232,14 +232,34 @@ class _MainLeadInfoState extends State<MainLeadInfo> {
                                     child: Container(
                                       width: double.infinity,
                                       height: double.infinity,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          width: 2,
+                                          color: Colors.grey,
+                                        ),
+                                        shape: BoxShape.circle,
+                                      ),
                                       child: ClipOval(
                                         child: CachedNetworkImage(
                                           imageUrl: widget.lead.member!.social_avatar,
                                           fit: BoxFit.fill,
                                           errorWidget: (context, error, stackTrace) {
-                                            return Image.asset(
-                                              'assets/png/no_user.png',
-                                              fit: BoxFit.fill,
+                                            String name = widget.lead.member!.first_name[0];
+                                            String surname = "";
+                                            if(widget.lead.member!.last_name.isNotEmpty) {
+                                              surname = widget.lead.member!.last_name[0];
+                                            }
+                                            return Center(
+                                              child: Text(
+                                                name + surname,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: UserToken.isDark
+                                                      ? Colors.white
+                                                      : Colors.grey.shade600,
+                                                ),
+                                              ),
                                             );
                                           },
                                         ),
@@ -437,18 +457,23 @@ class _MainLeadInfoState extends State<MainLeadInfo> {
                   Builder(
                     builder: (context) {
                       if(project!.userCategory != null) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 15,
+                        return ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: 130,
                           ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: AppColors.greenLight,
-                          ),
-                          child: Text(
-                            MainLeadInfo.userCategory,
-                            style: TextStyle(
-                              color: AppColors.green,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 15,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: AppColors.greenLight,
+                            ),
+                            child: Text(
+                              MainLeadInfo.userCategory,
+                              style: TextStyle(
+                                color: AppColors.green,
+                              ),
                             ),
                           ),
                         );
@@ -517,15 +542,14 @@ class _MainLeadInfoState extends State<MainLeadInfo> {
                               LeadMessagesSendEvent(
                                 message: 'Внес изменения в статус лида',
                                 client_id: null,
-                                user_id: widget.lead.createdBy,
+                                user_id: widget.lead.seller_id,
                                 lead_id: widget.lead.id,
                               ),
                             );
                           },
                           child: Container(
-                            padding:
-                            const EdgeInsets.symmetric(vertical: 5)
-                                .copyWith(left: 20, right: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 5)
+                                .copyWith(left: 10, right: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               color: Color(
@@ -535,8 +559,7 @@ class _MainLeadInfoState extends State<MainLeadInfo> {
                               ),
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   widget.leadStatus[index].userLabel!.name,
@@ -545,7 +568,6 @@ class _MainLeadInfoState extends State<MainLeadInfo> {
                                     color: Colors.white,
                                   ),
                                 ),
-                                SizedBox(width: 30),
                                 SvgPicture.asset(
                                   'assets/icons_svg/menu_icon.svg',
                                   height: 20,
@@ -561,7 +583,7 @@ class _MainLeadInfoState extends State<MainLeadInfo> {
                     if(widget.leadStatus.isNotEmpty) {
                       return Container(
                         padding: EdgeInsets.symmetric(vertical: 5)
-                            .copyWith(left: 20, right: 10),
+                            .copyWith(left: 15, right: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Color(
@@ -585,7 +607,7 @@ class _MainLeadInfoState extends State<MainLeadInfo> {
                                 color: Colors.white,
                               ),
                             ),
-                            const SizedBox(width: 30),
+                            const SizedBox(width: 20),
                             SvgPicture.asset(
                               'assets/icons_svg/menu_icon.svg',
                               height: 20,

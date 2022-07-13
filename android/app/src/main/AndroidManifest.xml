@@ -15,7 +15,8 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="I CRM">
+        android:label="I CRM"
+        android:usesCleartextTraffic="true">
 
         <activity
             android:name=".MainActivity"

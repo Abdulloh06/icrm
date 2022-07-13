@@ -19,7 +19,6 @@ class PrefsKeys {
   static const String accessTokenKey = 'access_token';
   static const String refreshTokenKey = 'refresh_token';
   static const String responsibilityKey = "response_key";
-  static const String expireDate = "expire_date";
 }
 
 class SharedPreferencesService {
@@ -42,11 +41,9 @@ class SharedPreferencesService {
   Future<void> setTokens({
     required String accessToken,
     required String refreshToken,
-    required int expiresIn,
   }) async {
     await _preferences.setString(PrefsKeys.accessTokenKey, accessToken);
     await _preferences.setString(PrefsKeys.refreshTokenKey, refreshToken);
-    await _preferences.setInt(PrefsKeys.expireDate, expiresIn);
   }
 
   Future<void> setUserInfo({required Map<String, dynamic> data, required bool fromSignUp}) async {
@@ -74,7 +71,7 @@ class SharedPreferencesService {
   bool get getAuth => _preferences.getBool(PrefsKeys.authStatus) ?? false;
 
   String get getLanguageCode =>
-      _preferences.getString(PrefsKeys.languageCode) ?? "ru";
+      _preferences.getString(PrefsKeys.languageCode) ?? "en";
 
   String get getName => _preferences.getString(PrefsKeys.nameKey) ?? "";
 
@@ -96,5 +93,4 @@ class SharedPreferencesService {
   dynamic get getUserId => _preferences.getInt(PrefsKeys.idKey);
   String get getResponsibility => _preferences.getString(PrefsKeys.responsibilityKey) ?? "";
 
-  int get getExpireDate => _preferences.getInt(PrefsKeys.expireDate) ?? 0;
 }

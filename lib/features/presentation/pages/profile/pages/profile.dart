@@ -12,7 +12,6 @@ import 'package:icrm/features/presentation/blocs/profile_bloc/profile_state.dart
 import 'package:icrm/features/presentation/pages/profile/components/change_user_info.dart';
 import 'package:icrm/features/presentation/pages/profile/components/profile_main_categories.dart';
 import 'package:icrm/widgets/main_app_bar.dart';
-import 'package:icrm/widgets/main_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -116,6 +115,13 @@ class _ProfileState extends State<Profile> {
                                   child: Container(
                                     width: double.infinity,
                                     height: double.infinity,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 2,
+                                        color: Colors.grey,
+                                      ),
+                                      shape: BoxShape.circle,
+                                    ),
                                     child: ClipOval(
                                       child: CachedNetworkImage(
                                         placeholder: (context, data) {
@@ -128,9 +134,22 @@ class _ProfileState extends State<Profile> {
                                         fit: BoxFit.fill,
                                         imageUrl: UserToken.userPhoto,
                                         errorWidget: (context, error, stackTrace) {
-                                          return Image.asset(
-                                            'assets/png/no_user.png',
-                                            fit: BoxFit.fill,
+                                          String name = UserToken.name[0];
+                                          String surname = "";
+                                          if(UserToken.surname.isNotEmpty) {
+                                            surname = UserToken.surname[0];
+                                          }
+                                          return Center(
+                                            child: Text(
+                                              name + surname,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 33,
+                                                color: UserToken.isDark
+                                                    ? Colors.white
+                                                    : Colors.grey.shade600,
+                                              ),
+                                            ),
                                           );
                                         },
                                       ),
@@ -200,77 +219,29 @@ class _ProfileState extends State<Profile> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Column(
-                  children: [
-                    BlocBuilder<ThemeCubit, bool>(builder: (context, state) {
-                      return Column(
+                child: BlocBuilder<ThemeCubit, bool>(builder: (context, state) {
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              LocaleText(
-                                'dark_theme',
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              Switch(
-                                value: state,
-                                onChanged: (value) => context.read<ThemeCubit>().changeTheme(value),
-                              ),
-                            ],
+                          LocaleText(
+                            'dark_theme',
+                            style: const TextStyle(fontSize: 14),
                           ),
-                          ProfileMainCategories(),
+                          Switch(
+                            value: state,
+                            onChanged: (value) {
+                              context.read<ThemeCubit>().changeTheme(value);
+                              setState(() {});
+                            },
+                          ),
                         ],
-                      );
-                    }),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return SimpleDialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                insetPadding: const EdgeInsets.symmetric(),
-                                title: Text(
-                                  Locales.string(
-                                      context, 'you_want_delete_profile'),
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.mainBold
-                                      .copyWith(fontSize: 22),
-                                ),
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      MainButton(
-                                        color: AppColors.red,
-                                        title: 'no',
-                                        onTap: () => Navigator.pop(context),
-                                        fontSize: 22,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 50, vertical: 10),
-                                      ),
-                                      MainButton(
-                                        onTap: () {},
-                                        color: AppColors.mainColor,
-                                        title: 'yes',
-                                        fontSize: 22,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 50, vertical: 10),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                          },
-                        );
-                      },
-                      child: LocaleText('delete_profile',
-                          style: const TextStyle(color: AppColors.red)),
-                    ),
-                  ],
-                ),
+                      ),
+                      ProfileMainCategories(),
+                    ],
+                  );
+                }),
               ),
             ],
           ),

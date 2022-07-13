@@ -76,3 +76,18 @@ class HelperErrorState extends HelperState {
 
   HelperErrorState({required this.error});
 }
+
+class HelperProjectMainState extends HelperState {
+  final int id;
+  final String name;
+  final int type;
+
+  HelperProjectMainState({
+    required this.type,
+    required this.id,
+    required this.name,
+  });
+
+  @override
+  List<Object?> get props => [id, name, type];
+}

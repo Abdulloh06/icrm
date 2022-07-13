@@ -7,11 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-  var dateFormat = new MaskTextInputFormatter(
-    mask: '##.##.####',
-    filter: { "#": RegExp(r'[0-9]') },
-    type: MaskAutoCompletionType.lazy,
-  );
+var dateFormat = new MaskTextInputFormatter(
+  mask: '##.##.####',
+  filter: {"#": RegExp(r'[0-9]')},
+  type: MaskAutoCompletionType.lazy,
+);
 
 class NumericTextFormatter extends TextInputFormatter {
   @override
@@ -23,7 +23,7 @@ class NumericTextFormatter extends TextInputFormatter {
       var selectionIndexFromTheRight =
           newValue.text.length - newValue.selection.end;
       final f =
-      NumberFormat.currency(locale: 'de', decimalDigits: 0, symbol: '');
+          NumberFormat.currency(locale: 'de', decimalDigits: 0, symbol: '');
       var num = int.parse(newValue.text.replaceAll(RegExp('[^0-9]'), ''));
       final newString = f.format(num).trim();
       return TextEditingValue(

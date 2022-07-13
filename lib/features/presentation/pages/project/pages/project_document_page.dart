@@ -17,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../../core/repository/user_token.dart';
 import '../../profile/components/notes_card.dart';
 
@@ -128,7 +129,7 @@ class _ProjectDocumentPageState extends State<ProjectDocumentPage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Expanded(
             child: BlocBuilder<AttachmentBloc, AttachmentState>(
               builder: (context, state) {
@@ -138,71 +139,76 @@ class _ProjectDocumentPageState extends State<ProjectDocumentPage> {
                     itemBuilder: (context, index) {
                       return Visibility(
                         visible: state.documents[index].file_type.toLowerCase().contains(fileType),
-                        child: Container(
-                          padding: const EdgeInsets.all(10).copyWith(right: 0),
-                          margin: const EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                            color: UserToken.isDark ? AppColors.cardColorDark : Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.apColor,
-                                        borderRadius: BorderRadius.circular(10)
-                                      ),
-                                      child: Text(
-                                        state.documents[index].file_type.split('/').last.toUpperCase(),
-                                        style: AppTextStyles.primary.copyWith(
-                                          fontSize: 14,
+                        child: GestureDetector(
+                          onTap: () async {
+                            await launch(state.documents[index].path);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10).copyWith(right: 0),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: UserToken.isDark ? AppColors.cardColorDark : Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.apColor,
+                                          borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: Text(
+                                          state.documents[index].file_type.split('/').last.toUpperCase(),
+                                          style: AppTextStyles.primary.copyWith(
+                                            fontSize: 14,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Flexible(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            state.documents[index].file_name.split('.').first,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: AppTextStyles.mainBold.copyWith(
-                                              color: UserToken.isDark ? Colors.white : Colors.black,
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              state.documents[index].file_name.split('.').first,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: AppTextStyles.mainBold.copyWith(
+                                                color: UserToken.isDark ? Colors.white : Colors.black,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            DateFormat("dd.MM.yyyy").format(DateTime.parse(state.documents[index].created_at)),
-                                            style: AppTextStyles.mainGrey.copyWith(fontSize: 12),
-                                          ),
-                                        ],
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              DateFormat("dd.MM.yyyy").format(DateTime.parse(state.documents[index].created_at)),
+                                              style: AppTextStyles.mainGrey.copyWith(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              PopupMenuButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)
+                                PopupMenuButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                  ),
+                                  itemBuilder: (context) {
+                                    return [
+                                      popupItem(
+                                        icon: 'assets/icons_svg/delete.svg',
+                                        title: 'delete',
+                                        onTap: () => context.read<AttachmentBloc>().add(AttachmentDeleteEvent(id: state.documents[index].id, content_id: widget.project_id, content_type: widget.content_type)),
+                                      ),
+                                    ];
+                                  },
+                                  padding: const EdgeInsets.all(0),
+                                  icon: SvgPicture.asset('assets/icons_svg/menu_icon.svg', color: Colors.black),
                                 ),
-                                itemBuilder: (context) {
-                                  return [
-                                    popupItem(
-                                      icon: 'assets/icons_svg/delete.svg',
-                                      title: 'delete',
-                                      onTap: () => context.read<AttachmentBloc>().add(AttachmentDeleteEvent(id: state.documents[index].id, content_id: widget.project_id, content_type: widget.content_type)),
-                                    ),
-                                  ];
-                                },
-                                padding: const EdgeInsets.all(0),
-                                icon: SvgPicture.asset('assets/icons_svg/menu_icon.svg', color: Colors.black),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       );

@@ -198,5 +198,7 @@
   "username_already_in_use": "Username has already been taken",
   "type_phone_of_user": "Type phone number or email of user",
   "enter_valid_date": "End date must be after start date",
-  "are_you_sure_to_exit": "Are you sure, you want to leave?"
+  "are_you_sure_to_exit": "Are you sure you want to leave?",
+  "you_are_not_seller": "You are not seller of this lead!",
+  "min_four_symbols": "At least 4 characters"
 }

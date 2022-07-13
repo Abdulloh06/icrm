@@ -16,6 +16,7 @@ class LeadMessageBloc extends Bloc<LeadMessagesEvent, LeadMessagesState> {
     on<LeadMessageInitEvent>((event, emit) => _init(event: event, emit: emit));
     on<LeadMessagesSendEvent>((event, emit) => _sendMessage(event: event, emit: emit));
     on<LeadMessagesDeleteEvent>((event, emit) => _deleteMessage(event: event, emit: emit));
+    on<GetMessageFromNotification>((event, emit) => _getMessageFromNotification(event: event, emit: emit));
   }
 
   Future<void> _init({
@@ -83,5 +84,34 @@ class LeadMessageBloc extends Bloc<LeadMessagesEvent, LeadMessagesState> {
       emit(LeadMessagesErrorState(error: error.toString()));
     }
   }
+
+  Future<void> _getMessageFromNotification({
+    required GetMessageFromNotification event,
+    required Emitter<LeadMessagesState> emit,
+  }) async {
+
+    try {
+
+      List<MessageModel> messages = event.messages.reversed.toList();
+
+      messages.add(MessageModel(
+        id: event.id,
+        lead_id: event.leadId,
+        client_id: event.clientId,
+        message: event.message,
+        user_id: null,
+        created_at: DateTime.now().toString(),
+        updated_at: "",
+      ));
+
+      messages = messages.toList();
+
+      emit(LeadMessagesInitState(messages: messages));
+
+    } catch(e) {
+      emit(LeadMessagesErrorState(error: "something_went_wrong"));
+    }
+  }
+
 
 }

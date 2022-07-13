@@ -7,6 +7,8 @@ import 'dart:io';
 import 'package:icrm/core/repository/api_repository.dart';
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:dio/dio.dart';
+import 'package:icrm/core/service/api/get_attachment.dart';
+import 'package:icrm/core/util/get_it.dart';
 
 import '../../models/notes_model.dart';
 
@@ -50,6 +52,7 @@ class GetNotes {
   Future<bool> addNotes({
     required String title,
     required String content,
+    required List<String> images,
   }) async {
 
     try {
@@ -70,7 +73,16 @@ class GetNotes {
         throw Exception('TIME OUT');
       });
 
-      if(response.statusCode == HttpStatus.ok || response.statusCode == HttpStatus.created) {
+      final Map<String, dynamic> data = await response.data;
+
+      if(response.statusCode == HttpStatus.created) {
+        for(int i = 0; i < images.length; i++) {
+          await getIt.get<GetAttachment>().addAttachment(
+            content_type: "note",
+            content_id: data['data']['id'],
+            file: File(images[i]),
+          );
+        }
         return true;
       }else if(response.statusCode == HttpStatus.internalServerError) {
         throw Exception('SERVER ERROR');

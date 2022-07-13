@@ -16,11 +16,16 @@ class NotesInitEvent extends NotesEvent {}
 class NotesAddEvent extends NotesEvent {
   final String title;
   final String content;
+  final List<String> images;
 
-  NotesAddEvent({required this.title, required this.content});
+  NotesAddEvent({
+    required this.title,
+    required this.content,
+    required this.images,
+  });
 
   @override
-  List<Object?> get props => [title, content];
+  List<Object?> get props => [title, content, images];
 }
 
 class NotesDeleteEvent extends NotesEvent {

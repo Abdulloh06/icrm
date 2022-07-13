@@ -733,7 +733,7 @@ class _LeadsState extends State<Leads> {
                                 lead_status: status_id!,
                                 description: _descriptionController.text,
                                 seller_id: members.isNotEmpty ? members.first.id : null,
-                                currency: _currencyController.text,
+                                currency: _currencyController.text.split('.').join(""),
                               ));
                               Navigator.pop(context);
                             } else {
@@ -747,7 +747,7 @@ class _LeadsState extends State<Leads> {
                                   startDate: start,
                                   endDate: end,
                                   leadStatus: status_id!,
-                                  currency: _currencyController.text,
+                                  currency: _currencyController.text.split(".").join(""),
                                 ),
                               );
                             }

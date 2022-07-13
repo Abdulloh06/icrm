@@ -52,8 +52,6 @@ class FirebaseService {
     _firebaseMessaging.getToken().then((value) {
       UserToken.fmToken = value.toString();
       FirebaseMessaging.onMessage.listen((message) async {
-        print("ON MESSAGE");
-        print(message.data);
         if(message.notification != null) {
           try {
             _notificationService.showNotification(message);

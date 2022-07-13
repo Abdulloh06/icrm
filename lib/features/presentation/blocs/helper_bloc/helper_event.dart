@@ -69,3 +69,18 @@ class HelperCompanyContactEvent extends HelperEvent {
   @override
   List<Object?> get props => [contact];
 }
+
+class HelperProjectMainEvent extends HelperEvent {
+  final int id;
+  final String name;
+  final int type;
+
+  HelperProjectMainEvent({
+    required this.name,
+    required this.id,
+    required this.type,
+  });
+
+  @override
+  List<Object?> get props => [id, name, type];
+}

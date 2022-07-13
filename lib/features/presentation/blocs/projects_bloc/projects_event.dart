@@ -88,53 +88,6 @@ class ProjectsUpdateEvent extends ProjectsEvent {
   List<Object?> get props => [];
 }
 
-class ProjectsCompanyEvent extends ProjectsEvent {
-  final int company_id;
-  final String name;
-
-  ProjectsCompanyEvent({
-    required this.company_id,
-    required this.name,
-  });
-
-  @override
-  List<Object?> get props => [company_id, name];
-}
-
-class ProjectsNameEvent extends ProjectsEvent {
-  final int contact_id;
-  final String name;
-
-  ProjectsNameEvent({
-    required this.contact_id,
-    required this.name,
-  });
-
-  @override
-  List<Object?> get props => [contact_id, name];
-}
-
-
-class ProjectsUserCategoryEvent extends ProjectsEvent {
-  final int id;
-  final String name;
-
-  ProjectsUserCategoryEvent({required this.id, required this.name});
-
-  @override
-  List<Object?> get props => [id, name];
-}
-
-class ProjectsAddStatusEvent extends ProjectsEvent {
-  final int id;
-  final String name;
-
-  ProjectsAddStatusEvent({required this.id, required this.name});
-
-  @override
-  List<Object?> get props => [id, name];
-}
-
 class ProjectsDeleteEvent extends ProjectsEvent {
   final int id;
 

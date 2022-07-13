@@ -71,7 +71,9 @@ class _TaskTabBarState extends State<TaskTabBar> {
               Expanded(
                 child: MainTabBar(
                   isScrollable: widget.visibleStatuses.length > 4,
-                  labelPadding: widget.visibleStatuses.length > 4 ? const EdgeInsets.symmetric(horizontal: 12) : const EdgeInsets.all(0),
+                  labelPadding: widget.visibleStatuses.length > 4
+                      ? const EdgeInsets.symmetric(horizontal: 12)
+                      : const EdgeInsets.all(0),
                   shadow: [
                     BoxShadow(
                       blurRadius: 4,

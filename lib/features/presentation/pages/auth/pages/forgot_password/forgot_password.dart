@@ -41,7 +41,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'icrm CRM',
+                    'I CRM',
                     style: AppTextStyles.primary,
                   ),
 

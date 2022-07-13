@@ -43,7 +43,8 @@
         android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="I CRM"
-        android:supportsRtl="true" >
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true" >
         <activity
             android:name="uz.madorgroup.icrm.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

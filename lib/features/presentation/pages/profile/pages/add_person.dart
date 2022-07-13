@@ -72,6 +72,17 @@ class _AddParticipantState extends State<AddParticipant> {
       _positionController.text = widget.contact!.position;
       _phoneController.text = widget.contact!.phone_number;
       selectedIndex = widget.contact!.contact_type;
+      switch(widget.contact!.contact_type) {
+        case 1:
+          indexName = "team";
+          break;
+        case 2:
+          indexName = "work";
+          break;
+        case 3:
+          indexName = "other";
+          break;
+      }
     }
   }
 

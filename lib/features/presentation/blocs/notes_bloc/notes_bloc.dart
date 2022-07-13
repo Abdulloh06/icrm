@@ -40,7 +40,11 @@ class NotesBloc extends Bloc<NotesEvent, NotesState>{
     emit(NotesLoadingState());
 
     try {
-      bool result = await getIt.get<GetNotes>().addNotes(title: event.title, content: event.content);
+      bool result = await getIt.get<GetNotes>().addNotes(
+        title: event.title,
+        content: event.content,
+        images: event.images,
+      );
 
       if(result) {
 

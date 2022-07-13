@@ -7,6 +7,7 @@ import 'package:icrm/core/models/projects_model.dart';
 import 'package:icrm/core/repository/user_token.dart';
 import 'package:icrm/core/util/colors.dart';
 import 'package:icrm/core/util/text_styles.dart';
+import 'package:icrm/features/presentation/blocs/helper_bloc/helper_bloc.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_bloc.dart';
 import 'package:icrm/features/presentation/blocs/home_bloc/home_event.dart';
 import 'package:icrm/features/presentation/blocs/projects_bloc/projects_bloc.dart';
@@ -21,6 +22,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../../widgets/custom_text_field.dart';
 import '../../../../../widgets/main_button.dart';
+import '../../../blocs/helper_bloc/helper_event.dart';
 import '../../leads/components/main_info.dart';
 
 class UserCategories extends StatelessWidget {
@@ -180,7 +182,7 @@ class UserCategories extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             if(fromProject) {
-                              context.read<ProjectsBloc>().add(ProjectsUserCategoryEvent(id: state.list[index].id, name: state.list[index].title));
+                              context.read<HelperBloc>().add(HelperProjectMainEvent(type: 3, id: state.list[index].id, name: state.list[index].title));
                               Navigator.pop(context);
                             }else {
                               List<int> users = [];

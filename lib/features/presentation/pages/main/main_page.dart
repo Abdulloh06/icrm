@@ -24,7 +24,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late final List<Widget> _list;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  int exitTime = 0;
 
   void getData() async {
     if(widget.isMain) {

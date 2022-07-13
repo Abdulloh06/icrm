@@ -66,7 +66,6 @@ class _NewTasksState extends State<NewTasks> {
                   content: LocaleText(state.error, style: AppTextStyles.mainGrey.copyWith(color: Colors.white)),
                 ),
               );
-
               context.read<TasksBloc>().add(TasksInitEvent());
             }
           },

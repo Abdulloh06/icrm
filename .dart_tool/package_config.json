@@ -716,6 +716,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "teledart",
+      "rootUri": "file:///Users/abdulloh/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/teledart-0.3.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "term_glyph",
       "rootUri": "file:///Users/abdulloh/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0",
       "packageUri": "lib/",
@@ -848,7 +854,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-05-30T10:26:16.299875Z",
+  "generated": "2022-06-03T14:06:49.535172Z",
   "generator": "pub",
   "generatorVersion": "2.16.1"
 }

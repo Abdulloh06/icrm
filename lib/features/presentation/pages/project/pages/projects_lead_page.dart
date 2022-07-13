@@ -110,8 +110,10 @@ class _ProjectLeadPageState extends State<ProjectLeadPage> {
                         children: [
                           Expanded(
                             child: MainTabBar(
-                              isScrollable: visibleStatuses.length >= 4,
-                              labelPadding: visibleStatuses.length >= 4 ? const EdgeInsets.symmetric(horizontal: 12, vertical: 0) : const EdgeInsets.all(0),
+                              isScrollable: visibleStatuses.length > 4,
+                              labelPadding: visibleStatuses.length >= 4
+                                  ? const EdgeInsets.symmetric(horizontal: 12, vertical: 0)
+                                  : const EdgeInsets.all(0),
                               shadow: [
                                 BoxShadow(
                                   blurRadius: 4,

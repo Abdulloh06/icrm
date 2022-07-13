@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "441254173032-1nrmq25phfud8nrfqoo0tuktdjc3i7jj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.madorgroup.icrm",
+            "certificate_hash": "2eb6d8c0f1f21ace1f86ac6df53afafb209e8a54"
+          }
+        },
+        {
           "client_id": "441254173032-lpaa5vu8fdb1qqle637bmu40ug74obah.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

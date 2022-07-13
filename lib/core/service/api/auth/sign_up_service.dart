@@ -126,7 +126,6 @@ class SignUpService {
           prefs.setTokens(
             accessToken: data['access_token'],
             refreshToken: data['refresh_token'],
-            expiresIn: data['expires_in'],
           );
 
           UserToken.phoneNumber = prefs.getPhoneNumber;

@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'custom_text_field.dart';
 
 class AppBarBack extends StatelessWidget {
   const AppBarBack({
@@ -77,8 +76,6 @@ class MainAppBar extends StatelessWidget {
   final bool isMainColor;
   final double elevation;
   final VoidCallback? onTap;
-
-  final _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

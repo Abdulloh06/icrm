@@ -21,6 +21,7 @@ class ProjectStatusBloc extends Bloc<ProjectStatusesEvent, ProjectStatusState>{
         emit(ProjectStatusInitState(projectStatuses: list));
       } catch(e) {
         print(e);
+        emit(ProjectStatusErrorState(error: "something_went_wrong"));
       }
     });
 

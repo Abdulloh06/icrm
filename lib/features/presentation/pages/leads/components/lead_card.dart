@@ -50,10 +50,13 @@ class LeadCard extends StatelessWidget{
     String deadline;
 
     try {
-      start_date = DateFormat("dd.MM.yyyy").format(DateTime.parse(lead.startDate));
-      deadline = DateFormat("dd.MM.yyyy").format(DateTime.parse(lead.endDate));
+      start_date = DateFormat("dd.MM.yyyy").format(DateTime.parse(lead.createdAt));
     } catch(error) {
-      start_date = lead.startDate;
+      start_date = lead.createdAt;
+    }
+    try {
+      deadline = DateFormat("dd.MM.yyyy").format(DateTime.parse(lead.endDate));
+    }catch(_) {
       deadline = lead.endDate;
     }
 
@@ -112,7 +115,7 @@ class LeadCard extends StatelessWidget{
                                   ),
                                   Builder(
                                     builder: (context) {
-                                      if(lead.member != null) {
+                                      if(lead.seller_id != null) {
                                         return MenuPopup(
                                           icon: SvgPicture.asset(
                                             "assets/icons_svg/dot.svg",
@@ -344,7 +347,10 @@ class LeadCard extends StatelessWidget{
                                 return Text(
                                   lead.messages!.first.message,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 10),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 );
                               }else {
                                 return SizedBox(height: 1);

@@ -47,14 +47,10 @@ class LeadsMessage {
           }
         ),
         data: data,
-      ).timeout(const Duration(minutes: 1), onTimeout: () {
-        throw Exception('TIME OUT');
-      });
+      );
 
       if(response.statusCode == HttpStatus.created) {
         return true;
-      }else if(response.statusCode == HttpStatus.internalServerError){
-        throw Exception('SERVER ERROR');
       }else {
         throw Exception('UNKNOWN');
       }
@@ -78,9 +74,7 @@ class LeadsMessage {
             "Authorization": "Bearer ${UserToken.accessToken}",
           }
         ),
-      ).timeout(const Duration(minutes: 1), onTimeout: () {
-        throw Exception('TIME OUT');
-      });
+      );
 
       final Map<String, dynamic> data = await response.data;
 

@@ -225,7 +225,9 @@ class _ChangeUserInfoDialogState extends State<ChangeUserInfoDialog> {
                           color: UserToken.isDark
                               ? AppColors.textFieldColorDark
                               : AppColors.textFieldColor,
-                          validator: (val) => null,
+                          validator: (value) => value!.isEmpty
+                              ? null : value.length >= 4
+                              ? null : Locales.string(context, "min_four_symbols"),
                           hint: 'username',
                           controller: _userNameController,
                           onChanged: (value) {},

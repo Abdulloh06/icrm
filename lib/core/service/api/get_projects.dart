@@ -28,7 +28,7 @@ class GetProjects {
               "company.contact,userCategory,members,"
               "tasks.label.userLabel,"
               "leads.label.userLabel,leads.contact"
-              "&trash=$trash&page=$page";
+              "&page=$page";
     } else {
       url = ApiRepository.getProjects +
           "?expand=label.userLabel,"

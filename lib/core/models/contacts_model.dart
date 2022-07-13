@@ -17,6 +17,7 @@ class ContactModel {
   final dynamic contact_type;
   final String avatar;
   final int source;
+  final dynamic telegramId;
 
   ContactModel({
     required this.id,
@@ -28,6 +29,7 @@ class ContactModel {
     required this.contact_type,
     required this.avatar,
     required this.source,
+    required this.telegramId,
   });
 
   factory ContactModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class ContactModel {
       contact_type: json['contact_type'],
       avatar: json['avatar'] ?? "",
       source: json['source'],
+      telegramId: json['telegram_chat_id'],
     );
   }
 

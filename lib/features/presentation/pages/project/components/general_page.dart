@@ -97,14 +97,34 @@ class _GeneralPageState extends State<GeneralPage> {
                                   child: Container(
                                     width: double.infinity,
                                     height: double.infinity,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 2,
+                                        color: Colors.grey,
+                                      ),
+                                      shape: BoxShape.circle,
+                                    ),
                                     child: ClipOval(
                                       child: CachedNetworkImage(
                                         imageUrl: widget.project.members![index].social_avatar,
                                         fit: BoxFit.fill,
                                         errorWidget: (context, error, stack) {
-                                          return Image.asset(
-                                            'assets/png/no_user.png',
-                                            fit: BoxFit.fill,
+                                          String name = widget.project.members![index].first_name[0];
+                                          String surname = "";
+                                          if(widget.project.members![index].last_name.isNotEmpty) {
+                                            surname = widget.project.members![index].last_name[0];
+                                          }
+                                          return Center(
+                                            child: Text(
+                                              name + surname,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: UserToken.isDark
+                                                    ? Colors.white
+                                                    : Colors.grey.shade600,
+                                              ),
+                                            ),
                                           );
                                         },
                                       ),

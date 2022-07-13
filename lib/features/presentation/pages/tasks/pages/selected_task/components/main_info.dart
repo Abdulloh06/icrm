@@ -218,14 +218,34 @@ class _MainTaskInfoState extends State<MainTaskInfo> {
                               },
                               child: Container(
                                 width: 50,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 2,
+                                    color: Colors.grey,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
                                 child: ClipOval(
                                   child: CachedNetworkImage(
                                     imageUrl: assigns[index].social_avatar,
                                     fit: BoxFit.fill,
                                     errorWidget: (context, error, stackTrace) {
-                                      return Image.asset(
-                                        'assets/png/no_user.png',
-                                        fit: BoxFit.fill,
+                                      String name = assigns[index].first_name[0];
+                                      String surname = "";
+                                      if(assigns[index].last_name.isNotEmpty) {
+                                        surname = assigns[index].last_name[0];
+                                      }
+                                      return Center(
+                                        child: Text(
+                                          name + surname,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: UserToken.isDark
+                                                ? Colors.white
+                                                : Colors.grey.shade600,
+                                          ),
+                                        ),
                                       );
                                     },
                                   ),

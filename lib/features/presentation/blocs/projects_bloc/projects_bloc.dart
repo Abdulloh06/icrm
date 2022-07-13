@@ -20,76 +20,7 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
     on<ProjectsNextPageEvent>((event, emit) => _getProjectsNextPage(event: event, emit: emit, list: event.list));
     on<ProjectsAddEvent>((event, emit) => _addProject(event: event, emit: emit));
     on<ProjectsUpdateEvent>((event, emit) => _updateProject(event: event, emit: emit));
-
-    on<ProjectsNameEvent>((event, emit) {
-      try {
-        emit(ProjectsNameState(
-          contact_id: event.contact_id,
-          contact_name: event.name,
-        ));
-      } catch (error) {
-        print(error);
-        emit(ProjectsErrorState(error: error.toString()));
-      }
-    });
-
-    on<ProjectsCompanyEvent>((event, emit) {
-      try {
-        emit(ProjectsCompanyState(
-          company_id: event.company_id,
-          name: event.name,
-        ));
-      } catch (error) {
-        print(error);
-        emit(ProjectsErrorState(error: error.toString()));
-      }
-    });
-
-    on<ProjectsUserCategoryEvent>((event, emit) {
-      try {
-        emit(ProjectsUserCategoryState(id: event.id, name: event.name));
-      } catch (error) {
-        print(error);
-        emit(ProjectsErrorState(error: error.toString()));
-      }
-    });
-
-    on<ProjectsAddStatusEvent>((event, emit) {
-      try {
-        emit(ProjectsAddStatusState(id: event.id, name: event.name));
-      } catch (error) {
-        print(error);
-        emit(ProjectsErrorState(error: error.toString()));
-      }
-    });
-
-    on<ProjectsDeleteEvent>((event, emit) async {
-
-      try {
-
-        bool result = await getIt.get<GetProjects>().deleteProject(id: event.id);
-
-        if(result) {
-
-          final List<ProjectsModel> projects = await getIt.get<GetProjects>().getProjects(page: 1);
-          final List<StatusModel> projectStatus = await getIt.get<GetStatus>().getStatus(type: 'project');
-
-          emit(ProjectsInitState(
-            projects: projects,
-            projectStatus: projectStatus,
-          ));
-
-        }else {
-          emit(ProjectsErrorState(error: 'something_went_wrong'));
-        }
-
-      } catch(error) {
-        print(error);
-
-        emit(ProjectsErrorState(error: error.toString()));
-      }
-
-    });
+    on<ProjectsDeleteEvent>((event, emit) => _deleteProject(event: event, emit: emit));
   }
 
   Future<void> _getProjects({
@@ -207,6 +138,36 @@ class ProjectsBloc extends Bloc<ProjectsEvent, ProjectsState> {
       }
     } catch (error) {
       print(error);
+      emit(ProjectsErrorState(error: error.toString()));
+    }
+  }
+
+  Future<void> _deleteProject({
+    required ProjectsDeleteEvent event,
+    required Emitter<ProjectsState> emit,
+  }) async {
+
+    try {
+
+      bool result = await getIt.get<GetProjects>().deleteProject(id: event.id);
+
+      if(result) {
+
+        final List<ProjectsModel> projects = await getIt.get<GetProjects>().getProjects(page: 1);
+        final List<StatusModel> projectStatus = await getIt.get<GetStatus>().getStatus(type: 'project');
+
+        emit(ProjectsInitState(
+          projects: projects,
+          projectStatus: projectStatus,
+        ));
+
+      }else {
+        emit(ProjectsErrorState(error: 'something_went_wrong'));
+      }
+
+    } catch(error) {
+      print(error);
+
       emit(ProjectsErrorState(error: error.toString()));
     }
   }

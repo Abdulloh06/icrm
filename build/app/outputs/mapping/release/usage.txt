@@ -17379,9 +17379,9 @@ com.google.android.datatransport.runtime.backends.CreationContext:
 com.google.zxing.oned.Code93Writer:
     protected static int appendPattern(boolean[],int,int[],boolean)
 kotlinx.coroutines.flow.FlowKt__ReduceKt$single$$inlined$collect$1
-io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
-    private static final java.lang.String TAG
 io.flutter.embedding.engine.systemchannels.PlatformChannel:
+    private static final java.lang.String TAG
+io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
     private static final java.lang.String TAG
 androidx.core.animation.AnimatorKt$addListener$4
 com.google.common.collect.Multisets$FilteredMultiset$1

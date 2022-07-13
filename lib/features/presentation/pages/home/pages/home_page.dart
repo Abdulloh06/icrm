@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
           scaffoldKey: scaffoldKey,
           elevation: 0,
           title: Text(
-            'CRM',
+            'I CRM',
             style: AppTextStyles.primary,
           ),
         ),
@@ -155,6 +155,7 @@ class HomePage extends StatelessWidget {
               ),
             );
           } else {
+            context.read<HomeBloc>().add(HomeInitEvent());
             return const Loading();
           }
         }),

@@ -30,7 +30,7 @@
 21-->[:file_picker] /Users/abdulloh/StudioProjects/icrm/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:11:21-69
 22
 23            <data android:mimeType="*/*" />
-23-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-52:45
+23-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:17-53:45
 24        </intent>
 25    </queries>
 26
@@ -75,7 +75,7 @@
 39-->[com.android.installreferrer:installreferrer:1.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/bb2b4f4ce538b1e51267cf51b26f3108/jetified-installreferrer-1.0/AndroidManifest.xml:9:22-107
 40
 41    <application
-41-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:16:5-101:19
+41-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:16:5-102:19
 42        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 42-->[androidx.core:core:1.6.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/96c09106850c7523644a266476c422c5/core-1.6.0/AndroidManifest.xml:24:18-86
 43        android:debuggable="true"
@@ -83,660 +83,662 @@
 44-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:17:9-43
 45        android:label="I CRM"
 45-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:18:9-30
-46        android:supportsRtl="true" >
+46        android:supportsRtl="true"
 46-->[com.facebook.android:facebook-login:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/09107218797bc6fa2f499b3b76c6d1a1/jetified-facebook-login-12.3.0/AndroidManifest.xml:28:18-44
-47        <activity
-47-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:20:9-74:20
-48            android:name="uz.madorgroup.icrm.MainActivity"
-48-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:21:13-41
-49            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-49-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:22:13-163
-50            android:hardwareAccelerated="true"
-50-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:23:13-47
-51            android:launchMode="singleTop"
-51-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:24:13-43
-52            android:theme="@style/LaunchTheme"
-52-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:25:13-47
-53            android:windowSoftInputMode="adjustResize" >
-53-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:26:13-55
-54
-55            <!--
-56                 Specifies an Android theme to apply to this Activity as soon as
-57                 the Android process has started. This theme is visible to the user
-58                 while the Flutter UI initializes. After that, this theme continues
-59                 to determine the Window background behind the Flutter UI.
-60            -->
-61            <meta-data
-61-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:31:13-33:57
-62                android:name="io.flutter.embedding.android.NormalTheme"
-62-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:32:17-72
-63                android:resource="@style/NormalTheme" />
-63-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:33:17-54
-64            <!--
-65                 Displays an Android View that continues showing the launch screen
-66                 Drawable until Flutter paints its first frame, then this splash
-67                 screen fades out. A splash screen is useful to avoid any visual
-68                 gap between the end of Android's launch screen and the painting of
-69                 Flutter's first frame.
-70            -->
-71            <meta-data
-71-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:39:13-41:66
-72                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-72-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:40:17-81
-73                android:resource="@drawable/launch_background" />
-73-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:41:17-63
-74
-75            <intent-filter>
-75-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:42:13-45:29
-76                <action android:name="android.intent.action.MAIN" />
-76-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:43:17-69
-76-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:43:25-66
-77
-78                <category android:name="android.intent.category.LAUNCHER" />
-78-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:44:17-77
-78-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:44:27-74
-79            </intent-filter>
-80            <intent-filter>
-80-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:46:13-53:29
-81                <action android:name="android.intent.action.VIEW" />
-81-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:17-68
-81-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:25-66
-82
-83                <category android:name="android.intent.category.DEFAULT" />
-83-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-75
-83-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:27-73
-84                <category android:name="android.intent.category.BROWSABLE" />
-84-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-77
-84-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-75
-85
-86                <data
-86-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-52:45
-87                    android:host="example.com"
-87-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:21-47
-88                    android:scheme="https" />
-88-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-43
-89            </intent-filter>
-90
-91            <!-- Deep linking -->
-92            <meta-data
-92-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:56:13-90
-93                android:name="flutter_deeplinking_enabled"
-93-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:56:24-66
-94                android:value="true" />
-94-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:56:67-87
-95
-96            <intent-filter android:autoVerify="true" >
-96-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:57:13-63:29
-96-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:57:28-53
-97                <action android:name="android.intent.action.VIEW" />
-97-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:17-68
-97-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:25-66
-98
-99                <category android:name="android.intent.category.DEFAULT" />
-99-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-75
-99-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:27-73
-100                <category android:name="android.intent.category.BROWSABLE" />
-100-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-77
-100-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-75
-101
-102                <data
-102-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-52:45
-103                    android:host="flutterbooksample.com"
-103-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:21-47
-104                    android:scheme="http" />
-104-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-43
-105                <data android:scheme="https" />
-105-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-52:45
-105-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-43
-106            </intent-filter>
-107            <intent-filter>
-107-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:46:13-53:29
-108                <action android:name="android.intent.action.VIEW" />
-108-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:17-68
-108-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:25-66
-109
-110                <category android:name="android.intent.category.DEFAULT" />
-110-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-75
-110-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:27-73
-111                <category android:name="android.intent.category.BROWSABLE" />
-111-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-77
-111-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-75
-112
-113                <data
-113-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-52:45
-114                    android:host="example.com"
-114-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:21-47
-115                    android:scheme="https" />
-115-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-43
-116            </intent-filter>
-117        </activity>
-118        <!--
-119             Don't delete the meta-data below.
-120             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-121        -->
-122
-123        <meta-data
-123-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:78:9-80:55
-124            android:name="com.facebook.sdk.ApplicationId"
-124-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:79:13-58
-125            android:value="@string/facebook_app_id" />
-125-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:80:13-52
-126
-127        <activity
-127-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:82:9-85:48
-128            android:name="com.facebook.FacebookActivity"
-128-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:83:13-57
-129            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-129-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:84:13-96
-130            android:label="@string/app_name"
-130-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:85:13-45
-131            android:theme="@style/com_facebook_activity_theme" />
-131-->[com.facebook.android:facebook-common:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/94e7c05b0befdaa489c54873c3e5c4fe/jetified-facebook-common-12.3.0/AndroidManifest.xml:33:13-63
-132        <activity
-132-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:86:9-96:20
-133            android:name="com.facebook.CustomTabActivity"
-133-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:87:13-58
-134            android:exported="true" >
-134-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:88:13-36
-135            <intent-filter>
-135-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:89:13-95:29
-136                <action android:name="android.intent.action.VIEW" />
-136-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:17-68
-136-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:25-66
-137
-138                <category android:name="android.intent.category.DEFAULT" />
-138-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-75
-138-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:27-73
-139                <category android:name="android.intent.category.BROWSABLE" />
-139-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-77
-139-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-75
-140
-141                <data android:scheme="@string/fb_login_protocol_scheme" />
-141-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-52:45
-141-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-43
-142            </intent-filter>
-143            <intent-filter>
-143-->[com.facebook.android:facebook-common:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/94e7c05b0befdaa489c54873c3e5c4fe/jetified-facebook-common-12.3.0/AndroidManifest.xml:39:13-48:29
-144                <action android:name="android.intent.action.VIEW" />
-144-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:17-68
-144-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:25-66
-145
-146                <category android:name="android.intent.category.DEFAULT" />
-146-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-75
-146-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:27-73
-147                <category android:name="android.intent.category.BROWSABLE" />
-147-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-77
-147-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-75
-148
-149                <data
-149-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-52:45
-150                    android:host="cct.uz.madorgroup.icrm"
-150-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:21-47
-151                    android:scheme="fbconnect" />
-151-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-43
-152            </intent-filter>
-153        </activity>
-154
-155        <meta-data
-155-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:98:9-100:33
-156            android:name="flutterEmbedding"
-156-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:99:13-44
-157            android:value="2" />
-157-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:100:13-30
-158
-159        <service
-159-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:10:9-14:19
-160            android:name="com.google.firebase.components.ComponentDiscoveryService"
-160-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:10:18-89
-161            android:directBootAware="true"
-161-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:35:13-43
-162            android:exported="false" >
-162-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:51:13-37
-163            <meta-data
-163-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-13:85
-164                android:name="com.google.firebase.components:io.flutter.plugins.firebase.dynamiclinks.FlutterFirebaseAppRegistrar"
-164-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:12:17-131
-165                android:value="com.google.firebase.components.ComponentRegistrar" />
-165-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:13:17-82
-166            <meta-data
-166-->[:firebase_auth] /Users/abdulloh/StudioProjects/icrm/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
-167                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
-167-->[:firebase_auth] /Users/abdulloh/StudioProjects/icrm/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-124
-168                android:value="com.google.firebase.components.ComponentRegistrar" />
-168-->[:firebase_auth] /Users/abdulloh/StudioProjects/icrm/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
-169            <meta-data
-169-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:34:13-36:85
-170                android:name="com.google.firebase.components:io.flutter.plugins.firebase.messaging.FlutterFirebaseAppRegistrar"
-170-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:35:17-128
-171                android:value="com.google.firebase.components.ComponentRegistrar" />
-171-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:36:17-82
-172            <meta-data
-172-->[:firebase_core] /Users/abdulloh/StudioProjects/icrm/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
-173                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
-173-->[:firebase_core] /Users/abdulloh/StudioProjects/icrm/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-124
-174                android:value="com.google.firebase.components.ComponentRegistrar" />
-174-->[:firebase_core] /Users/abdulloh/StudioProjects/icrm/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
-175            <meta-data
-175-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:52:13-54:85
-176                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
-176-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:53:17-119
-177                android:value="com.google.firebase.components.ComponentRegistrar" />
-177-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:54:17-82
-178            <meta-data
-178-->[com.google.firebase:firebase-datatransport:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/49acc024d7d1caa154b16f7a13878804/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:28:13-30:85
-179                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
-179-->[com.google.firebase:firebase-datatransport:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/49acc024d7d1caa154b16f7a13878804/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:29:17-115
-180                android:value="com.google.firebase.components.ComponentRegistrar" />
-180-->[com.google.firebase:firebase-datatransport:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/49acc024d7d1caa154b16f7a13878804/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:30:17-82
-181            <meta-data
-181-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:77:13-79:85
-182                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
-182-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:78:17-109
-183                android:value="com.google.firebase.components.ComponentRegistrar" />
-183-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:79:17-82
-184            <meta-data
-184-->[com.google.firebase:firebase-dynamic-links:21.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/929d7213088f0dff4b465db3f5085242/jetified-firebase-dynamic-links-21.0.0/AndroidManifest.xml:27:13-29:85
-185                android:name="com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar"
-185-->[com.google.firebase:firebase-dynamic-links:21.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/929d7213088f0dff4b465db3f5085242/jetified-firebase-dynamic-links-21.0.0/AndroidManifest.xml:28:17-133
-186                android:value="com.google.firebase.components.ComponentRegistrar" />
-186-->[com.google.firebase:firebase-dynamic-links:21.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/929d7213088f0dff4b465db3f5085242/jetified-firebase-dynamic-links-21.0.0/AndroidManifest.xml:29:17-82
-187            <meta-data
-187-->[com.google.firebase:firebase-installations:17.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/bcdaefde71b4fe64246416b421f66bbd/jetified-firebase-installations-17.0.0/AndroidManifest.xml:18:13-20:85
-188                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
-188-->[com.google.firebase:firebase-installations:17.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/bcdaefde71b4fe64246416b421f66bbd/jetified-firebase-installations-17.0.0/AndroidManifest.xml:19:17-127
-189                android:value="com.google.firebase.components.ComponentRegistrar" />
-189-->[com.google.firebase:firebase-installations:17.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/bcdaefde71b4fe64246416b421f66bbd/jetified-firebase-installations-17.0.0/AndroidManifest.xml:20:17-82
-190        </service>
-191        <service
-191-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-15:72
-192            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingBackgroundService"
-192-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-107
-193            android:exported="false"
-193-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-37
-194            android:permission="android.permission.BIND_JOB_SERVICE" />
-194-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-69
-195        <service
-195-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:16:9-22:19
-196            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingService"
-196-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:17:13-97
-197            android:exported="false" >
-197-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-37
-198            <intent-filter>
-198-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:19:13-21:29
-199                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-199-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-78
-199-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:20:25-75
-200            </intent-filter>
-201        </service>
-202
-203        <receiver
-203-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:24:9-31:20
-204            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingReceiver"
-204-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:25:13-98
-205            android:exported="true"
-205-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:26:13-36
-206            android:permission="com.google.android.c2dm.permission.SEND" >
-206-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:27:13-73
-207            <intent-filter>
-207-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:28:13-30:29
-208                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-208-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:29:17-81
-208-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:29:25-78
-209            </intent-filter>
-210        </receiver>
-211
-212        <provider
-212-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:39:9-43:38
-213            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingInitProvider"
-213-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:40:13-102
-214            android:authorities="uz.madorgroup.icrm.flutterfirebasemessaginginitprovider"
-214-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:41:13-88
-215            android:exported="false"
-215-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:42:13-37
-216            android:initOrder="99" />
-216-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:43:13-35
-217        <provider
-217-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-16:20
-218            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-218-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-82
-219            android:authorities="uz.madorgroup.icrm.flutter.image_provider"
-219-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:10:13-74
-220            android:exported="false"
-220-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-37
-221            android:grantUriPermissions="true" >
-221-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:12:13-47
-222            <meta-data
-222-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-15:75
-223                android:name="android.support.FILE_PROVIDER_PATHS"
-223-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:14:17-67
-224                android:resource="@xml/flutter_image_picker_file_paths" />
-224-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:15:17-72
-225        </provider>
-226
-227        <receiver
-227-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-15:40
-228            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
-228-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-97
-229            android:exported="false" />
-229-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-37
-230        <receiver
-230-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:16:9-25:20
-231            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
-231-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:17:13-101
-232            android:exported="false" >
-232-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-37
-233            <intent-filter>
-233-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:19:13-24:29
-234                <action android:name="android.intent.action.BOOT_COMPLETED" />
-234-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-79
-234-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:20:25-76
-235                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-235-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:21:17-84
-235-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:21:25-81
-236                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-236-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:22:17-82
-236-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:22:25-79
-237                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-237-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:23:17-82
-237-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:23:25-79
-238            </intent-filter>
-239        </receiver>
-240
-241        <activity
-241-->[:url_launcher_android] /Users/abdulloh/StudioProjects/icrm/build/url_launcher_android/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-11:74
-242            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-242-->[:url_launcher_android] /Users/abdulloh/StudioProjects/icrm/build/url_launcher_android/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-74
-243            android:exported="false"
-243-->[:url_launcher_android] /Users/abdulloh/StudioProjects/icrm/build/url_launcher_android/intermediates/library_manifest/debug/AndroidManifest.xml:10:13-37
-244            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-244-->[:url_launcher_android] /Users/abdulloh/StudioProjects/icrm/build/url_launcher_android/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-71
-245
-246        <provider
-246-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-16:20
-247            android:name="io.flutter.plugins.share.ShareFileProvider"
-247-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-70
-248            android:authorities="uz.madorgroup.icrm.flutter.share_provider"
-248-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:10:13-74
-249            android:exported="false"
-249-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-37
-250            android:grantUriPermissions="true" >
-250-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:12:13-47
-251            <meta-data
-251-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-15:75
-252                android:name="android.support.FILE_PROVIDER_PATHS"
-252-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:14:17-67
-253                android:resource="@xml/flutter_share_file_paths" />
-253-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:15:17-72
-254        </provider>
-255
-256        <activity android:name="com.facebook.CustomTabMainActivity" />
-256-->[com.facebook.android:facebook-common:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/94e7c05b0befdaa489c54873c3e5c4fe/jetified-facebook-common-12.3.0/AndroidManifest.xml:34:9-71
-256-->[com.facebook.android:facebook-common:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/94e7c05b0befdaa489c54873c3e5c4fe/jetified-facebook-common-12.3.0/AndroidManifest.xml:34:19-68
-257        <!--
-258         The initialization ContentProvider will call FacebookSdk.sdkInitialize automatically
-259         with the application context. This config is merged in with the host app's manifest,
-260         but there can only be one provider with the same authority activated at any given
-261         point; so if the end user has two or more different apps that use Facebook SDK, only the
-262         first one will be able to use the provider. To work around this problem, we use the
-263         following placeholder in the authority to identify each host application as if it was
-264         a completely different provider.
-265        -->
-266        <provider
-266-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:39:9-42:40
-267            android:name="com.facebook.internal.FacebookInitProvider"
-267-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:40:13-70
-268            android:authorities="uz.madorgroup.icrm.FacebookInitProvider"
-268-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:41:13-72
-269            android:exported="false" />
-269-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:42:13-37
-270
-271        <receiver
-271-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:44:9-50:20
-272            android:name="com.facebook.CurrentAccessTokenExpirationBroadcastReceiver"
-272-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:45:13-86
-273            android:exported="false" >
-273-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:46:13-37
-274            <intent-filter>
-274-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:47:13-49:29
-275                <action android:name="com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED" />
-275-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:48:17-95
-275-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:48:25-92
-276            </intent-filter>
-277        </receiver>
-278        <receiver
-278-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:51:9-57:20
-279            android:name="com.facebook.AuthenticationTokenManager$CurrentAuthenticationTokenChangedBroadcastReceiver"
-279-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:52:13-118
-280            android:exported="false" >
-280-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:53:13-37
-281            <intent-filter>
-281-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:54:13-56:29
-282                <action android:name="com.facebook.sdk.ACTION_CURRENT_AUTHENTICATION_TOKEN_CHANGED" />
-282-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:55:17-103
-282-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:55:25-100
-283            </intent-filter>
-284        </receiver>
-285
-286        <uses-library
-286-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
-287            android:name="androidx.window.extensions"
-287-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
-288            android:required="false" />
-288-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
-289        <uses-library
-289-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
-290            android:name="androidx.window.sidecar"
-290-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
-291            android:required="false" />
-291-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
-292
-293        <receiver
-293-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:28:9-35:20
-294            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
-294-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:29:13-78
-295            android:exported="true"
-295-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:30:13-36
-296            android:permission="com.google.android.c2dm.permission.SEND" >
-296-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:31:13-73
-297            <intent-filter>
-297-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:28:13-30:29
-298                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-298-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:29:17-81
-298-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:29:25-78
-299            </intent-filter>
-300        </receiver>
-301        <!--
-302             FirebaseMessagingService performs security checks at runtime,
-303             but set to not exported to explicitly avoid allowing another app to call it.
-304        -->
-305        <service
-305-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:41:9-48:19
-306            android:name="com.google.firebase.messaging.FirebaseMessagingService"
-306-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:42:13-82
-307            android:directBootAware="true"
-307-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:43:13-43
-308            android:exported="false" >
-308-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:44:13-37
-309            <intent-filter android:priority="-500" >
-309-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:19:13-21:29
-310                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-310-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-78
-310-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:20:25-75
-311            </intent-filter>
-312        </service>
-313        <service
-313-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:29:9-35:19
-314            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
-314-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:30:13-103
-315            android:exported="false" >
-315-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:31:13-37
-316            <meta-data
-316-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:32:13-34:39
-317                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
-317-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:33:17-94
-318                android:value="cct" />
-318-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:34:17-36
-319        </service>
-320
-321        <activity
-321-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:27:9-44:20
-322            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
-322-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:28:13-80
-323            android:excludeFromRecents="true"
-323-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:29:13-46
-324            android:exported="true"
-324-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:30:13-36
-325            android:launchMode="singleTask"
-325-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:31:13-44
-326            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-326-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:32:13-72
-327            <intent-filter>
-327-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:33:13-43:29
-328                <action android:name="android.intent.action.VIEW" />
-328-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:17-68
-328-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:25-66
-329
-330                <category android:name="android.intent.category.DEFAULT" />
-330-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-75
-330-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:27-73
-331                <category android:name="android.intent.category.BROWSABLE" />
-331-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-77
-331-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-75
-332
-333                <data
-333-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-52:45
-334                    android:host="firebase.auth"
-334-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:21-47
-335                    android:path="/"
-336                    android:scheme="genericidp" />
-336-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-43
-337            </intent-filter>
-338        </activity>
-339        <activity
-339-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:45:9-62:20
-340            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
-340-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:46:13-79
-341            android:excludeFromRecents="true"
-341-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:47:13-46
-342            android:exported="true"
-342-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:48:13-36
-343            android:launchMode="singleTask"
-343-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:49:13-44
-344            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-344-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:50:13-72
-345            <intent-filter>
-345-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:51:13-61:29
-346                <action android:name="android.intent.action.VIEW" />
-346-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:17-68
-346-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:25-66
-347
-348                <category android:name="android.intent.category.DEFAULT" />
-348-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-75
-348-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:27-73
-349                <category android:name="android.intent.category.BROWSABLE" />
-349-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-77
-349-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-75
-350
-351                <data
-351-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-52:45
-352                    android:host="firebase.auth"
-352-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:21-47
-353                    android:path="/"
-354                    android:scheme="recaptcha" />
-354-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-43
-355            </intent-filter>
-356        </activity>
-357
-358        <service
-358-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:64:9-73:19
-359            android:name="com.google.firebase.auth.api.fallback.service.FirebaseAuthFallbackService"
-359-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:65:13-101
-360            android:enabled="true"
-360-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:66:13-35
-361            android:exported="false" >
-361-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:67:13-37
-362            <intent-filter>
-362-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:68:13-72:29
-363                <action android:name="com.google.firebase.auth.api.gms.service.START" />
-363-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:69:17-89
-363-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:69:25-86
-364
-365                <category android:name="android.intent.category.DEFAULT" />
-365-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-75
-365-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:27-73
-366            </intent-filter>
-367        </service>
-368
-369        <provider
-369-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:26:9-31:39
-370            android:name="com.google.firebase.provider.FirebaseInitProvider"
-370-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:27:13-77
-371            android:authorities="uz.madorgroup.icrm.firebaseinitprovider"
-371-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:28:13-72
-372            android:directBootAware="true"
-372-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:29:13-43
-373            android:exported="false"
-373-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:30:13-37
-374            android:initOrder="100" />
-374-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:31:13-36
-375
-376        <activity
-376-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:23:9-27:75
-377            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
-377-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:24:13-93
-378            android:excludeFromRecents="true"
-378-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:25:13-46
-379            android:exported="false"
-379-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:26:13-37
-380            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-380-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:27:13-72
-381        <!--
-382            Service handling Google Sign-In user revocation. For apps that do not integrate with
-383            Google Sign-In, this service will never be started.
-384        -->
-385        <service
-385-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:33:9-37:51
-386            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
-386-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:34:13-89
-387            android:exported="true"
-387-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:35:13-36
-388            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
-388-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:36:13-107
-389            android:visibleToInstantApps="true" />
-389-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:37:13-48
-390
-391        <activity
-391-->[com.google.android.gms:play-services-base:18.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1cb858daf5fca9efd5a29d498c81af88/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:9-22:45
-392            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-392-->[com.google.android.gms:play-services-base:18.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1cb858daf5fca9efd5a29d498c81af88/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:19-85
-393            android:exported="false"
-393-->[com.google.android.gms:play-services-base:18.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1cb858daf5fca9efd5a29d498c81af88/jetified-play-services-base-18.0.1/AndroidManifest.xml:22:19-43
-394            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-394-->[com.google.android.gms:play-services-base:18.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1cb858daf5fca9efd5a29d498c81af88/jetified-play-services-base-18.0.1/AndroidManifest.xml:21:19-78
-395
-396        <meta-data
-396-->[com.google.android.gms:play-services-basement:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/5f0bdd5f66d29f07bd2bb38368c267e9/jetified-play-services-basement-18.0.0/AndroidManifest.xml:21:9-23:69
-397            android:name="com.google.android.gms.version"
-397-->[com.google.android.gms:play-services-basement:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/5f0bdd5f66d29f07bd2bb38368c267e9/jetified-play-services-basement-18.0.0/AndroidManifest.xml:22:13-58
-398            android:value="@integer/google_play_services_version" />
-398-->[com.google.android.gms:play-services-basement:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/5f0bdd5f66d29f07bd2bb38368c267e9/jetified-play-services-basement-18.0.0/AndroidManifest.xml:23:13-66
-399
-400        <service
-400-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:26:9-30:19
-401            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
-401-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:27:13-117
-402            android:exported="false"
-402-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:28:13-37
-403            android:permission="android.permission.BIND_JOB_SERVICE" >
-403-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:29:13-69
-404        </service>
-405
-406        <receiver
-406-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:32:9-34:40
-407            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
-407-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:33:13-132
-408            android:exported="false" />
-408-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:34:13-37
-409    </application>
-410
-411</manifest>
+47        android:usesCleartextTraffic="true" >
+47-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:19:9-44
+48        <activity
+48-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:21:9-75:20
+49            android:name="uz.madorgroup.icrm.MainActivity"
+49-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:22:13-41
+50            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+50-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:23:13-163
+51            android:hardwareAccelerated="true"
+51-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:24:13-47
+52            android:launchMode="singleTop"
+52-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:25:13-43
+53            android:theme="@style/LaunchTheme"
+53-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:26:13-47
+54            android:windowSoftInputMode="adjustResize" >
+54-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:27:13-55
+55
+56            <!--
+57                 Specifies an Android theme to apply to this Activity as soon as
+58                 the Android process has started. This theme is visible to the user
+59                 while the Flutter UI initializes. After that, this theme continues
+60                 to determine the Window background behind the Flutter UI.
+61            -->
+62            <meta-data
+62-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:32:13-34:57
+63                android:name="io.flutter.embedding.android.NormalTheme"
+63-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:33:17-72
+64                android:resource="@style/NormalTheme" />
+64-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:34:17-54
+65            <!--
+66                 Displays an Android View that continues showing the launch screen
+67                 Drawable until Flutter paints its first frame, then this splash
+68                 screen fades out. A splash screen is useful to avoid any visual
+69                 gap between the end of Android's launch screen and the painting of
+70                 Flutter's first frame.
+71            -->
+72            <meta-data
+72-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:40:13-42:66
+73                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+73-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:41:17-81
+74                android:resource="@drawable/launch_background" />
+74-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:42:17-63
+75
+76            <intent-filter>
+76-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:43:13-46:29
+77                <action android:name="android.intent.action.MAIN" />
+77-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:44:17-69
+77-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:44:25-66
+78
+79                <category android:name="android.intent.category.LAUNCHER" />
+79-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:45:17-77
+79-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:45:27-74
+80            </intent-filter>
+81            <intent-filter>
+81-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:13-54:29
+82                <action android:name="android.intent.action.VIEW" />
+82-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-68
+82-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:25-66
+83
+84                <category android:name="android.intent.category.DEFAULT" />
+84-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-75
+84-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-73
+85                <category android:name="android.intent.category.BROWSABLE" />
+85-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-77
+85-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:27-75
+86
+87                <data
+87-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:17-53:45
+88                    android:host="example.com"
+88-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-47
+89                    android:scheme="https" />
+89-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:53:21-43
+90            </intent-filter>
+91
+92            <!-- Deep linking -->
+93            <meta-data
+93-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:57:13-90
+94                android:name="flutter_deeplinking_enabled"
+94-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:57:24-66
+95                android:value="true" />
+95-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:57:67-87
+96
+97            <intent-filter android:autoVerify="true" >
+97-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:58:13-64:29
+97-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:58:28-53
+98                <action android:name="android.intent.action.VIEW" />
+98-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-68
+98-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:25-66
+99
+100                <category android:name="android.intent.category.DEFAULT" />
+100-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-75
+100-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-73
+101                <category android:name="android.intent.category.BROWSABLE" />
+101-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-77
+101-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:27-75
+102
+103                <data
+103-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:17-53:45
+104                    android:host="flutterbooksample.com"
+104-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-47
+105                    android:scheme="http" />
+105-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:53:21-43
+106                <data android:scheme="https" />
+106-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:17-53:45
+106-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:53:21-43
+107            </intent-filter>
+108            <intent-filter>
+108-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:47:13-54:29
+109                <action android:name="android.intent.action.VIEW" />
+109-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-68
+109-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:25-66
+110
+111                <category android:name="android.intent.category.DEFAULT" />
+111-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-75
+111-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-73
+112                <category android:name="android.intent.category.BROWSABLE" />
+112-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-77
+112-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:27-75
+113
+114                <data
+114-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:17-53:45
+115                    android:host="example.com"
+115-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-47
+116                    android:scheme="https" />
+116-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:53:21-43
+117            </intent-filter>
+118        </activity>
+119        <!--
+120             Don't delete the meta-data below.
+121             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+122        -->
+123
+124        <meta-data
+124-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:79:9-81:55
+125            android:name="com.facebook.sdk.ApplicationId"
+125-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:80:13-58
+126            android:value="@string/facebook_app_id" />
+126-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:81:13-52
+127
+128        <activity
+128-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:83:9-86:48
+129            android:name="com.facebook.FacebookActivity"
+129-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:84:13-57
+130            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+130-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:85:13-96
+131            android:label="@string/app_name"
+131-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:86:13-45
+132            android:theme="@style/com_facebook_activity_theme" />
+132-->[com.facebook.android:facebook-common:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/94e7c05b0befdaa489c54873c3e5c4fe/jetified-facebook-common-12.3.0/AndroidManifest.xml:33:13-63
+133        <activity
+133-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:87:9-97:20
+134            android:name="com.facebook.CustomTabActivity"
+134-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:88:13-58
+135            android:exported="true" >
+135-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:89:13-36
+136            <intent-filter>
+136-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:90:13-96:29
+137                <action android:name="android.intent.action.VIEW" />
+137-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-68
+137-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:25-66
+138
+139                <category android:name="android.intent.category.DEFAULT" />
+139-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-75
+139-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-73
+140                <category android:name="android.intent.category.BROWSABLE" />
+140-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-77
+140-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:27-75
+141
+142                <data android:scheme="@string/fb_login_protocol_scheme" />
+142-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:17-53:45
+142-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:53:21-43
+143            </intent-filter>
+144            <intent-filter>
+144-->[com.facebook.android:facebook-common:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/94e7c05b0befdaa489c54873c3e5c4fe/jetified-facebook-common-12.3.0/AndroidManifest.xml:39:13-48:29
+145                <action android:name="android.intent.action.VIEW" />
+145-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-68
+145-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:25-66
+146
+147                <category android:name="android.intent.category.DEFAULT" />
+147-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-75
+147-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-73
+148                <category android:name="android.intent.category.BROWSABLE" />
+148-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-77
+148-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:27-75
+149
+150                <data
+150-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:17-53:45
+151                    android:host="cct.uz.madorgroup.icrm"
+151-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-47
+152                    android:scheme="fbconnect" />
+152-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:53:21-43
+153            </intent-filter>
+154        </activity>
+155
+156        <meta-data
+156-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:99:9-101:33
+157            android:name="flutterEmbedding"
+157-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:100:13-44
+158            android:value="2" />
+158-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:101:13-30
+159
+160        <service
+160-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:10:9-14:19
+161            android:name="com.google.firebase.components.ComponentDiscoveryService"
+161-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:10:18-89
+162            android:directBootAware="true"
+162-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:35:13-43
+163            android:exported="false" >
+163-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:51:13-37
+164            <meta-data
+164-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-13:85
+165                android:name="com.google.firebase.components:io.flutter.plugins.firebase.dynamiclinks.FlutterFirebaseAppRegistrar"
+165-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:12:17-131
+166                android:value="com.google.firebase.components.ComponentRegistrar" />
+166-->[:firebase_dynamic_links] /Users/abdulloh/StudioProjects/icrm/build/firebase_dynamic_links/intermediates/library_manifest/debug/AndroidManifest.xml:13:17-82
+167            <meta-data
+167-->[:firebase_auth] /Users/abdulloh/StudioProjects/icrm/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
+168                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
+168-->[:firebase_auth] /Users/abdulloh/StudioProjects/icrm/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-124
+169                android:value="com.google.firebase.components.ComponentRegistrar" />
+169-->[:firebase_auth] /Users/abdulloh/StudioProjects/icrm/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
+170            <meta-data
+170-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:34:13-36:85
+171                android:name="com.google.firebase.components:io.flutter.plugins.firebase.messaging.FlutterFirebaseAppRegistrar"
+171-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:35:17-128
+172                android:value="com.google.firebase.components.ComponentRegistrar" />
+172-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:36:17-82
+173            <meta-data
+173-->[:firebase_core] /Users/abdulloh/StudioProjects/icrm/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
+174                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+174-->[:firebase_core] /Users/abdulloh/StudioProjects/icrm/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-124
+175                android:value="com.google.firebase.components.ComponentRegistrar" />
+175-->[:firebase_core] /Users/abdulloh/StudioProjects/icrm/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
+176            <meta-data
+176-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:52:13-54:85
+177                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+177-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:53:17-119
+178                android:value="com.google.firebase.components.ComponentRegistrar" />
+178-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:54:17-82
+179            <meta-data
+179-->[com.google.firebase:firebase-datatransport:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/49acc024d7d1caa154b16f7a13878804/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:28:13-30:85
+180                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+180-->[com.google.firebase:firebase-datatransport:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/49acc024d7d1caa154b16f7a13878804/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:29:17-115
+181                android:value="com.google.firebase.components.ComponentRegistrar" />
+181-->[com.google.firebase:firebase-datatransport:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/49acc024d7d1caa154b16f7a13878804/jetified-firebase-datatransport-18.0.0/AndroidManifest.xml:30:17-82
+182            <meta-data
+182-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:77:13-79:85
+183                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+183-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:78:17-109
+184                android:value="com.google.firebase.components.ComponentRegistrar" />
+184-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:79:17-82
+185            <meta-data
+185-->[com.google.firebase:firebase-dynamic-links:21.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/929d7213088f0dff4b465db3f5085242/jetified-firebase-dynamic-links-21.0.0/AndroidManifest.xml:27:13-29:85
+186                android:name="com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar"
+186-->[com.google.firebase:firebase-dynamic-links:21.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/929d7213088f0dff4b465db3f5085242/jetified-firebase-dynamic-links-21.0.0/AndroidManifest.xml:28:17-133
+187                android:value="com.google.firebase.components.ComponentRegistrar" />
+187-->[com.google.firebase:firebase-dynamic-links:21.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/929d7213088f0dff4b465db3f5085242/jetified-firebase-dynamic-links-21.0.0/AndroidManifest.xml:29:17-82
+188            <meta-data
+188-->[com.google.firebase:firebase-installations:17.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/bcdaefde71b4fe64246416b421f66bbd/jetified-firebase-installations-17.0.0/AndroidManifest.xml:18:13-20:85
+189                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+189-->[com.google.firebase:firebase-installations:17.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/bcdaefde71b4fe64246416b421f66bbd/jetified-firebase-installations-17.0.0/AndroidManifest.xml:19:17-127
+190                android:value="com.google.firebase.components.ComponentRegistrar" />
+190-->[com.google.firebase:firebase-installations:17.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/bcdaefde71b4fe64246416b421f66bbd/jetified-firebase-installations-17.0.0/AndroidManifest.xml:20:17-82
+191        </service>
+192        <service
+192-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-15:72
+193            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingBackgroundService"
+193-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-107
+194            android:exported="false"
+194-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-37
+195            android:permission="android.permission.BIND_JOB_SERVICE" />
+195-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-69
+196        <service
+196-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:16:9-22:19
+197            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingService"
+197-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:17:13-97
+198            android:exported="false" >
+198-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-37
+199            <intent-filter>
+199-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:19:13-21:29
+200                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+200-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-78
+200-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:20:25-75
+201            </intent-filter>
+202        </service>
+203
+204        <receiver
+204-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:24:9-31:20
+205            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingReceiver"
+205-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:25:13-98
+206            android:exported="true"
+206-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:26:13-36
+207            android:permission="com.google.android.c2dm.permission.SEND" >
+207-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:27:13-73
+208            <intent-filter>
+208-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:28:13-30:29
+209                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+209-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:29:17-81
+209-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:29:25-78
+210            </intent-filter>
+211        </receiver>
+212
+213        <provider
+213-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:39:9-43:38
+214            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingInitProvider"
+214-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:40:13-102
+215            android:authorities="uz.madorgroup.icrm.flutterfirebasemessaginginitprovider"
+215-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:41:13-88
+216            android:exported="false"
+216-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:42:13-37
+217            android:initOrder="99" />
+217-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:43:13-35
+218        <provider
+218-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-16:20
+219            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+219-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-82
+220            android:authorities="uz.madorgroup.icrm.flutter.image_provider"
+220-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:10:13-74
+221            android:exported="false"
+221-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-37
+222            android:grantUriPermissions="true" >
+222-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:12:13-47
+223            <meta-data
+223-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-15:75
+224                android:name="android.support.FILE_PROVIDER_PATHS"
+224-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:14:17-67
+225                android:resource="@xml/flutter_image_picker_file_paths" />
+225-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:15:17-72
+226        </provider>
+227
+228        <receiver
+228-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-15:40
+229            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+229-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-97
+230            android:exported="false" />
+230-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-37
+231        <receiver
+231-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:16:9-25:20
+232            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+232-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:17:13-101
+233            android:exported="false" >
+233-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:18:13-37
+234            <intent-filter>
+234-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:19:13-24:29
+235                <action android:name="android.intent.action.BOOT_COMPLETED" />
+235-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-79
+235-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:20:25-76
+236                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+236-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:21:17-84
+236-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:21:25-81
+237                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+237-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:22:17-82
+237-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:22:25-79
+238                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+238-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:23:17-82
+238-->[:flutter_local_notifications] /Users/abdulloh/StudioProjects/icrm/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:23:25-79
+239            </intent-filter>
+240        </receiver>
+241
+242        <activity
+242-->[:url_launcher_android] /Users/abdulloh/StudioProjects/icrm/build/url_launcher_android/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-11:74
+243            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+243-->[:url_launcher_android] /Users/abdulloh/StudioProjects/icrm/build/url_launcher_android/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-74
+244            android:exported="false"
+244-->[:url_launcher_android] /Users/abdulloh/StudioProjects/icrm/build/url_launcher_android/intermediates/library_manifest/debug/AndroidManifest.xml:10:13-37
+245            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+245-->[:url_launcher_android] /Users/abdulloh/StudioProjects/icrm/build/url_launcher_android/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-71
+246
+247        <provider
+247-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-16:20
+248            android:name="io.flutter.plugins.share.ShareFileProvider"
+248-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-70
+249            android:authorities="uz.madorgroup.icrm.flutter.share_provider"
+249-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:10:13-74
+250            android:exported="false"
+250-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-37
+251            android:grantUriPermissions="true" >
+251-->[:share] /Users/abdulloh/StudioProjects/icrm/build/share/intermediates/library_manifest/debug/AndroidManifest.xml:12:13-47
+252            <meta-data
+252-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-15:75
+253                android:name="android.support.FILE_PROVIDER_PATHS"
+253-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:14:17-67
+254                android:resource="@xml/flutter_share_file_paths" />
+254-->[:image_picker] /Users/abdulloh/StudioProjects/icrm/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:15:17-72
+255        </provider>
+256
+257        <activity android:name="com.facebook.CustomTabMainActivity" />
+257-->[com.facebook.android:facebook-common:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/94e7c05b0befdaa489c54873c3e5c4fe/jetified-facebook-common-12.3.0/AndroidManifest.xml:34:9-71
+257-->[com.facebook.android:facebook-common:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/94e7c05b0befdaa489c54873c3e5c4fe/jetified-facebook-common-12.3.0/AndroidManifest.xml:34:19-68
+258        <!--
+259         The initialization ContentProvider will call FacebookSdk.sdkInitialize automatically
+260         with the application context. This config is merged in with the host app's manifest,
+261         but there can only be one provider with the same authority activated at any given
+262         point; so if the end user has two or more different apps that use Facebook SDK, only the
+263         first one will be able to use the provider. To work around this problem, we use the
+264         following placeholder in the authority to identify each host application as if it was
+265         a completely different provider.
+266        -->
+267        <provider
+267-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:39:9-42:40
+268            android:name="com.facebook.internal.FacebookInitProvider"
+268-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:40:13-70
+269            android:authorities="uz.madorgroup.icrm.FacebookInitProvider"
+269-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:41:13-72
+270            android:exported="false" />
+270-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:42:13-37
+271
+272        <receiver
+272-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:44:9-50:20
+273            android:name="com.facebook.CurrentAccessTokenExpirationBroadcastReceiver"
+273-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:45:13-86
+274            android:exported="false" >
+274-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:46:13-37
+275            <intent-filter>
+275-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:47:13-49:29
+276                <action android:name="com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED" />
+276-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:48:17-95
+276-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:48:25-92
+277            </intent-filter>
+278        </receiver>
+279        <receiver
+279-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:51:9-57:20
+280            android:name="com.facebook.AuthenticationTokenManager$CurrentAuthenticationTokenChangedBroadcastReceiver"
+280-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:52:13-118
+281            android:exported="false" >
+281-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:53:13-37
+282            <intent-filter>
+282-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:54:13-56:29
+283                <action android:name="com.facebook.sdk.ACTION_CURRENT_AUTHENTICATION_TOKEN_CHANGED" />
+283-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:55:17-103
+283-->[com.facebook.android:facebook-core:12.3.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1883f40572c28a94abffb4aef770dfc/jetified-facebook-core-12.3.0/AndroidManifest.xml:55:25-100
+284            </intent-filter>
+285        </receiver>
+286
+287        <uses-library
+287-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
+288            android:name="androidx.window.extensions"
+288-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
+289            android:required="false" />
+289-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
+290        <uses-library
+290-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
+291            android:name="androidx.window.sidecar"
+291-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
+292            android:required="false" />
+292-->[androidx.window:window:1.0.0-beta04] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/29fa090d6d134c23788900fa122a3ad0/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
+293
+294        <receiver
+294-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:28:9-35:20
+295            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+295-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:29:13-78
+296            android:exported="true"
+296-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:30:13-36
+297            android:permission="com.google.android.c2dm.permission.SEND" >
+297-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:31:13-73
+298            <intent-filter>
+298-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:28:13-30:29
+299                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+299-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:29:17-81
+299-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:29:25-78
+300            </intent-filter>
+301        </receiver>
+302        <!--
+303             FirebaseMessagingService performs security checks at runtime,
+304             but set to not exported to explicitly avoid allowing another app to call it.
+305        -->
+306        <service
+306-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:41:9-48:19
+307            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+307-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:42:13-82
+308            android:directBootAware="true"
+308-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:43:13-43
+309            android:exported="false" >
+309-->[com.google.firebase:firebase-messaging:23.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/c96dbe4e3bbe37a522b6755ae7a55a37/jetified-firebase-messaging-23.0.0/AndroidManifest.xml:44:13-37
+310            <intent-filter android:priority="-500" >
+310-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:19:13-21:29
+311                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+311-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:20:17-78
+311-->[:firebase_messaging] /Users/abdulloh/StudioProjects/icrm/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:20:25-75
+312            </intent-filter>
+313        </service>
+314        <service
+314-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:29:9-35:19
+315            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+315-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:30:13-103
+316            android:exported="false" >
+316-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:31:13-37
+317            <meta-data
+317-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:32:13-34:39
+318                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+318-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:33:17-94
+319                android:value="cct" />
+319-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1d68a27ac32eb26846d58206e391a0e1/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:34:17-36
+320        </service>
+321
+322        <activity
+322-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:27:9-44:20
+323            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+323-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:28:13-80
+324            android:excludeFromRecents="true"
+324-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:29:13-46
+325            android:exported="true"
+325-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:30:13-36
+326            android:launchMode="singleTask"
+326-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:31:13-44
+327            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+327-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:32:13-72
+328            <intent-filter>
+328-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:33:13-43:29
+329                <action android:name="android.intent.action.VIEW" />
+329-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-68
+329-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:25-66
+330
+331                <category android:name="android.intent.category.DEFAULT" />
+331-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-75
+331-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-73
+332                <category android:name="android.intent.category.BROWSABLE" />
+332-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-77
+332-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:27-75
+333
+334                <data
+334-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:17-53:45
+335                    android:host="firebase.auth"
+335-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-47
+336                    android:path="/"
+337                    android:scheme="genericidp" />
+337-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:53:21-43
+338            </intent-filter>
+339        </activity>
+340        <activity
+340-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:45:9-62:20
+341            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+341-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:46:13-79
+342            android:excludeFromRecents="true"
+342-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:47:13-46
+343            android:exported="true"
+343-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:48:13-36
+344            android:launchMode="singleTask"
+344-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:49:13-44
+345            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+345-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:50:13-72
+346            <intent-filter>
+346-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:51:13-61:29
+347                <action android:name="android.intent.action.VIEW" />
+347-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:17-68
+347-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:48:25-66
+348
+349                <category android:name="android.intent.category.DEFAULT" />
+349-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-75
+349-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-73
+350                <category android:name="android.intent.category.BROWSABLE" />
+350-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:17-77
+350-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:50:27-75
+351
+352                <data
+352-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:51:17-53:45
+353                    android:host="firebase.auth"
+353-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:52:21-47
+354                    android:path="/"
+355                    android:scheme="recaptcha" />
+355-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:53:21-43
+356            </intent-filter>
+357        </activity>
+358
+359        <service
+359-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:64:9-73:19
+360            android:name="com.google.firebase.auth.api.fallback.service.FirebaseAuthFallbackService"
+360-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:65:13-101
+361            android:enabled="true"
+361-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:66:13-35
+362            android:exported="false" >
+362-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:67:13-37
+363            <intent-filter>
+363-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:68:13-72:29
+364                <action android:name="com.google.firebase.auth.api.gms.service.START" />
+364-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:69:17-89
+364-->[com.google.firebase:firebase-auth:21.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/63c22d4406457ed0a382d8445d9dd20c/jetified-firebase-auth-21.0.1/AndroidManifest.xml:69:25-86
+365
+366                <category android:name="android.intent.category.DEFAULT" />
+366-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:17-75
+366-->/Users/abdulloh/StudioProjects/icrm/android/app/src/main/AndroidManifest.xml:49:27-73
+367            </intent-filter>
+368        </service>
+369
+370        <provider
+370-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:26:9-31:39
+371            android:name="com.google.firebase.provider.FirebaseInitProvider"
+371-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:27:13-77
+372            android:authorities="uz.madorgroup.icrm.firebaseinitprovider"
+372-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:28:13-72
+373            android:directBootAware="true"
+373-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:29:13-43
+374            android:exported="false"
+374-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:30:13-37
+375            android:initOrder="100" />
+375-->[com.google.firebase:firebase-common:20.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/56c97aed14b6f3aacbc916c636d83bb4/jetified-firebase-common-20.0.0/AndroidManifest.xml:31:13-36
+376
+377        <activity
+377-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:23:9-27:75
+378            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+378-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:24:13-93
+379            android:excludeFromRecents="true"
+379-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:25:13-46
+380            android:exported="false"
+380-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:26:13-37
+381            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+381-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:27:13-72
+382        <!--
+383            Service handling Google Sign-In user revocation. For apps that do not integrate with
+384            Google Sign-In, this service will never be started.
+385        -->
+386        <service
+386-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:33:9-37:51
+387            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+387-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:34:13-89
+388            android:exported="true"
+388-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:35:13-36
+389            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+389-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:36:13-107
+390            android:visibleToInstantApps="true" />
+390-->[com.google.android.gms:play-services-auth:20.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/d1bd579c703edabfc8e3295d3c11ccf8/jetified-play-services-auth-20.0.1/AndroidManifest.xml:37:13-48
+391
+392        <activity
+392-->[com.google.android.gms:play-services-base:18.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1cb858daf5fca9efd5a29d498c81af88/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:9-22:45
+393            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+393-->[com.google.android.gms:play-services-base:18.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1cb858daf5fca9efd5a29d498c81af88/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:19-85
+394            android:exported="false"
+394-->[com.google.android.gms:play-services-base:18.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1cb858daf5fca9efd5a29d498c81af88/jetified-play-services-base-18.0.1/AndroidManifest.xml:22:19-43
+395            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+395-->[com.google.android.gms:play-services-base:18.0.1] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/1cb858daf5fca9efd5a29d498c81af88/jetified-play-services-base-18.0.1/AndroidManifest.xml:21:19-78
+396
+397        <meta-data
+397-->[com.google.android.gms:play-services-basement:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/5f0bdd5f66d29f07bd2bb38368c267e9/jetified-play-services-basement-18.0.0/AndroidManifest.xml:21:9-23:69
+398            android:name="com.google.android.gms.version"
+398-->[com.google.android.gms:play-services-basement:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/5f0bdd5f66d29f07bd2bb38368c267e9/jetified-play-services-basement-18.0.0/AndroidManifest.xml:22:13-58
+399            android:value="@integer/google_play_services_version" />
+399-->[com.google.android.gms:play-services-basement:18.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/5f0bdd5f66d29f07bd2bb38368c267e9/jetified-play-services-basement-18.0.0/AndroidManifest.xml:23:13-66
+400
+401        <service
+401-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:26:9-30:19
+402            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+402-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:27:13-117
+403            android:exported="false"
+403-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:28:13-37
+404            android:permission="android.permission.BIND_JOB_SERVICE" >
+404-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:29:13-69
+405        </service>
+406
+407        <receiver
+407-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:32:9-34:40
+408            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+408-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:33:13-132
+409            android:exported="false" />
+409-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/abdulloh/.gradle/caches/transforms-2/files-2.1/7882ad946f051ddc29b569ddf859cd1d/jetified-transport-runtime-3.0.0/AndroidManifest.xml:34:13-37
+410    </application>
+411
+412</manifest>

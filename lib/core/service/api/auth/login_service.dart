@@ -46,7 +46,6 @@ class LoginService {
           prefs.setTokens(
             accessToken: data['access_token'],
             refreshToken: data['refresh_token'],
-            expiresIn: data['expires_in'],
           );
 
           UserToken.authStatus = prefs.getAuth;
@@ -62,6 +61,7 @@ class LoginService {
     } on DioError catch(e) {
       final Map<String, dynamic> data = e.response!.data;
 
+      print(data);
       if(data['error'] == 'invalid_grant') {
         return 'user_not_found';
       } else if(data['error_description'].toString().toLowerCase().contains('refresh token')) {
@@ -90,7 +90,7 @@ class LoginService {
         ),
         data: {
           "password": oldPassword,
-          "new_confirmation": newPassword,
+          "new_password": newPassword,
           "new_password_confirmation": newPassword,
         },
       );

@@ -96,7 +96,6 @@ class _LeadsPageState extends State<LeadsPage> with TickerProviderStateMixin{
                   child: SizedBox(
                     height: maxHeight,
                     child: CustomScrollView(
-                      scrollBehavior: const ScrollBehavior().copyWith(overscroll: false),
                       slivers: [
                         SliverToBoxAdapter(
                           child: MainLeadInfo(

@@ -35,9 +35,7 @@ class GetLeads {
             HttpHeaders.authorizationHeader: 'Bearer ${UserToken.accessToken}',
           },
         ),
-      ).timeout(const Duration(minutes: 1), onTimeout: () {
-        throw (Exception('TIME OUT'));
-      });
+      );
 
       final Map<String, dynamic> data = await response.data;
 
@@ -145,9 +143,7 @@ class GetLeads {
             "Authorization": 'Bearer ${UserToken.accessToken}',
           },
         ),
-      ).timeout(const Duration(minutes: 1), onTimeout: () {
-        throw (Exception('TIME OUT'));
-      });
+      );
 
       final Map<String, dynamic> data = await response.data;
 
